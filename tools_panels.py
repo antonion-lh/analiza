@@ -99,7 +99,7 @@ def render_simulator() -> None:
         key="sim_addons",
     )
     include_holding = st.toggle(
-        "Uključi i Holding (gruba procjena ~17 mil. € pri +12 % — nije razrada mirenja)",
+        "Uključi i Holding (gruba procjena ~17 mil. € pri +12 % — nije službena razrada)",
         value=False,
         key="sim_holding",
     )
@@ -131,7 +131,7 @@ def render_simulator() -> None:
     a.metric("Samo ZET", mil(zet_total))
     b.metric("Holding (procjena)", mil(holding_total) if include_holding else "—")
     st.caption(
-        f"Ako bi se ZET-ov dio prevalio na subvenciju, udio direktnog iznosa bio bi "
+        f"Ako bi Grad ZET-ov dio platio većom subvencijom, udio direktnog iznosa bio bi "
         f"{pct(zet_share_new)} (sada 6,8 %)."
     )
 
@@ -164,41 +164,17 @@ def render_myths() -> None:
         st.write(
             "To nisu iste stvari. Sindikat traži **novo** povećanje osnovice za 13 %. "
             "Uprava ZET-a „oko 14 %“ zbraja razdoblje **od 1. siječnja 2026. do 1. siječnja 2027.**: "
-            "već dano +4,4 %, ponudu +4,5 % od rujna i indeksaciju oko 4–4,5 % početkom 2027. "
+            "već dano +4,4 %, ponudu +4,5 % od rujna i usklađivanje plaća s cijenama oko 4–4,5 % početkom 2027. "
             "Povećanje iz **svibnja 2025. (+15,6 %)** dogodilo se ranije i **nije** u tom zbroju."
         )
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {
-                        "Stavka": "Svibanj 2025.",
-                        "Iznos": "+15,6 % osnovice",
-                        "Ulazi u „14 %“?": "Ne",
-                    },
-                    {
-                        "Stavka": "Siječanj 2026.",
-                        "Iznos": "+4,4 % osnovice",
-                        "Ulazi u „14 %“?": "Da",
-                    },
-                    {
-                        "Stavka": "Ponuda (rujan 2026.)",
-                        "Iznos": "+4,5 %",
-                        "Ulazi u „14 %“?": "Da",
-                    },
-                    {
-                        "Stavka": "Indeksacija 2027.",
-                        "Iznos": "oko 4–4,5 %",
-                        "Ulazi u „14 %“?": "Da (buduće)",
-                    },
-                    {
-                        "Stavka": "Zahtjev sindikata",
-                        "Iznos": "+13 % odmah",
-                        "Ulazi u „14 %“?": "Ne — druga računica",
-                    },
-                ]
-            ),
-            hide_index=True,
-            use_container_width=True,
+        st.markdown(
+            """
+- **Svibanj 2025.** · +15,6 % osnovice · **ne** ulazi u „14 %“
+- **Siječanj 2026.** · +4,4 % osnovice · **da**
+- **Ponuda (rujan 2026.)** · +4,5 % · **da**
+- **Usklađivanje s cijenama 2027.** · oko 4–4,5 % · **da** (buduće)
+- **Zahtjev sindikata** · +13 % odmah · **ne** — druga računica
+"""
         )
         st.caption("Izvor zbroja „14 %“: priopćenje uprave ZET.")
 
@@ -221,8 +197,8 @@ def render_myths() -> None:
 
     with st.expander("„Zahtjev sindikata košta samo 15 milijuna.“"):
         st.write(
-            f"**Uprava** u mirenju: cijeli paket **{PAKET_ZET} mil. €** godišnje "
-            f"(osnovica, dodaci, indeksacija i ostalo; 23,8 % mase plaća). "
+            f"**Uprava** u mirenju (pregovori uz posrednika): cijeli paket **{PAKET_ZET} mil. €** godišnje "
+            f"(osnovica, dodaci, usklađivanje s cijenama i ostalo; 23,8 % ukupne mase plaća). "
             f"**Gruba procjena same osnovice:** +13 % na trošak rada ≈ **{UNION_BASE_ONLY_M} mil. €** — "
             "brojka koju sindikati često ističu kao neposredni trošak. "
             f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
@@ -386,13 +362,19 @@ def render_pulse() -> None:
     left, right = st.columns(2)
     with left:
         st.markdown("##### Ishod")
-        df1["udio %"] = (100 * df1["n"] / n).round(1)
-        st.dataframe(df1, hide_index=True, use_container_width=True)
+        for _, r in df1.iterrows():
+            st.markdown(
+                f"- **{r['odgovor']}** — {int(r['n'])} "
+                f"({100 * r['n'] / n:.0f} %)"
+            )
         st.bar_chart(df1.set_index("odgovor")["n"], color=ACCENT)
     with right:
-        st.markdown("##### Cijena karte 0,53 = 0,80?")
-        df2["udio %"] = (100 * df2["n"] / n).round(1)
-        st.dataframe(df2, hide_index=True, use_container_width=True)
+        st.markdown("##### Cijena karte 0,53 → 0,80?")
+        for _, r in df2.iterrows():
+            st.markdown(
+                f"- **{r['odgovor']}** — {int(r['n'])} "
+                f"({100 * r['n'] / n:.0f} %)"
+            )
         st.bar_chart(df2.set_index("odgovor")["n"], color="#0F766E")
 
 
