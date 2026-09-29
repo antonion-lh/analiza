@@ -12,6 +12,15 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from tools_panels import (
+    build_pdf_bytes,
+    render_myths,
+    render_pulse,
+    render_sankey,
+    render_share_bar,
+    render_simulator,
+)
+
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
 ZET_DIREKTNO_2025 = 176.8
@@ -223,6 +232,15 @@ div[data-testid="stMetricValue"] {
   color: var(--accent);
 }
 div[data-testid="stMetricLabel"] { color: var(--muted); }
+
+@media (max-width: 700px) {
+  div[data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div {
+    min-width: 100% !important;
+  }
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -383,17 +401,26 @@ html(
 """
 )
 
+@st.cache_data(show_spinner=False)
+def _pdf_dosje() -> bytes:
+    return build_pdf_bytes()
+
+
+render_share_bar(_pdf_dosje())
+
 segment = st.segmented_control(
     "Odjeljak",
-    options=["Javni dosje", "Uz štrajk"],
+    options=["Javni dosje", "Uz štrajk", "Alati"],
     default="Javni dosje",
     label_visibility="collapsed",
 )
+if not segment:
+    segment = "Javni dosje"
 
 # ---------------------------------------------------------------------------
 # JAVNI DOSJE
 # ---------------------------------------------------------------------------
-if segment != "Uz štrajk":
+if segment == "Javni dosje":
     kpi_tiles(
         [
             ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
@@ -528,9 +555,10 @@ if segment != "Uz štrajk":
         st.subheader("Trošak rada po zaposlenom")
         st.dataframe(LABOR, hide_index=True, use_container_width=True)
         st.line_chart(LABOR.set_index("Godina")["€ / zap."], color=CHART_3)
-        a, b, c, d = st.columns(4)
+        a, b = st.columns(2)
         a.metric("Udio 55+", "36,7 %")
         b.metric("Prosječna dob", "48,3 god.")
+        c, d = st.columns(2)
         c.metric("Vozači autobusa — odlasci 2024.", "94")
         d.metric("Manjak vozača (javno)", "oko 200")
 
@@ -614,6 +642,7 @@ if segment != "Uz štrajk":
             "U 2024. rashode Grada povećao je i jednokratni prijenos CUPOV-a (225,9 mil. €). "
             "U 2025. uz subvenciju i kapital stoje još pozajmica od 18 mil. € i dokapitalizacija od 8,6 mil. €."
         )
+        st.info("Interaktivni Sankey tok novca: odjeljak **Alati → Tok novca**.")
         st.subheader("Subvencija po stanovniku — orijentacija")
         st.bar_chart(
             pd.DataFrame(
@@ -752,7 +781,7 @@ if segment != "Uz štrajk":
 # ---------------------------------------------------------------------------
 # UZ ŠTRAJK
 # ---------------------------------------------------------------------------
-else:
+elif segment == "Uz štrajk":
     html(
         """
 <div class="bento">
@@ -940,42 +969,41 @@ else:
             ]
         )
 
-        st.subheader("Vlastiti izračun — samo osnovica na trošak rada")
-        custom_pct = st.slider(
-            "Povećanje osnovice (%)",
-            min_value=0.0,
-            max_value=20.0,
-            value=8.0,
-            step=0.5,
-        )
-        include_holding = st.checkbox(
-            "Uključi Holding grubo (isti postotak × omjer paketa 34 / 32,4)",
-            value=False,
-        )
-        custom = scenario_cost(custom_pct)
-        holding_extra = custom * (PAKET_HOLDING / PAKET_ZET) if include_holding else 0.0
-        total = custom + holding_extra
-        imp = city_impact(total)
-
-        s1, s2, s3, s4 = st.columns(4)
-        s1.metric("ZET (procjena)", mil(custom))
-        s2.metric("Holding (grubo)", mil(holding_extra) if include_holding else "—")
-        s3.metric("Ukupno / udio rashoda", f"{mil(total)} · {pct(imp['share_city'])}")
-        s4.metric("Novi udio ZET*", pct(city_impact(custom)["zet_share"]))
-        st.caption(
-            "* Udio ZET-a računa samo dodatak ZET-a na 176,8 mil. €. "
-            "Holding nije u „izravno ZET“."
-        )
-
         st.info(
-            f"**ZET + Holding, puni paketi (uprava):** oko {mil(PAKET_ZET + PAKET_HOLDING)} "
-            f"(+{pct(100 * (PAKET_ZET + PAKET_HOLDING) / RASHODI_GRADA_2025)} rashoda)."
+            "Za interaktivni „što ako?“ s dodacima, Holdingom, udjelom u proračunu i "
+            "cijenom po stanovniku — otvorite odjeljak **Alati → Simulator**."
         )
         st.warning(
             "Spor nije „pet ili trideset dva“ u istoj jedinici. "
             "Spor je hoće li dogovor biti bliži **osnovici** (A–C) ili **cijelom paketu** (D) — "
             "i koliko Holding povuče sa sobom."
         )
+
+# ---------------------------------------------------------------------------
+# ALATI
+# ---------------------------------------------------------------------------
+elif segment == "Alati":
+    st.caption(
+        "Interaktivni sloj: simulator, fact-check, tok novca i anonimna anketa. "
+        "Brojevi ostaju javni; tumačenje ostaje vama."
+    )
+    tool = st.pills(
+        "Alat",
+        ["Simulator", "Mitovi vs. stvarnost", "Tok novca", "Anketa"],
+        default="Simulator",
+        label_visibility="collapsed",
+        key="alat_tab",
+    )
+    if not tool:
+        tool = "Simulator"
+    if tool == "Simulator":
+        render_simulator()
+    elif tool == "Mitovi vs. stvarnost":
+        render_myths()
+    elif tool == "Tok novca":
+        render_sankey()
+    else:
+        render_pulse()
 
 html(
     """
