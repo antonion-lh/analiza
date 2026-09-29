@@ -1,0 +1,24 @@
+id,naziv,razina,pravna_osobnost,vlasnik,oib,napomena
+zet,Zagrebački električni tramvaj d.o.o.,zet,da,Grad Zagreb 100%,,"Izdvojen iz Holdinga 2018.; sestrinsko društvo, ne član Grupe ZGH"
+zgh_grupa,Grupa Zagrebački holding,grupa,konsolidacija,Grad Zagreb (preko ZGH),,"12 podružnica + ovisna društva + ustanova; GI konsolidirano"
+zgh_matica,Zagrebački holding d.o.o. (matica),matica,da,Grad Zagreb 100%,85584865987,"Uključuje 12 podružnica; GI nekonsolidirano; ~5381 zaposlenih (31.12.2025.)"
+pod_cistoca,Podružnica Čistoća,podruznica,ne,dio ZGH matice,,"Fokus štrajka Holdinga; nema zasebnog GFI"
+pod_ceste,Podružnica Zagrebačke ceste,podruznica,ne,dio ZGH matice,,
+pod_zrinjevac,Podružnica Zrinjevac,podruznica,ne,dio ZGH matice,,
+pod_parking,Podružnica Zagrebparking,podruznica,ne,dio ZGH matice,,
+pod_trznice,Podružnica Tržnice Zagreb,podruznica,ne,dio ZGH matice,,
+pod_groblja,Podružnica Gradska groblja,podruznica,ne,dio ZGH matice,,
+pod_arena,Podružnica Arena Zagreb,podruznica,ne,dio ZGH matice,,
+pod_akz,Podružnica Autobusni kolodvor Zagreb,podruznica,ne,dio ZGH matice,,
+pod_rtz,Podružnica Robni terminali Zagreb,podruznica,ne,dio ZGH matice,,
+pod_agm,Podružnica AGM,podruznica,ne,dio ZGH matice,,
+pod_vn,Podružnica Vladimir Nazor,podruznica,ne,dio ZGH matice,,
+pod_zdg,Podružnica Zagrebački digitalni grad,podruznica,ne,dio ZGH matice,,
+vio,Vodoopskrba i odvodnja d.o.o.,ovisno,da,ZGH (+ manjinski udjeli JLS),83416546499,Vlastita GI na vio.hr; FINA; ~1344 zaposlenih u Grupi 2025.
+gpz,Gradska plinara Zagreb d.o.o.,ovisno,da,ZGH 100%,,Distribucija plina; ~397 zaposlenih
+gpz_o,Gradska plinara Zagreb – Opskrba d.o.o.,ovisno,da,ZGH 100%,,Opskrba plinom; ~93 zaposlenih
+gpb,Gradska plinara Bjelovar d.o.o.,ovisno,da,kćer GPZ,,~26 zaposlenih; izvan Zagreba
+gskg,Gradsko stambeno komunalno gospodarstvo d.o.o.,ovisno,da,ZGH 100%,,~338 zaposlenih
+zp,Zagreb plakat d.o.o.,ovisno,da,ZGH 100%,,~10 zaposlenih
+gljz,Gradska ljekarna Zagreb,ustanova,da (ustanova),ZGH,,~411 zaposlenih
+grad,Grad Zagreb (proračun),grad,da,—,,"Subvencije / jamstva prema društvima; kratki vodiči izvršenja"

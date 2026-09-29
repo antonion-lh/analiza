@@ -1,0 +1,49 @@
+entitet_id,metrika,jedinica,y2023,y2024,y2025,y2026,izvor_id,pouzdanost,dostupnost,napomena
+zgh_grupa,zaposleni_31_12,osobe,,7782|7792,8000,,zgh_gi_k;esrs_aneks,B,da,"U tekstu se javlja 7.782 i 7.792 za 2024. — uskladiti pri unosu iz tablica GFI"
+zgh_grupa,prihodi_ukupno,mil_eur,,857.62,779.62,,zgh_gi_k,A,da,Pad 9 % YoY uglavnom zbog ostalih poslovnih prihoda
+zgh_grupa,prihodi_od_prodaje,mil_eur,,592.36,607.87,,zgh_gi_k,A,da,+3 % YoY
+zgh_grupa,ebit,mil_eur,,49.94,41.88,,zgh_gi_k,A,da,
+zgh_grupa,ebitda,mil_eur,,105.58,104.98,,zgh_gi_k,A,da,
+zgh_grupa,dobit_razdoblja,mil_eur,,,21.73,,zgh_gi_k,A,da,Navedeno u komentaru uprave 2025.
+zgh_grupa,neto_dug,mil_eur,,475.38,423.76,,zgh_gi_k,A,da,
+zgh_grupa,rast_mase_placa_pct,pct,,15.57,20.26,,zgh_gi_k,B,da,"Payroll growth rate (ESRS/KPI); uključuje jednokratne neto isplate"
+zgh_grupa,osnovica_place,eur,,,567.24,592.20 (od I/2026),zgh_gi_k,B,da,"+15,6 % (V/ili VI/2025) i +4,4 % od I/2026 — ista logika kao ZET Dodatak III."
+zgh_matica,zaposleni_31_12,osobe,,5356,5381,,zgh_gi_n;esrs_aneks,A,da,Uključuje sve podružnice matice
+zgh_matica,prihodi_ukupno,mil_eur,,354.18,387.54,,zgh_gi_n,A,da,
+zgh_matica,poslovni_prihodi,mil_eur,,346.19,379.42,,zgh_gi_n,A,da,
+zgh_matica,ebit,mil_eur,,39.67,52.39,,zgh_gi_n,A,da,
+zgh_matica,ebitda,mil_eur,,56.67,69.13,,zgh_gi_n,A,da,
+zgh_matica,dobit_razdoblja,mil_eur,,7.18,33.26,,zgh_gi_n,A,da,
+zgh_matica,neto_dug,mil_eur,,,474.79,,zgh_gi_n,A,da,
+zgh_matica,prihodi_po_podruznici,mil_eur,,,,,zgh_gi_n,N,ne,"Nema javne tablice RDG po 12 podružnica; samo segmentni komentari (zelenilo +27 %; ceste +6 %…)"
+zgh_matica,zaposleni_po_podruznici,osobe,,,,,esrs_aneks,N,ne,ESRS daje samo zbir matice; ne Čistoća vs Ceste
+vio,zaposleni_31_12_grupa,osobe,,1174,1344,,esrs_aneks,B,da,Porast zbog pripajanja (Samobor/Žumberak itd.)
+vio,prihodi_ukupno,mil_eur,,,132.37,,fina_infobiz;vio_gi,A|C,da,FINA 2025; potvrditi iz VIO GFI PDF
+vio,neto_dobit,mil_eur,,,-17.94,,fina_infobiz,C,da,Gubitak 2025. prema FINA
+gpz,zaposleni_31_12,osobe,,395,397,,esrs_aneks,B,da,
+gpz_o,zaposleni_31_12,osobe,,95,93,,esrs_aneks,B,da,
+gpb,zaposleni_31_12,osobe,,25,26,,esrs_aneks,B,da,
+gskg,zaposleni_31_12,osobe,,320,338,,esrs_aneks,B,da,
+gljz,zaposleni_31_12,osobe,,417,411,,esrs_aneks,B,da,
+zp,zaposleni_31_12,osobe,,,10,,esrs_aneks,B,da,
+gpz,prihodi_ukupno,mil_eur,,,,,gpz vlastiti GI / fina,A|N,djelomicno,Treba skinuti GFI s plinara-zagreb.hr / FINA
+gpz_o,prihodi_ukupno,mil_eur,,,,,fina_infobiz,C|N,djelomicno,Za unos u MVP
+gskg,prihodi_ukupno,mil_eur,,,,,fina_infobiz,C|N,djelomicno,
+pod_cistoca,subvencija_grad_otpad,mil_eur,,,~46.4,,grad_izvrsenje,A,da,"Linija „gospodarenje otpadom“ u vodiču 2025. — Čistoća je glavni korisnik; nije 1:1 RDG podružnice"
+pod_cistoca,prihodi_rdg,mil_eur,,,,,zgh_gi_n,N,ne,Nema zasebnog GFI
+pod_cistoca,zaposleni,osobe,,,,,zgh_gi_k,N,ne,"Spominje se rast operativnih radnika; nema javnog broja samo za Čistoću"
+pod_cistoca,trošak_rada,mil_eur,,,,,—,N,ne,
+pod_cistoca,isplata_radnik_primjer,eur,,,,,mediji_strajk / priopćenja,C|N,djelomicno,U ZET app već: komunalac Čistoća 1.651 € (uprava) — provjeriti izvor
+pod_ceste,prihodi_rdg,mil_eur,,,,,zgh_gi_n,N,ne,Samo komentar rasta prihoda održavanja cesta ~6 %
+pod_arena,subvencija_zakupnina_grad,mil_eur,,,~7.5,,grad_izvrsenje,A,da,Zakupnina dvorane Arena
+pod_trznice,subvencija_grad,mil_eur,,,~0.83,,grad_izvrsenje,A,da,
+grad,subvencije_ukupno,mil_eur,,,~250.5,,grad_izvrsenje,A,da,Izvršenje 2025. kratki vodič
+grad,subvencija_zet,mil_eur,,,~154.5,,grad_izvrsenje,A,da,Tekuća subvencija JGP (već u Istražimo)
+grad,subvencija_voda_vio,mil_eur,,,~14,,grad_izvrsenje,A,da,
+grad,jamstvo_obveznice_zgh,mil_eur,,,~305,,grad_izvrsenje,A,da,Indirektni dug / jamstvo od lipnja 2023.
+zet,zaposleni,osobe,(serija u appu),(serija),(serija H1),,zet_gi,A,da,Već u Istražimo
+zet,trosak_rada,mil_eur,,,117.1,,zet_gi,A,da,Već u Istražimo
+zet,subvencija_grad,mil_eur,,,154.5,,grad_izvrsenje,A,da,Već u Istražimo
+zet,paket_strajk_uprava,mil_eur,,,,32.4,mediji_strajk / mirenje,B,da,Već u Istražimo
+zgh_grupa,paket_strajk_uprava,mil_eur,,,,>34,mediji_strajk,B,da,"Holding >34 mil. € — nema javne razrade stavki"
+zgh_grupa,podrska_strajku_sindikat_pct,pct,,,,~75,mediji_strajk,C,da,Sindikalni podatak; Grad navodi i druge postotke (operativni dolazak)

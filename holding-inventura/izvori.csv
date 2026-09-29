@@ -1,0 +1,12 @@
+id,naziv,url_ili_lokacija,tip,frekvencija,obuhvat,napomena
+zgh_gi_k,ZGH GI konsolidirano (PDF/ZIP),https://www.zgh.hr/investitori/financijska-izvjesca/10887,godisnje_izvjesce,godisnje+polugodisnje,grupa,"2025 ENG/HR dostupno; revidirano; ESEF službena verzija"
+zgh_gi_n,ZGH GI nekonsolidirano (PDF/ZIP),https://www.zgh.hr/investitori/financijska-izvjesca/10887,godisnje_izvjesce,godisnje+polugodisnje,matica,"Matica + 12 podružnica zbirno"
+zgh_plan_2026,Plan poslovanja ZGH 2026,https://www.zgh.hr/UserDocsImages/investitori/Planovi%20poslovanja/,plan,godisnje,matica+podruznice,Kvalitativni ciljevi po podružnici; malo tvrdih serija
+zgh_eho,EHO ZSE obavijesti ZGH,https://eho.zse.hr/obavijesti-izdavatelja/security/HRZGHOO237A3,trziste_kapitala,ad_hoc,grupa+matica,Obveznice / financijski izvještaji
+grad_izvrsenje,Kratki vodič izvršenja proračuna Grada,https://www.zagreb.hr/ (arhiva financije) + IJF repozitorij,proracun,godisnje+polugodisnje,grad,"Subvencije po liniji: ZET, otpad, voda…"
+grad_td,Pregled trgovačkih društava Grada,https://www.zagreb.hr/trgovacka-drustva/1745,registar,povremeno,grad+drustva,Struktura vlasništva
+vio_gi,VIO godišnja/financijska izvješća,https://www.vio.hr/dokumenti/izvjesca-planovi/godisnja-izvjesca-planovi/3073,godisnje_izvjesce,godisnje,vio,Financijsko izvješće 2023–2025 navedeno
+fina_infobiz,FINA Info.BIZ,https://infobiz.fina.hr/,registar_gfi,godisnje,ovisna_drustva,"Prihod, dobit, zaposleni; dio iza paywalla"
+esrs_aneks,ESRS aneksi u GI Grupe (zaposleni po društvu),unutar zgh_gi_k,esrs,godisnje,grupa_po_pravnoj_osobi,"Annex 9: Company/GPZ/VIO… — NE po podružnici"
+zet_gi,ZET poslovna izvješća / postojeći Istražimo dataset,postojeća app + zet.hr,godisnje_izvjesce,godisnje,zet,Već u istrazimo
+mediji_strajk,Priopćenja / mediji štrajk 2026,razni,priopcenje,ad_hoc,zet+holding,"Paket >34 mil. Holding; podrška štrajku ~75 %"
