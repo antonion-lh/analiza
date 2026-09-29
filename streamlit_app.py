@@ -461,9 +461,9 @@ labor_growth_2y = int(
 
 WAGES = pd.DataFrame(
     [
-        {"Kategorija": "Vozač ZET (neto + dodaci)", "Neto €": 1992, "Napomena": "+63 % naspram VII/2021."},
-        {"Kategorija": "Prosjek ZET", "Neto €": 1931, "Napomena": "+59 % naspram 2021. (uprava)"},
-        {"Kategorija": "Komunalac Čistoća", "Neto €": 1651, "Napomena": "+87 % naspram VII/2021."},
+        {"Kategorija": "Vozač ZET (neto + dodaci)", "Neto €": 1992, "Napomena": "+63 % u odnosu na VII/2021."},
+        {"Kategorija": "Prosjek ZET", "Neto €": 1931, "Napomena": "+59 % u odnosu na 2021. (uprava)"},
+        {"Kategorija": "Komunalac Čistoća", "Neto €": 1651, "Napomena": "+87 % u odnosu na VII/2021."},
         {"Kategorija": "Prosjek RH 2025. (DZS)", "Neto €": 1449, "Napomena": "godišnji prosjek"},
         {"Kategorija": "Medijan RH XII/2025.", "Neto €": 1280, "Napomena": "DZS"},
     ]
@@ -496,16 +496,16 @@ html(
     """
 <div class="bento">
   <div class="tile hero s8">
-    <p class="kicker">Istražimo · otvoreno na raspolaganje</p>
-    <h1>ZET — javni podaci</h1>
+    <p class="kicker">Istražimo · javni podaci</p>
+    <h1>ZET — brojevi na jednom mjestu</h1>
     <p class="lead">
-      Godišnje serije iz izvješća i proračuna, uz zaseban odjeljak o štrajku
-      od 28.&nbsp;rujna&nbsp;2026. Brojevi su javni; tumačenje ostaje vama.
+      Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
+      od 28.&nbsp;rujna&nbsp;2026. Podaci su javni — zaključke donosite sami.
     </p>
   </div>
   <div class="tile brand s4">
-    <div class="big">Bez stava.<br/>Samo mjere<br/>koje se ne miješaju.</div>
-    <div class="small">Poslovna izvješća · Grad · DZS · GTFS</div>
+    <div class="big">Bez stava.<br/>Tri mjere plaće<br/>ne miješamo.</div>
+    <div class="small">Izvješća ZET · Grad · DZS · GTFS</div>
   </div>
 </div>
 """
@@ -535,14 +535,14 @@ if segment == "Javni dosje":
         [
             ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
             (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
-            ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija + kapital)", ""),
-            ("67 %", "Udio subvencija u prihodima ZET-a", "c"),
+            ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
+            ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
         ],
         spans=["s3", "s3", "s3", "s3"],
     )
 
     page = nav_pick(
-        "Podstranica dosjea",
+        "Tema",
         [
             "Pregled",
             "Plaće",
@@ -552,7 +552,7 @@ if segment == "Javni dosje":
             "Mreža",
             "Flota",
             "Kašnjenja",
-            "Ograničenja",
+            "Što nedostaje",
             "Sažetak",
         ],
         default="Pregled",
@@ -564,40 +564,40 @@ if segment == "Javni dosje":
             f"""
 <div class="bento">
   <div class="tile note s12">
-    <h4>Dvije serije plaća — ne miješati</h4>
+    <h4>Tri broja za plaću — ne zbrajajte ih</h4>
     <p>
-      Uprava navodi <strong>neto isplate s dodacima</strong> (vozač 1.992&nbsp;€, +63&nbsp;% od 2021.).
+      Uprava objavljuje <strong>isplatu s dodacima</strong> (vozač 1.992&nbsp;€, +63&nbsp;% od 2021.).
       Poslovna izvješća mjere <strong>trošak rada po zaposlenom</strong>
-      (+{labor_growth}&nbsp;% od 2018.), što uključuje doprinose.
-      Sindikati gledaju rast <strong>osnovice</strong> i kupovnu moć.
-      Sve tri baže su legitimne; u ovom dosjeu ostaju odvojene.
+      (+{labor_growth}&nbsp;% od 2018.), s doprinosima.
+      Sindikati pregovaraju o <strong>osnovici</strong> kolektivnog ugovora.
+      Sve tri stvari postoje; ovdje ih držimo odvojeno.
     </p>
   </div>
 </div>
 """
         )
-        st.subheader("Što brojevi kažu na jednoj stranici")
+        st.subheader("Na prvi pogled")
         qa_tiles(
             [
                 (
                     "Plaća",
-                    "1.992 € isplata VII/2026.",
-                    "Neto s dodacima (uprava) — ne plaća za 160 h. +63 % vs 2021. = isplate, ne samo osnovica.",
+                    "1.992 € — isplata u srpnju",
+                    "S dodacima (uprava). Nije plaća za 160 sati. +63 % od 2021. odnosi se na isplate.",
                 ),
                 (
                     "Zaposleni",
                     "Manje ljudi nego 2019.",
-                    "Vrhunac 3.956 → 3.692 (lipanj 2025.). Starija dobna struktura.",
+                    "S 3.956 na 3.692 (lipanj 2025.). Starija dobna struktura.",
                 ),
                 (
                     "Trošak rada",
                     f"+{labor_growth} % po zaposlenom",
-                    f"Od 2018.; +{labor_growth_2y} % od 2022. — druga serija od neto plaća.",
+                    f"Od 2018.; +{labor_growth_2y} % od 2022. — druga serija od neto isplata.",
                 ),
                 (
                     "Tko plaća",
                     "Subvencije ~67 %, karte ~18 %",
-                    "Rast plaća prevaljuje se na Grad.",
+                    "Veći trošak rada u pravilu pada na Grad.",
                 ),
                 (
                     "Udio u gradu",
@@ -607,17 +607,17 @@ if segment == "Javni dosje":
                 (
                     "Mreža",
                     "Novih tramvajskih pruga: 0",
-                    "Bus dnevne 149→135. GTFS stajališta blago padaju.",
+                    "Autobusne dnevne linije 149→135. Broj stajališta blago pada.",
                 ),
                 (
                     "Flota",
-                    "Modernizacija da, broj pada",
-                    "TMK 2400, e-bus, rabljeni. Ukupno vozila blago pada.",
+                    "Modernizacija da, vozila manje",
+                    "TMK 2400, električni autobusi, rabljena vozila. Ukupan broj blago pada.",
                 ),
                 (
                     "Kašnjenja",
-                    "Javnog KPI-ja nema",
-                    "U štrajku usluga = 0. RT-prijenos nije uporabiv.",
+                    "Nema javnog pokazatelja",
+                    "U štrajku nema usluge. Podaci u stvarnom vremenu nisu uporabivi.",
                 ),
             ]
         )
@@ -630,41 +630,39 @@ if segment == "Javni dosje":
             ]
         )
         st.caption(
-            "Pitanja o pregovorima i paketu od 32,4 mil. € → **Uz štrajk**. "
-            "Što institucije ne objavljuju → **Ograničenja**."
+            "Pregovori i 32,4 mil. € → **Uz štrajk**. "
+            "Što nije objavljeno → **Što nedostaje**."
         )
 
     elif page == "Plaće":
-        st.subheader("Neto isplata vs. osnovica")
+        st.subheader("Isplata i osnovica — nisu isto")
         st.warning(
-            "**1.992 €** (vozač, VII/2026., uprava) je **ukupna isplata na račun** za taj mjesec: "
-            "osnovica × koeficijent + stalni dodaci + prekovremeni + vikendi/noć/blagdani + smjenski dodaci. "
-            "To **nije** standardna neto plaća za redovnih ~160 sati bez dodataka — "
+            "**1.992 €** (vozač, srpanj 2026., uprava) je **ukupna isplata na račun** toga mjeseca: "
+            "osnovica puta koeficijent, stalni dodaci, prekovremeni, vikendi, noć, blagdani. "
+            "To **nije** uobičajena neto plaća za oko 160 sati bez dodataka — "
             "taj iznos **nije javno objavljen** i znatno je niži. "
-            "Srpanj često uključuje više prekovremenih (odmori, pokrivanje smjena)."
+            "U srpnju često bude više prekovremenih zbog godišnjih odmora."
         )
         st.info(
-            "**Kontekst rasporeda (sindikalni opis, nije ZET KPI):** mnogi vozači rade "
-            "„split“ smjene (npr. jutarnji blok, neplaćena/slabo plaćena pauza usred dana, "
-            "pa popodnevni blok). Broj na isplatnoj listi ne mjeri taj ritam rada."
+            "**Raspored (kako ga opisuju sindikati):** mnogi vozači rade „lomljene“ smjene — "
+            "jutarnji blok, pauza usred dana, pa popodne. "
+            "Broj na isplatnoj listi taj ritam ne pokazuje."
         )
-        st.write(
-            "Ispod: ono što je uprava objavila (isplata). Zasebno: poznate točke **osnovice KU**."
-        )
+        st.write("Prvo što je uprava objavila (isplata), zatim poznate točke **osnovice**.")
         st.dataframe(WAGES, hide_index=True, use_container_width=True)
         st.bar_chart(WAGES.set_index("Kategorija")["Neto €"], color=CHART)
 
-        st.subheader("Osnovica KU — javne točke (ne isplata)")
+        st.subheader("Osnovica kolektivnog ugovora")
         st.write(
             "Pregovara se o **osnovici**, ne o prosječnoj isplati. "
-            "Javno poznate točke iz Dodatka III. KU (NHS / priopćenja):"
+            "Javno potvrđene točke iz Dodatka III. KU:"
         )
         osnovice = pd.DataFrame(
             [
                 {
-                    "Datum": "prije V/2025.",
+                    "Datum": "prije svibnja 2025.",
                     "Osnovica €": round(567.24 / 1.156, 2),
-                    "Napomena": "izvedeno unatrag iz +15,6 % (nije zasebno priopćenje)",
+                    "Napomena": "izračunato unatrag iz +15,6 %",
                 },
                 {
                     "Datum": "od 1. 5. 2025.",
@@ -681,39 +679,38 @@ if segment == "Javni dosje":
         st.dataframe(osnovice, hide_index=True, use_container_width=True)
         st.line_chart(osnovice.set_index("Datum")["Osnovica €"], color=CHART)
         st.caption(
-            "Serija osnovice 2021.–2024. nije u ovom dosjeu kao potpuna tablica — "
-            "javno su potvrđene navedene točke. Vozač: osnovica × koeficijent (npr. 2,60) + dodaci."
+            "Cjelovite serije osnovice 2021.–2024. ovdje nema. "
+            "Za vozača: osnovica × koeficijent (npr. 2,60) + dodaci."
         )
 
         c1, c2 = st.columns(2)
-        c1.metric("Već isplaćeno — V/2025.", "+15,6 % osnovice")
-        c2.metric("Već isplaćeno — I/2026.", "+4,4 % osnovice")
+        c1.metric("Već dano — svibanj 2025.", "+15,6 % osnovice")
+        c2.metric("Već dano — siječanj 2026.", "+4,4 % osnovice")
 
         st.subheader("Što znači +63 % od 2021.")
         st.write(
-            "Uprava: prosječna **isplata** vozača (neto + dodaci) VII/2026. vs VII/2021. = **+63 %**. "
-            "Sindikalni kontekst koji vrijedi imenovati: polazna baza 2021. bila je niska "
-            "(godine slabijeg rasta osnovice), a dio rasta pada u razdoblje visoke inflacije — "
-            "dakle „krpanje zaostataka“, ne automatski dokaz luksuznih primanja. "
-            "Inflacija (HICP) otprilike sredina 2021. – kraj 2024.: **~+27,5 %** (HNB). "
-            "Nominalni +63 % isplata nadmašuje tu inflaciju, ali **ne zatvara** pitanje osnovice ni paketa dodataka."
+            "Uprava uspoređuje **isplatu** vozača (neto s dodacima) u srpnju 2026. i srpnju 2021.: **+63 %**. "
+            "Sindikati odgovaraju da je polazište 2021. bilo nisko i da je dio rasta pao u godine "
+            "jake inflacije — dakle krpanje zaostataka, ne dokaz „luksuznih“ plaća. "
+            "Inflacija (HICP) otprilike od sredine 2021. do kraja 2024.: **oko +27,5 %** (HNB). "
+            "Nominalnih +63 % nadmašuje tu inflaciju, ali **ne zatvara** raspravu o osnovici ni o paketu dodataka."
         )
-        st.caption("Izvori: priopćenja uprava ZET/Holding; Dodatak III. KU (NHS); DZS; HNB.")
+        st.caption("Izvori: priopćenja uprava; Dodatak III. KU; DZS; HNB.")
 
     elif page == "Zaposleni":
         st.subheader("Zaposleni i trošak rada")
         st.info(
-            f"Ovdje nije ista serija kao „1.992 € vozač“. "
+            f"Ovo **nije** ista serija kao „1.992 € vozač“. "
             f"Trošak rada po zaposlenom: +{labor_growth} % (2018.–2024.), "
             f"+{labor_growth_2y} % (2022.–2024.)."
         )
         st.write(
             "Najviše zaposlenih bilo je **3.956** krajem 2019. "
-            "Na dan 30. lipnja 2025. stoji **3.692** — pad od 6,7 % s vrhunca. "
-            "Oko 36 % zaposlenih starije je od 55 godina (poslovna izvješća)."
+            "Na 30. lipnja 2025. stoji **3.692** — 6,7 % manje nego na vrhuncu. "
+            "Oko 36 % zaposlenih starije je od 55 godina."
         )
         st.line_chart(EMP.set_index("Godina")["Zaposleni"], color=CHART)
-        st.caption("Izvor: Poslovna izvješća ZET, 2018.–2024. i I.–VI. 2025.")
+        st.caption("Izvor: Poslovna izvješća ZET.")
         st.subheader("Trošak rada po zaposlenom")
         st.dataframe(LABOR, hide_index=True, use_container_width=True)
         st.line_chart(LABOR.set_index("Godina")["€ / zap."], color=CHART_3)
@@ -721,7 +718,7 @@ if segment == "Javni dosje":
         a.metric("Udio 55+", "36,7 %")
         b.metric("Prosječna dob", "48,3 god.")
         c, d = st.columns(2)
-        c.metric("Vozači autobusa — odlasci 2024.", "94")
+        c.metric("Odlasci vozača autobusa 2024.", "94")
         d.metric("Manjak vozača (javno)", "oko 200")
 
     elif page == "Novac":
@@ -770,10 +767,9 @@ if segment == "Javni dosje":
             "Dio onoga što se vodi kao prihod od karata zapravo plaća Grad."
         )
         st.info(
-            "**Perspektiva proračuna:** političke odluke o besplatnim kategorijama građani često "
-            "pozdravljaju, ali one smanjuju komercijalni prihod od karata i povećavaju ovisnost "
-            "ZET-a o Gradu (subvencije ~67 % prihoda). Ugovor za besplatne kategorije u strukturi "
-            "„karata“: **8,9 mil. €**."
+            "**Što to znači za proračun:** besplatne kategorije građani često pozdravljaju, "
+            "ali smanjuju zaradu od karata i povećavaju ovisnost ZET-a o Gradu "
+            "(subvencije ~67 % prihoda). Ugovor za te kategorije u strukturi „karata“: **8,9 mil. €**."
         )
         st.subheader("Putnici (milijuni)")
         st.bar_chart(
@@ -808,19 +804,18 @@ if segment == "Javni dosje":
             use_container_width=True,
         )
         st.warning(
-            "**Fiskalna odgovornost (perspektiva Grada, ne sud):** ZET već prima veći dio "
-            "gradskih subvencija — **≈ 62 %** ako brojimo samo operativnu subvenciju (154,5), "
-            "ili **≈ 71 %** ako ubrojimo i kapital (176,8) u zbroju ~250,5 mil. €. "
-            "Svaki dodatni milijun koji se prevali na Grad konkurira drugim stavkama "
-            "(vrtići, škole, infrastruktura, otpad…). Ovo ne kaže koliki rast plaća „treba“ biti — "
-            "samo gdje novac dolazi iz istog proračuna."
+            "**Zašto Grad ne može „samo dati“:** ZET već prima velik dio gradskih subvencija — "
+            "**oko 62 %** ako brojimo samo operativnu subvenciju (154,5), "
+            "ili **oko 71 %** sa kapitalom (176,8) u zbroju ~250,5 mil. €. "
+            "Svaki dodatni milijun koji padne na Grad konkurira vrtićima, školama, "
+            "vodovodu, otpadu… To ne kaže koliki rast plaća treba biti — samo odakle ide novac."
         )
         st.caption(
-            "U 2024. rashode Grada povećao je i jednokratni prijenos CUPOV-a (225,9 mil. €). "
+            "U 2024. rashode je povećao i jednokratni prijenos CUPOV-a (225,9 mil. €). "
             "U 2025. uz subvenciju i kapital stoje još pozajmica od 18 mil. € i dokapitalizacija od 8,6 mil. €."
         )
-        st.info("Interaktivni Sankey tok novca: odjeljak **Alati → Tok novca**.")
-        st.subheader("Subvencija po stanovniku — orijentacija")
+        st.info("Dijagram toka novca: **Alati → Tok novca**.")
+        st.subheader("Subvencija po stanovniku (orijentacija)")
         st.bar_chart(
             pd.DataFrame(
                 [
@@ -837,8 +832,8 @@ if segment == "Javni dosje":
             color=CHART_2,
         )
         st.caption(
-            "Zagreb: izvršenje 2024. Ostali: EMTA/EIT Urban Mobility 2019. "
-            "Usporedbu valja čitati kao orijentaciju, ne kao strogu rang-listu."
+            "Zagreb: izvršenje 2024. Ostali gradovi: EMTA/EIT 2019. "
+            "Usporedba je orijentacijska, ne rang-lista."
         )
 
     elif page == "Mreža":
@@ -915,46 +910,46 @@ if segment == "Javni dosje":
     elif page == "Kašnjenja":
         st.subheader("Kašnjenja")
         st.warning(
-            "Javnog pokazatelja kašnjenja u minutama nema. "
-            "Od 28. rujna 2026. usluga je u štrajku praktički nula — "
-            "tada više nije riječ o kašnjenju, nego o prekidu. "
-            "GTFS-RT prijenos trenutačno nije uporabiv za javni pregled."
+            "Javnog broja kašnjenja u minutama nema. "
+            "Od 28. rujna 2026. u štrajku praktički nema usluge — "
+            "to više nije kašnjenje, nego prekid. "
+            "Podaci u stvarnom vremenu trenutačno nisu uporabivi."
         )
-        st.caption("Širi popis rupa u podacima → podstranica **Ograničenja**.")
+        st.caption("Širi popis rupa → **Što nedostaje**.")
         qa_tiles(
             [
                 (
                     "1",
                     "Dosje štrajka",
-                    "Serije iz PDF-ova, Radar isplata ZET-u, dani bez usluge.",
+                    "Serije iz izvješća, isplate ZET-u, dani bez usluge.",
                 ),
                 (
                     "2",
-                    "Razlika mreže",
-                    "Automatska usporedba GTFS arhive (linije, stajališta, razmaci) po kvartalu.",
+                    "Promjene mreže",
+                    "Usporedba arhive voznog reda (linije, stajališta) po kvartalu.",
                 ),
                 (
                     "3",
-                    "RT kad se vrati",
-                    "Snimanje GTFS-RT i prvi javni pregled kašnjenja za Zagreb.",
+                    "Kad se promet vrati",
+                    "Prvi javni pregled kašnjenja za Zagreb.",
                 ),
             ]
         )
 
-    elif page == "Ograničenja":
-        st.subheader("Što nam javne institucije i dalje ne govore?")
+    elif page == "Što nedostaje":
+        st.subheader("Što još nije javno")
         st.write(
-            "Ovdje nema stava tko je „u pravu“. Nabraja se što **nije** u javnom obliku "
-            "dovoljnom za čvrst sud — s obje strane stola."
+            "Nije sud o tome tko je u pravu. Samo popis onoga što **nedostaje** "
+            "za čvršći zaključak — s obje strane."
         )
         html(
             """
 <div class="bento">
   <div class="tile note s12">
-    <h4>Gdje podaci ne dopuštaju čvrst sud</h4>
+    <h4>Gdje brojevi ne dopuštaju čvrst sud</h4>
     <p>
-      Dosje odvaja mjere koje se ne smiju miješati i eksplicitno kaže što nedostaje.
-      Transparentnost rupa jednako je važna kao i objavljeni brojevi.
+      Odvajamo mjere koje se ne smiju miješati i kažemo što nije objavljeno.
+      Rupe u podacima važne su koliko i sami brojevi.
     </p>
   </div>
 </div>
@@ -964,33 +959,33 @@ if segment == "Javni dosje":
             pd.DataFrame(
                 [
                     {
-                        "Što nedostaje": "Neto plaća za redovnih ~160 h bez dodataka",
-                        "Zašto bitno": "1.992 € je isplata s dodacima; usporedba s „prosječnom plaćom“ zavarava",
+                        "Nedostaje": "Neto plaća za ~160 sati bez dodataka",
+                        "Zašto": "1.992 € je isplata s dodacima; usporedba s „prosječnom plaćom“ zavarava",
                         "Tko bi mogao objaviti": "ZET / Holding",
                     },
                     {
-                        "Što nedostaje": "Javna tablica osnovica × koeficijenata po radnim mjestima",
-                        "Zašto bitno": "Pregovara se o osnovici; građani vide samo isplatu",
-                        "Tko bi mogao objaviti": "ZET + sindikati (KU)",
+                        "Nedostaje": "Tablica osnovica i koeficijenata po radnim mjestima",
+                        "Zašto": "Pregovara se o osnovici; javnost vidi samo isplatu",
+                        "Tko bi mogao objaviti": "ZET i sindikati",
                     },
                     {
-                        "Što nedostaje": "Stavka-po-stavci razrada 32,375 mil. €",
-                        "Zašto bitno": "Uprava kaže paket; sindikati sporiju razinu; nema javnog excel-a",
-                        "Tko bi mogao objaviti": "Uprava ZET (mirenje)",
+                        "Nedostaje": "Razrada 32,375 mil. € stavka po stavci",
+                        "Zašto": "Uprava govori o paketu; sindikati o nižoj razini; nema javne tablice",
+                        "Tko bi mogao objaviti": "Uprava ZET",
                     },
                     {
-                        "Što nedostaje": "Kašnjenja u minutama (javni KPI)",
-                        "Zašto bitno": "Kvaliteta usluge ostaje anegdota ili štrajk = 0",
-                        "Tko bi mogao objaviti": "ZET / Grad (GTFS-RT)",
-                    },
-                    {
-                        "Što nedostaje": "Potpuna serija osnovice 2018.–2024.",
-                        "Zašto bitno": "+63 % isplata ≠ dokumentiran put osnovice kroz godine",
+                        "Nedostaje": "Kašnjenja u minutama",
+                        "Zašto": "Kvaliteta usluge ostaje anegdota ili štrajk = nula",
                         "Tko bi mogao objaviti": "ZET / Grad",
                     },
                     {
-                        "Što nedostaje": "Neovisna razrada troška Holding >34 mil. €",
-                        "Zašto bitno": "Paralelni štrajk; ista metodološka rupa kao kod ZET-a",
+                        "Nedostaje": "Cjelovita serija osnovice 2018.–2024.",
+                        "Zašto": "+63 % isplata nije isto što put osnovice kroz godine",
+                        "Tko bi mogao objaviti": "ZET / Grad",
+                    },
+                    {
+                        "Nedostaje": "Razrada Holding >34 mil. €",
+                        "Zašto": "Ista rupa kao kod ZET-a, paralelni štrajk",
                         "Tko bi mogao objaviti": "Uprava Holdinga",
                     },
                 ]
@@ -999,22 +994,23 @@ if segment == "Javni dosje":
             use_container_width=True,
         )
         st.info(
-            "Dok to nije javno, svaki citat „plaće su X“ ili „zahtjev košta Y“ treba nositi "
-            "**izvor** (uprava / sindikat / izvješće) i **mjeru** (isplata / osnovica / trošak rada)."
+            "Dok to nije javno, svaki citat „plaće su X“ ili „zahtjev košta Y“ treba "
+            "nositi **tko kaže** (uprava / sindikat / izvješće) i **što mjeri** "
+            "(isplata / osnovica / trošak rada)."
         )
 
     else:  # Sažetak
-        st.subheader("Sažetak javnog dosjea")
+        st.subheader("Ukratko")
         qa_tiles(
             [
-                ("Plaća", "1.992 € = isplata VII", "S dodacima; 160 h neto nije javan"),
-                ("Osnovica", "592,20 € od I/2026.", "Dodatak III.; +63 % = druga serija"),
+                ("Plaća", "1.992 € = isplata u srpnju", "S dodacima; 160 sati neto nije javan"),
+                ("Osnovica", "592,20 € od I/2026.", "Dodatak III.; +63 % je druga serija"),
                 ("Zaposleni", "3.956 → 3.692", "Oko 36 % starijih od 55"),
                 ("Trošak rada", f"+{labor_growth} % po zaposlenom", "Od 2018. — druga serija"),
                 ("Tko plaća", "Subvencije ~67 %", "Besplatne kategorije 8,9 mil. €"),
-                ("Udio u gradu", "6,8 % rashoda", "Sub. ≈62 % / sub+kap ≈71 % zbroja subvencija"),
-                ("Ograničenja", "Rupe u podacima", "Bez KPI kašnjenja; bez razrade 32,4"),
-                ("Dalje", "Uz štrajk + Alati", "Uprava vs sindikat; simulator"),
+                ("Udio u gradu", "6,8 % rashoda", "Subvencija ≈62 % / sa kapitalom ≈71 %"),
+                ("Rupe", "Što nedostaje", "Nema razrade 32,4; nema mjerenja kašnjenja"),
+                ("Dalje", "Uz štrajk i Alati", "Uprava i sindikat; računica"),
             ]
         )
 
@@ -1026,9 +1022,9 @@ elif segment == "Uz štrajk":
         """
 <div class="bento">
   <div class="tile note s12">
-    <h4>Dodatni odjeljak — u kontekstu štrajka</h4>
+    <h4>Uz štrajk — tvrdnje i računice</h4>
     <p>
-      Ovdje su tvrdnje stranaka o pregovorima i fiskalni scenariji A–D.
+      Ovdje su stajališta stranaka o pregovorima i scenariji A–D.
       Godišnje serije (zaposleni, mreža, flota…) ostaju u „Javnom dosjeu“.
     </p>
   </div>
@@ -1038,23 +1034,23 @@ elif segment == "Uz štrajk":
 
     kpi_tiles(
         [
-            ("1.992 €", "Isplata vozača VII/2026. (s dodacima) — ne 160 h", "t"),
-            ("+63 %", "Isplata vs VII/2021. (uprava) — kontekst: niska baza", "y"),
-            (mil(PAKET_ZET).replace(" mil. €", ""), "Paket mirenja — tvrdnja uprave ZET", "c"),
-            ("≈71 %", "ZET sub+kap u zbroju gradskih subvencija", ""),
+            ("1.992 €", "Isplata vozača u srpnju 2026. (s dodacima)", "t"),
+            ("+63 %", "Isplata u odnosu na srpanj 2021. (uprava)", "y"),
+            (mil(PAKET_ZET).replace(" mil. €", ""), "Paket mirenja — brojka uprave ZET", "c"),
+            ("≈71 %", "ZET (subvencija+kapital) u zbroju subvencija", ""),
         ],
         spans=["s3", "s3", "s4", "s2"],
     )
 
     page = nav_pick(
-        "Podstranica štrajka",
+        "Tema",
         ["Pregovori i paket", "Scenariji A–D"],
         default="Pregovori i paket",
         key="strajk_page",
     )
 
     if page == "Pregovori i paket":
-        st.subheader("Što kažu javni i priopćeni brojevi")
+        st.subheader("Što stoji u javnim priopćenjima")
         qa_tiles(
             [
                 (
@@ -1063,14 +1059,14 @@ elif segment == "Uz štrajk":
                     "Mil. € / god. samo ZET. Holding >34. Zbroj punih paketa premašuje 66.",
                 ),
                 (
-                    "13 % ≠ 14 %",
-                    "Novo povećanje ≠ kumulativ",
+                    "13 % nije 14 %",
+                    "Novo povećanje nije kumulativ",
                     "Sindikat: novo na osnovicu. Grad: već dano + ponuda + indeksacija.",
                 ),
                 (
                     "Ponuda Grada",
                     "+4,5 % + indeksacija ≈ ~14 %",
-                    "U prozoru I/2026.–I/2027.: već +4,4 % (I/2026.), ponuda +4,5 %, indeksacija ~4–4,5 %. (+15,6 % V/2025. je ranije.)",
+                    "U prozoru I/2026.–I/2027.: već +4,4 %, ponuda +4,5 %, indeksacija ~4–4,5 %. (+15,6 % iz V/2025. je ranije.)",
                 ),
                 (
                     "Ako prođe 32,4 mil.",
@@ -1109,7 +1105,7 @@ elif segment == "Uz štrajk":
 """
             )
 
-        st.subheader("Procjena troška — imenovani izvori")
+        st.subheader("Procjena troška — tko što tvrdi")
         a, b, c, d = st.columns(4)
         a.metric("Paket ZET (uprava)", mil(PAKET_ZET))
         b.metric("Udio u masi (uprava)", "23,8 %")
@@ -1117,20 +1113,18 @@ elif segment == "Uz štrajk":
         d.metric("Zahtjev osnovice ZET", "+13 %")
 
         st.info(
-            f"**Uprava** u mirenju: cijeli sindikalni paket = **{mil(PAKET_ZET)}**/god "
-            f"(= 23,8 % mase plaća), uključujući osnovicu, dodatke, indeksaciju i ostalo. "
-            f"**Orijentacija na osnovicu:** +13 % × trošak rada {mil(TROSAK_RADA_2024)} ≈ "
-            f"**{mil(scenario_cost(13))}** — broj koji sindikati često ističu kao neposredni "
-            "trošak zahtjeva za osnovicom. "
-            "**Ovaj dosje ne proglašava tko je u pravu** — pokazuje gdje nastaje razlika "
-            f"(oko {ADDONS_EST_M} mil. € ostaje u „paketu“ izvan čiste osnovice na izvješće). "
-            f"Holding (uprava): više od {mil(PAKET_HOLDING)}."
+            f"**Uprava** u mirenju: cijeli paket = **{mil(PAKET_ZET)}** godišnje "
+            f"(23,8 % mase plaća) — osnovica, dodaci, indeksacija i ostalo. "
+            f"**Gruba procjena same osnovice:** +13 % × trošak rada {mil(TROSAK_RADA_2024)} ≈ "
+            f"**{mil(scenario_cost(13))}** — brojka koju sindikati često ističu. "
+            f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
+            f"Holding (uprava): više od {mil(PAKET_HOLDING)}. "
+            "Ovdje se ne bira strana — samo se vidi jaz."
         )
 
-        st.subheader("Rekonstrukcija paketa (nije službena razrada)")
+        st.subheader("Odakle 32,4 milijuna (nije službena razrada)")
         st.write(
-            "Javne stavke po stavci **nema**. Ispod: što slijedi iz poznatih brojeva — "
-            "uz jasno ime izvora."
+            "Stavke po stavci **nisu** javne. Ispod je što slijedi iz poznatih brojeva."
         )
         st.dataframe(
             pd.DataFrame(
@@ -1138,20 +1132,20 @@ elif segment == "Uz štrajk":
                     {
                         "Komponenta": "Uprava: cijeli paket mirenja",
                         "Procjena": mil(PAKET_ZET),
-                        "Napomena": "priopćenje; uključuje i buduće/indeksaciju po njihovoj metodologiji",
+                        "Napomena": "priopćenje; uključuje i buduću indeksaciju po njihovoj metodi",
                     },
                     {
-                        "Komponenta": "Proxy: samo +13 % na trošak rada 117,1",
+                        "Komponenta": "Procjena: samo +13 % na trošak rada 117,1",
                         "Procjena": mil(scenario_cost(13)),
-                        "Napomena": "orijentacija „neposredne osnovice“; sindikati često ističu ovu razinu",
+                        "Napomena": "gruba „neposredna osnovica“; sindikati često ističu ovu razinu",
                     },
                     {
-                        "Komponenta": f"Proxy: +13 % na implied masu ~{MASA_IMPLIED:.0f}",
+                        "Komponenta": f"Procjena: +13 % na izvedenu masu ~{MASA_IMPLIED:.0f}",
                         "Procjena": mil(MASA_IMPLIED * 0.13),
-                        "Napomena": "ako je baza masa iz 32,4 / 23,8 %",
+                        "Napomena": "ako je baza 32,4 / 23,8 %",
                     },
                     {
-                        "Komponenta": "Razlika paket − proxy osnovice",
+                        "Komponenta": "Razlika paket − procjena osnovice",
                         "Procjena": f"oko {ADDONS_EST_M} mil. €",
                         "Napomena": "dodaci, indeksacija, prijevoz, vjernost… — bez javne stavke",
                     },
@@ -1161,8 +1155,8 @@ elif segment == "Uz štrajk":
             use_container_width=True,
         )
         st.caption(
-            "Uprava tvrdi X (32,4). Sindikati odgovaraju da je neposredni trošak osnovice bliži ~15. "
-            "Podaci pokazuju jaz; ne biraju stranu."
+            "Uprava kaže 32,4. Sindikati odgovaraju da je neposredni trošak osnovice bliži ~15. "
+            "Brojevi pokazuju jaz."
         )
 
         st.subheader("ZET i Holding — paralelni štrajk")
@@ -1209,26 +1203,23 @@ elif segment == "Uz štrajk":
             )
         st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
         st.caption(
-            "A–C = proxy (postotak × trošak rada 117,1) — nije službeni €-iznos Grada. "
-            "D = broj koji navodi uprava (cijeli paket mirenja)."
+            "A–C = gruba procjena (postotak × trošak rada 117,1) — nije službeni iznos Grada. "
+            "D = brojka uprave (cijeli paket mirenja)."
         )
 
         kpi_tiles(
             [
-                ("~5,3 mil.", "A — proxy +4,5 %", "t"),
-                ("~9,4 mil.", "B — proxy +8 %", ""),
-                ("~15,2 mil.", "C — proxy +13 %", "y"),
+                ("~5,3 mil.", "A — procjena +4,5 %", "t"),
+                ("~9,4 mil.", "B — procjena +8 %", ""),
+                ("~15,2 mil.", "C — procjena +13 %", "y"),
                 ("32,4 mil.", "D — paket uprave", "c"),
             ]
         )
 
-        st.info(
-            "Za interaktivni „što ako?“ s dodacima, Holdingom, udjelom u proračunu i "
-            "cijenom po stanovniku — otvorite odjeljak **Alati → Simulator**."
-        )
+        st.info("Za računicu s dodacima i Holdingom: **Alati → Računica**.")
         st.warning(
             "Spor nije „pet ili trideset dva“ u istoj jedinici. "
-            "Spor je hoće li dogovor biti bliži **osnovici** (A–C) ili **cijelom paketu** (D) — "
+            "Pitanje je bliži li se dogovor **osnovici** (A–C) ili **cijelom paketu** (D) — "
             "i koliko Holding povuče sa sobom."
         )
 
@@ -1237,18 +1228,18 @@ elif segment == "Uz štrajk":
 # ---------------------------------------------------------------------------
 elif segment == "Alati":
     st.caption(
-        "Interaktivni sloj: simulator, fact-check, tok novca i anonimna anketa. "
-        "Brojevi ostaju javni; tumačenje ostaje vama."
+        "Računica, raspletanje čestih tvrdnji, tok novca i kratka anketa. "
+        "Brojevi su javni; zaključak je vaš."
     )
     tool = nav_pick(
         "Alat",
-        ["Simulator", "Mitovi vs. stvarnost", "Tok novca", "Anketa"],
-        default="Simulator",
+        ["Računica", "Često čujemo", "Tok novca", "Anketa"],
+        default="Računica",
         key="alat_tab",
     )
-    if tool == "Simulator":
+    if tool == "Računica":
         render_simulator()
-    elif tool == "Mitovi vs. stvarnost":
+    elif tool == "Često čujemo":
         render_myths()
     elif tool == "Tok novca":
         render_sankey()
@@ -1258,9 +1249,9 @@ elif segment == "Alati":
 html(
     """
 <div class="foot" role="contentinfo">
-  Metodologija: Poslovna izvješća ZET; kratki vodiči izvršenja proračuna Grada;
-  priopćenja uprava (neto plaće VII/2026., scenarij 32,4 mil. €); DZS; EMTA/EIT (2019.); GTFS.
-  Tečaj 7,5345 kn/€. Proxy plaće ≠ neto isplata ≠ osnovica kolektivnog ugovora.
+  Izvori: poslovna izvješća ZET; kratki vodiči izvršenja proračuna Grada;
+  priopćenja uprava (isplate VII/2026., paket 32,4 mil. €); DZS; EMTA/EIT (2019.); GTFS.
+  Tečaj 7,5345 kn/€. Isplata ≠ trošak rada po zaposlenom ≠ osnovica kolektivnog ugovora.
   Ovo nije stav u pregovorima.
 </div>
 """
@@ -1269,7 +1260,7 @@ html(
 with st.expander("Izvori i napomene"):
     st.markdown(
         """
-**Tri mjere plaće** — ne miješati: neto s dodacima (isplata) · trošak rada po zaposlenom (izvješća) · osnovica KU (pregovori).
+**Tri mjere plaće** — ne miješati: isplata s dodacima · trošak rada po zaposlenom (izvješća) · osnovica KU (pregovori).
 
 [Poslovna izvješća ZET](https://www.zet.hr/preuzimanja/pravo-na-pristup-informacijama/676) ·
 izvršenje proračuna Grada · priopćenja · DZS · EMTA/EIT · GTFS · tečaj 7,5345 kn/€.
