@@ -1,25 +1,10 @@
-# 🎈 Blank app template
+# Istražimo
 
-A simple Streamlit app template for you to modify!
+Javni podaci i analitika — [istrazimo.streamlit.app](https://istrazimo.streamlit.app/)
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+Trenutno: **ZET i Zagreb** (štrajk / plaće / proračun), bez stava.
 
-### How to run it on your own machine
-
-Prerequisite: install `uv` if you don't already have it.
-
+```bash
+uv sync
+uv run streamlit run streamlit_app.py
 ```
-$ curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-1. Sync the dependencies
-
-   ```
-   $ uv sync
-   ```
-
-2. Run the app
-
-   ```
-   $ uv run streamlit run streamlit_app.py
-   ```
