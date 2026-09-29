@@ -767,17 +767,16 @@ if segment == "Javni dosje":
     )
     analytics_place = f"Javni dosje · {page}"
 
-    kpi_tiles(
-        [
-            ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
-            (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
-            ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
-            ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
-        ],
-        spans=["s3", "s3", "s3", "s3"],
-    )
-
     if page == "Pregled":
+        kpi_tiles(
+            [
+                ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
+                (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
+                ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
+                ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
+            ],
+            spans=["s3", "s3", "s3", "s3"],
+        )
         html(
             f"""
 <div class="bento">
@@ -1203,17 +1202,16 @@ elif segment == "Uz štrajk":
     )
     analytics_place = f"Uz štrajk · {page}"
 
-    kpi_tiles(
-        [
-            ("1.992 €", "Isplata vozača u srpnju 2026. (s dodacima)", "t"),
-            ("+63 %", "Isplata u odnosu na srpanj 2021. (uprava)", "y"),
-            (mil(PAKET_ZET).replace(" mil. €", ""), "Cijeli paket (uprava ZET)", "c"),
-            ("≈71 %", "ZET (subvencija+kapital) u zbroju subvencija", ""),
-        ],
-        spans=["s3", "s3", "s4", "s2"],
-    )
-
     if page == "Pregovori i paket":
+        kpi_tiles(
+            [
+                ("1.992 €", "Isplata vozača u srpnju 2026. (s dodacima)", "t"),
+                ("+63 %", "Isplata u odnosu na srpanj 2021. (uprava)", "y"),
+                (mil(PAKET_ZET).replace(" mil. €", ""), "Cijeli paket (uprava ZET)", "c"),
+                ("≈71 %", "ZET (subvencija+kapital) u zbroju subvencija", ""),
+            ],
+            spans=["s3", "s3", "s4", "s2"],
+        )
         st.subheader("Što stoji u javnim priopćenjima")
         qa_tiles(
             [
