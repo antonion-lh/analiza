@@ -113,7 +113,8 @@ section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
 
 /* Glavni odjeljak */
-div[data-testid="stSegmentedControl"] label {
+div[data-testid="stSegmentedControl"] label,
+div[data-testid="stSegmentedControl"] [role="radio"] {
   font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600 !important;
   letter-spacing: 0;
@@ -121,6 +122,7 @@ div[data-testid="stSegmentedControl"] label {
   padding-left: 0.95rem !important;
   padding-right: 0.95rem !important;
   border-radius: 2px !important;
+  color: var(--ink) !important;
 }
 div[data-testid="stSegmentedControl"] {
   margin: 0.35rem 0 1.1rem;
@@ -131,6 +133,19 @@ div[data-testid="stSegmentedControl"] > div {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   gap: 0.3rem !important;
+}
+div[data-testid="stSegmentedControl"] [aria-checked="true"],
+div[data-testid="stSegmentedControl"] label:has(input:checked),
+div[data-testid="stSegmentedControl"] label[data-checked="true"] {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #ffffff !important;
+}
+div[data-testid="stSegmentedControl"] [aria-checked="true"] *,
+div[data-testid="stSegmentedControl"] label:has(input:checked) *,
+div[data-testid="stSegmentedControl"] label[data-checked="true"] * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 /* Izbornik */
@@ -201,10 +216,22 @@ div[data-testid="stButtonGroup"] [role="radio"] {
 div[data-testid="stPills"] label[data-checked="true"],
 div[data-testid="stPills"] label:has(input:checked),
 div[data-testid="stPills"] [aria-checked="true"],
-div[data-testid="stButtonGroup"] [aria-checked="true"] {
+div[data-testid="stButtonGroup"] [aria-checked="true"],
+div[data-testid="stButtonGroup"] label:has(input:checked),
+div[data-testid="stButtonGroup"] label[data-checked="true"] {
   background: var(--accent) !important;
   border-color: var(--accent) !important;
-  color: #fff !important;
+  color: #ffffff !important;
+}
+/* Streamlit stavlja tekst u span — forsira bijelo i tamo */
+div[data-testid="stPills"] [aria-checked="true"] *,
+div[data-testid="stPills"] label:has(input:checked) *,
+div[data-testid="stPills"] label[data-checked="true"] *,
+div[data-testid="stButtonGroup"] [aria-checked="true"] *,
+div[data-testid="stButtonGroup"] label:has(input:checked) *,
+div[data-testid="stButtonGroup"] label[data-checked="true"] * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 div[data-testid="stSelectbox"] {
