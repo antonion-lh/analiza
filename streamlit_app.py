@@ -21,6 +21,11 @@ from tools_panels import (
     render_sankey,
     render_simulator,
 )
+from analytics import (
+    inject_optional_web_analytics,
+    render_owner_analytics,
+    track_page,
+)
 
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
@@ -743,6 +748,8 @@ segment = st.segmented_control(
 if not segment:
     segment = "Javni dosje"
 
+analytics_place = segment
+
 # ---------------------------------------------------------------------------
 # JAVNI DOSJE
 # ---------------------------------------------------------------------------
@@ -764,6 +771,7 @@ if segment == "Javni dosje":
         key="dosje_page",
         hint="Teme javnog dosjea — kliknite da otvorite.",
     )
+    analytics_place = f"Javni dosje · {page}"
 
     kpi_tiles(
         [
@@ -1214,6 +1222,7 @@ elif segment == "Uz štrajk":
         key="strajk_page",
         hint="Odaberite temu uz štrajk.",
     )
+    analytics_place = f"Uz štrajk · {page}"
 
     kpi_tiles(
         [
@@ -1428,6 +1437,7 @@ elif segment == "Alati":
         key="alat_tab",
         hint="Odaberite alat.",
     )
+    analytics_place = f"Alati · {tool}"
     if tool == "Računica":
         render_simulator()
     elif tool == "Često čujemo":
@@ -1436,6 +1446,9 @@ elif segment == "Alati":
         render_sankey()
     else:
         render_pulse()
+
+track_page(analytics_place)
+inject_optional_web_analytics()
 
 html(
     """
@@ -1447,6 +1460,8 @@ html(
 </div>
 """
 )
+
+render_owner_analytics()
 
 with st.expander("Izvori i napomene"):
     st.markdown(
