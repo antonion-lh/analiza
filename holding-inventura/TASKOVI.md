@@ -13,63 +13,36 @@ git checkout holding-local
 
 ---
 
-## T0 — Infrastruktura (lokalno) ✅ u tijeku
+## T0 — Infrastruktura ✅
 - [x] Branch `holding-local`
-- [ ] Feature flag: Holding UI samo ako `?holding=1` **ili** env `HOLDING_DEV=1` (default: sakriven)
-- [ ] Kratka napomena u README kako pokrenuti 8506
-- [ ] **Ne** pushati ovaj branch na Streamlit Cloud
+- [x] Feature flag: lokalno ON, Cloud OFF; `?holding=1` / `HOLDING_DEV`
+- [x] README: port 8506
+- [x] Ne pushati UI na `main` / Cloud
 
-## T1 — Navigacija
-- [ ] Gornji odabir: **ZET** (postojeće) | **Holding** | **Grad**
-- [ ] ZET tab = današnji app bez regresije
-- [ ] Holding / Grad prazni skeletoni dok nema podataka
+## T1 — Navigacija ✅
+- [x] **ZET** | **Holding** | **Grad**
+- [x] ZET = postojeći app
 
-## T2 — Dataset iz inventure
-- [ ] CSV u `data/holding/` iz `holding-inventura/metrike.csv` (očistiti, samo A/B)
-- [ ] Grupa 2024–2025: prihodi, EBIT/EBITDA, zaposleni, neto dug
-- [ ] Matica: isto
-- [ ] Zaposleni po pravnoj osobi (ESRS Annex 9)
-- [ ] Subvencije Grada 2025 (ZET, otpad/Čistoća, ViO, Arena, ostalo)
-- [ ] Izvor + napomena uz svaku seriju
+## T2 — Dataset ✅
+- [x] `data/holding/*.csv` (grupa, matica, zaposleni, subvencije, ovisna)
 
-## T3 — Pregled Grupe
-- [ ] KPI strip (prihodi, EBITDA, zaposleni, dug)
-- [ ] Graf: zaposleni po društvu (vodoravno, mobitel)
-- [ ] Kratki tekst: što je Grupa vs matica vs ZET
-- [ ] „Što ovo **nije**“ (nema RDG po podružnici)
+## T3 — Pregled Grupe ✅
+- [x] KPI + trend prihoda + zaposleni po društvu
 
-## T4 — Grad: tko plaća
-- [ ] Fact list + graf udjela subvencija
-- [ ] Sankey / stupci: Grad → ZET / Čistoća / ViO / ostalo
-- [ ] Jamstvo ~305 mil. € (obveznice ZGH) — kontekst, ne panika
-- [ ] Link na postojeći ZET tok novca gdje ima smisla
+## T4 — Grad ✅
+- [x] Subvencije + jamstva (~305 mil. €)
 
-## T5 — Uz štrajk (Holding)
-- [ ] Paket uprave **>34 mil. €** (bez razrade — „nije javno“)
-- [ ] Osnovica +15,6 % / +4,4 % (ista logika kao ZET)
-- [ ] Čistoća: subvencija + što znamo / ne znamo
-- [ ] Usporedba ZET 32,4 vs Holding >34 (ne zbrajati naivno)
+## T5 — Štrajk Holding ✅
+- [x] Paket >34, osnovica, Čistoća
 
-## T6 — Ovisna društva
-- [ ] Kartice: VIO, GPZ, GPZ-O, GSKG, Ljekarna, Plakat
-- [ ] Minimum: zaposleni + prihod gdje ima A/C izvora
-- [ ] VIO prvi (ima GI na vio.hr + FINA)
+## T6 — Ovisna društva ✅
+- [x] Kartice (VIO s financijama; ostali zaposleni)
 
-## T7 — Rupe, izvori, QA
-- [ ] Stranica „Što nedostaje“ (po podružnici)
-- [ ] Izvori / napomene
-- [ ] AppTest + browser na 8506 (mobitel)
-- [ ] Provjera: bez `?holding=1` app = čisti ZET
+## T7 — Rupe + QA ✅
+- [x] Što nedostaje
+- [x] `scripts/qa_holding.py` ALL GREEN
+- [ ] Ručni browser pregled na 8506
 
 ## T8 — Live (samo na tvoj OK)
-- [ ] Review lokalno
-- [ ] Ukloniti ili ostaviti flag po dogovoru
 - [ ] Merge `holding-local` → `main` + deploy
 - [ ] **Ne raditi dok ne potvrdiš**
-
----
-
-## Redoslijed rada
-`T0 → T1 → T2 → T3 → T4` (MVP koji se može gledati)  
-zatim `T5 → T6 → T7`  
-`T8` zasebno.
