@@ -23,7 +23,7 @@ EUR = 7.5345
 
 st.set_page_config(
     page_title="Istražimo · ZET — javni podaci",
-    page_icon=":material/tram:",
+    page_icon="🚊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
