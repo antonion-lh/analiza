@@ -293,7 +293,7 @@ def render_pulse() -> None:
         [
             "Ponuda +4,5 % (grubo ≈ 5,3 mil. € na trošak rada)",
             "Kompromis (grubo ≈ 9–15 mil. €)",
-            "Cijeli paket sindikata (32,4 mil. € — brojka uprave)",
+            "Cijeli paket uprave (32,4 mil. € — brojka iz mirenja)",
         ],
         index=None,
         key="pulse_q1",

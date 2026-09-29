@@ -716,6 +716,9 @@ FLEET = pd.DataFrame(
         {"Godina": "2024", "Tramvaj": 267, "Prikolice": 45, "Autobus": 465, "Ukupno": 791},
     ]
 )
+FLEET["Ostalo"] = (
+    FLEET["Ukupno"] - FLEET["Tramvaj"] - FLEET["Prikolice"] - FLEET["Autobus"]
+)
 
 html(
     f"""
@@ -957,10 +960,15 @@ if segment == "Javni dosje":
         st.markdown("##### Prihodi")
         fact_list(
             [
-                ("Subvencije Grada", "143,4 mil. €", "Oko 67 % svih prihoda"),
+                ("Subvencije Grada (u knjigama ZET-a)", "143,4 mil. €", "Oko 67 % svih prihoda ZET-a 2024."),
                 ("Karte / prodaja", "37,9 mil. €", "Oko 18 % prihoda"),
                 ("Ostalo", "33,8 mil. €", "Oko 16 % prihoda"),
             ]
+        )
+        st.caption(
+            "143,4 mil. € = stavka „subvencije“ u Poslovnom izvješću ZET 2024. "
+            "U izvršenju proračuna Grada tekuća subvencija ZET-u za 2024. stoji **142,2 mil. €** — "
+            "bliska, ali nije ista knjiga (ZET vs Grad)."
         )
         st.markdown("##### Rashodi (glavne stavke)")
         fact_list(
@@ -1010,7 +1018,7 @@ if segment == "Javni dosje":
         fact_list(
             [
                 ("Rashodi Grada", "2024.: 2,45 mlrd € · 2025.: 2,60 mlrd €", None),
-                ("Subvencija ZET-u (tekuća)", "2024.: 142,2 mil. € · 2025.: 154,5 mil. €", "Redovita subvencija za rad"),
+                ("Subvencija ZET-u (tekuća, knjige Grada)", "2024.: 142,2 mil. € · 2025.: 154,5 mil. €", "Redovita subvencija za rad — izvršenje proračuna"),
                 ("Kapitalna pomoć ZET-u", "2024.: 25,2 mil. € · 2025.: 22,3 mil. €", "Za vozila, infrastrukturu…"),
                 (
                     "Zajedno (subvencija + kapital)",
@@ -1020,10 +1028,14 @@ if segment == "Javni dosje":
                 (
                     "Udio u svim gradskim subvencijama 2025.",
                     "Samo tekuća ≈ 62 % · sa kapitalom ≈ 71 %",
-                    "Od zbroja ~250,5 mil. € svih subvencija u našoj bazi",
+                    "Od zbroja ~250,5 mil. € svih subvencija u našoj bazi; 71 % ubraja i kapital u brojnik",
                 ),
                 ("Po stanovniku (subvencija + kapital)", "2024.: 218 € · 2025.: 230 €", None),
             ]
+        )
+        st.caption(
+            "U knjigama ZET-a za 2024. „subvencije Grada“ stoje **143,4 mil. €** (udio ~67 % prihoda). "
+            "Ovdje **142,2** je tekuća subvencija iz izvršenja proračuna Grada — dva izvora, bliski iznosi."
         )
         st.warning(
             "**Zašto Grad ne može „samo dati“:** ZET već prima velik dio gradskih subvencija — "
@@ -1094,15 +1106,29 @@ if segment == "Javni dosje":
     elif page == "Flota":
         st.subheader("Flota")
         st.line_chart(FLEET.set_index("Godina")["Ukupno"], color=CHART)
+        f24 = FLEET.loc[FLEET["Godina"] == "2024"].iloc[0]
         fact_list(
             [
                 ("Ukupno vozila 2018.", "754", None),
                 ("Ukupno vozila 2022. (vrhunac)", "816", None),
-                ("Ukupno vozila 2024.", "791", "Tramvaj 267 · prikolice 45 · autobus 465"),
+                (
+                    "Ukupno vozila 2024.",
+                    "791",
+                    (
+                        f"Tramvaj {int(f24['Tramvaj'])} · prikolice {int(f24['Prikolice'])} · "
+                        f"autobus {int(f24['Autobus'])} · ostalo {int(f24['Ostalo'])} "
+                        "(ostalo = razlika do ukupnog broja u izvješću)"
+                    ),
+                ),
                 ("Prosječna starost tramvaja", "30,6 godina", None),
                 ("Prosječna starost autobusa", "10,5 godina", None),
                 ("Autobusi stariji od 15 godina", "47,7 %", "222 od 465 vozila"),
             ]
+        )
+        st.caption(
+            "Ukupno u Poslovnom izvješću nije samo zbroj tramvaj + prikolice + autobus "
+            f"(za 2024. taj zbroj je {int(f24['Tramvaj'] + f24['Prikolice'] + f24['Autobus'])}; "
+            f"razlika {int(f24['Ostalo'])} ide u „ostalo“ — npr. specijalna / pomoćna vozila)."
         )
         st.subheader("Nabave u tijeku")
         fact_list(
@@ -1270,17 +1296,24 @@ elif segment == "Uz štrajk":
         st.subheader("Procjena troška — tko što tvrdi")
         a, b, c, d = st.columns(4)
         a.metric("Paket ZET (uprava)", mil(PAKET_ZET))
-        b.metric("Udio u masi (uprava)", "23,8 %")
+        b.metric("Udio u masi plaća (uprava)", "23,8 %")
         c.metric("Ponuda osnovice", "+4,5 %")
         d.metric("Zahtjev osnovice ZET", "+13 %")
 
         st.info(
             f"**Uprava** u mirenju (pregovori uz posrednika): cijeli paket = **{mil(PAKET_ZET)}** godišnje "
-            f"(23,8 % ukupne mase plaća) — osnovica, dodaci, usklađivanje s cijenama i ostalo. "
+            f"(**23,8 %** njihove „mase plaća“) — osnovica, dodaci, usklađivanje s cijenama i ostalo. "
             f"**Gruba procjena same osnovice:** +13 % × trošak rada {mil(TROSAK_RADA_2024)} ≈ "
             f"**{mil(scenario_cost(13))}** — brojka koju sindikati često ističu. "
             f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
             f"Holding (uprava): više od {mil(PAKET_HOLDING)}."
+        )
+        st.caption(
+            f"**Masa plaća ≠ trošak rada 117,1.** Uprava kaže da je 32,4 mil. € = 23,8 % mase plaća "
+            f"— iz toga slijedi masa ≈ **{MASA_IMPLIED:.0f} mil. €**. "
+            f"Trošak rada u izvješću 2024. je **117,1 mil. €** (plaće + doprinosi i srodne stavke). "
+            "To nisu iste baze: druga definicija / obuhvat, pa +13 % na 117,1 daje ~15,2, "
+            "a +13 % na izvedenu masu ~17,7."
         )
 
         st.subheader("Odakle 32,4 milijuna (nije službena razrada)")
@@ -1292,7 +1325,7 @@ elif segment == "Uz štrajk":
                 (
                     "Uprava: cijeli paket",
                     mil(PAKET_ZET),
-                    "Priopćenje iz mirenja (pregovori uz posrednika); uključuje i buduće usklađivanje s cijenama",
+                    "Priopćenje iz mirenja; 23,8 % njihove mase plaća (ne isto što trošak rada 117,1)",
                 ),
                 (
                     "Procjena: samo +13 % na trošak rada 117,1",
@@ -1302,10 +1335,10 @@ elif segment == "Uz štrajk":
                 (
                     f"Procjena: +13 % na izvedenu masu ~{MASA_IMPLIED:.0f}",
                     mil(MASA_IMPLIED * 0.13),
-                    "Ako je baza paketa 32,4 mil. € = 23,8 % ukupne mase plaća",
+                    "Ako je 32,4 = 23,8 % mase koju koristi uprava",
                 ),
                 (
-                    "Razlika: paket minus procjena osnovice",
+                    "Razlika: paket minus procjena na 117,1",
                     f"oko {ADDONS_EST_M} mil. €",
                     "Dodaci, usklađivanje s cijenama, prijevoz, vjernost… — bez javne stavke",
                 ),
