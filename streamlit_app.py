@@ -558,7 +558,7 @@ html(
     </p>
   </div>
   <div class="tile brand s4">
-    <div class="big">Bez stava.<br/>Tri mjere plaće<br/>ne miješamo.</div>
+    <div class="big">Nismo ni za jednu<br/>stranu. Tri vrste<br/>brojeva držimo odvojeno.</div>
     <div class="small">Izvješća ZET · Grad · DZS · javni vozni red</div>
   </div>
 </div>
