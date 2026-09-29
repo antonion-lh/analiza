@@ -10,7 +10,6 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from fpdf import FPDF
 
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
@@ -50,24 +49,6 @@ def _init_db() -> None:
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
             """
-        )
-
-
-def render_share_bar(pdf_bytes: bytes) -> None:
-    c1, c2 = st.columns([1, 1])
-    with c1:
-        st.download_button(
-            label="Preuzmi kratki PDF",
-            data=pdf_bytes,
-            file_name="istrazimo-zet-sazetak.pdf",
-            mime="application/pdf",
-            use_container_width=True,
-        )
-    with c2:
-        st.link_button(
-            "Podijeli na LinkedInu",
-            "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fistrazimo.streamlit.app",
-            use_container_width=True,
         )
 
 
@@ -376,89 +357,3 @@ def render_pulse() -> None:
                 f"({100 * r['n'] / n:.0f} %)"
             )
         st.bar_chart(df2.set_index("odgovor")["n"], color="#0F766E")
-
-
-def build_pdf_bytes() -> bytes:
-    """Kratki PDF (ASCII radi Helvetica fonta)."""
-    pdf = FPDF()
-    pdf.set_margins(18, 18, 18)
-    pdf.set_auto_page_break(auto=True, margin=18)
-    pdf.add_page()
-    w = pdf.epw
-
-    pdf.set_font("Helvetica", "B", 16)
-    pdf.multi_cell(w, 8, "Istrazimo - ZET (kratki sazetak)")
-    pdf.ln(2)
-    pdf.set_font("Helvetica", "", 11)
-    pdf.multi_cell(
-        w,
-        6,
-        "Kratki sazetak javnih brojeva uz strajk od 28. 9. 2026. Nije stav. "
-        "Izvori: poslovna izvjesca ZET, proracun Grada, priopcenja, DZS, GTFS. "
-        "Alat: https://istrazimo.streamlit.app",
-    )
-    pdf.ln(4)
-
-    sections = [
-        (
-            "Place",
-            "Isplata vozaca VII/2026.: 1.992 EUR s dodacima (+63% naspram isplate 2021.). "
-            "To nije neto za 160 h. Osnovica KU 592,20 od I/2026. DZS RH 1.449.",
-        ),
-        (
-            "Zaposleni i trosak rada",
-            "Vrhunac 3.956 (2019.) -> 3.692 (VI/2025.). Trosak rada po zaposlenom +46% 2018-2024.",
-        ),
-        (
-            "Novac i grad",
-            "Subvencije ~67% prihoda ZET. Operativna subvencija 154,5 ~62% zbroja subvencija; "
-            "sa kapitalom 176,8 ~71%. Besplatne kategorije 8,9 mil. EUR.",
-        ),
-        (
-            "Pregovori",
-            "Uprava: paket ZET 32,4 mil. EUR/god. Procjena +13% na 117,1 ~15,2. "
-            "Sindikati cesto isticu razinu oko 15. Holding uprava >34.",
-        ),
-        (
-            "Scenariji",
-            "A ~5,3 | B ~9,4 | C ~15,2 | D paket uprave 32,4 mil. EUR/god. (A-C = gruba procjena).",
-        ),
-        (
-            "Sto nedostaje",
-            "Nema javne neto za 160 h; nema razrade 32,4 stavka po stavci; "
-            "nema sluzbenog mjerenja kasnjenja; nema pune serije osnovice 2018-2024.",
-        ),
-    ]
-    for title, body in sections:
-        pdf.set_font("Helvetica", "B", 12)
-        pdf.multi_cell(w, 7, title)
-        pdf.set_font("Helvetica", "", 10)
-        pdf.multi_cell(w, 5, body)
-        pdf.ln(2)
-
-    pdf.add_page()
-    pdf.set_font("Helvetica", "B", 13)
-    pdf.multi_cell(w, 7, "Tri napomene")
-    pdf.set_font("Helvetica", "", 10)
-    pdf.multi_cell(
-        w,
-        5,
-        "1) 13% nije isto sto Gradovih ~14% (prozor I/2026.-I/2027.; +15,6% iz V/2025. nije u zbroju).\n"
-        "2) 1.992 EUR je isplata sa dodacima, ne osnovica.\n"
-        "3) ~15 mil. EUR je procjena +13% na trosak rada; paket uprave je 32,4 mil. EUR.",
-    )
-    pdf.ln(4)
-    pdf.set_font("Helvetica", "B", 13)
-    pdf.multi_cell(w, 7, "Citiranje")
-    pdf.set_font("Helvetica", "", 10)
-    pdf.multi_cell(
-        w,
-        5,
-        "Navedite Istrazimo (istrazimo.streamlit.app) i izvornu seriju "
-        "(izvjesce / proracun / priopcenje). Razlikujte isplatu, osnovicu i trosak rada.",
-    )
-
-    out = pdf.output()
-    if isinstance(out, (bytes, bytearray)):
-        return bytes(out)
-    return out.encode("latin-1")

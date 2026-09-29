@@ -14,11 +14,9 @@ import streamlit as st
 
 from tools_panels import (
     ADDONS_EST_M,
-    build_pdf_bytes,
     render_myths,
     render_pulse,
     render_sankey,
-    render_share_bar,
     render_simulator,
 )
 
@@ -680,13 +678,6 @@ html(
 </div>
 """
 )
-
-@st.cache_data(show_spinner=False)
-def _pdf_dosje() -> bytes:
-    return build_pdf_bytes()
-
-
-render_share_bar(_pdf_dosje())
 
 segment = st.segmented_control(
     "Odjeljak",
