@@ -284,81 +284,59 @@ def _load_summary() -> dict:
 
 
 def render_owner_analytics() -> None:
-    """Panel za vlasnika — samo uz točnu lozinku u secrets / ?analitika=."""
+    """Panel za vlasnika — nije vidljiv javnosti; samo s ?analitika=lozinka."""
     try:
         has_pw = bool(str(st.secrets.get("ANALYTICS_PASSWORD", "")).strip())
     except Exception:
         has_pw = False
 
-    with st.expander("Analitika posjeta (samo vlasnik)", expanded=_owner_unlocked()):
-        if not has_pw:
-            st.info(
-                "Za uključivanje postavite u Streamlit **Secrets**:\n\n"
-                '`ANALYTICS_PASSWORD = "vaša-lozinka"`\n\n'
-                "Zatim otvorite `?analitika=vaša-lozinka` ili unesite lozinku ovdje.\n\n"
-                "Opcionalno trajno praćenje: `PLAUSIBLE_DOMAIN` ili `GA_MEASUREMENT_ID`."
-            )
-            return
+    if not has_pw or not _owner_unlocked():
+        return
 
-        if not _owner_unlocked():
-            pw = st.text_input(
-                "Lozinka",
-                type="password",
-                key="analytics_pw_input",
-            )
-            if st.button("Otvori analitiku", key="analytics_unlock_btn"):
-                try:
-                    expected = str(st.secrets.get("ANALYTICS_PASSWORD", "")).strip()
-                except Exception:
-                    expected = ""
-                if pw and pw == expected:
-                    st.session_state.analytics_owner = True
-                    st.rerun()
-                else:
-                    st.error("Pogrešna lozinka.")
-            st.caption(
-                "Ili dodajte `?analitika=lozinka` u URL. "
-                "Podaci su anonimni; na Cloudu se SQLite može resetirati pri redeployu."
-            )
-            return
+    st.markdown("### Analitika posjeta")
+    st.caption("Vidljivo samo vama (otvoreno tajnim linkom).")
 
-        s = _load_summary()
-        a, b, c, d = st.columns(4)
-        a.metric("Sesije", f"{s['sessions']:,}".replace(",", "."))
-        b.metric("Jedinstveni (hash)", f"{s['uniques']:,}".replace(",", "."))
-        c.metric("Pregledi stranica", f"{s['events']:,}".replace(",", "."))
-        d.metric("Prosj. zadržavanje", f"{s['avg_min']:.1f} min".replace(".", ","))
+    s = _load_summary()
+    a, b, c, d = st.columns(4)
+    a.metric("Sesije", f"{s['sessions']:,}".replace(",", "."))
+    b.metric("Jedinstveni (hash)", f"{s['uniques']:,}".replace(",", "."))
+    c.metric("Pregledi stranica", f"{s['events']:,}".replace(",", "."))
+    d.metric("Prosj. zadržavanje", f"{s['avg_min']:.1f} min".replace(".", ","))
 
-        st.caption(
-            f"Najduža sesija: {s['max_min']:.1f} min. "
-            "Zadržavanje = od prvog do zadnjeg klika u istoj sesiji preglednika. "
-            "IP se ne sprema — samo kratki hash."
-        )
+    st.caption(
+        f"Najduža sesija: {s['max_min']:.1f} min. "
+        "Zadržavanje = od prvog do zadnjeg klika u istoj sesiji preglednika. "
+        "IP se ne sprema — samo kratki hash."
+    )
 
-        left, right = st.columns(2)
-        with left:
-            st.markdown("##### Najčešća mjesta")
-            if s["places"].empty:
-                st.write("Još nema događaja.")
-            else:
-                st.dataframe(s["places"], hide_index=True, use_container_width=True)
-                st.bar_chart(s["places"].set_index("mjesto")["pregleda"], color=ACCENT)
-        with right:
-            st.markdown("##### Sesije po danu")
-            if s["days"].empty:
-                st.write("Još nema sesija.")
-            else:
-                st.dataframe(s["days"], hide_index=True, use_container_width=True)
-                st.bar_chart(s["days"].set_index("dan")["sesije"], color="#0F766E")
+    left, right = st.columns(2)
+    with left:
+        st.markdown("##### Najčešća mjesta")
+        if s["places"].empty:
+            st.write("Još nema događaja.")
+        else:
+            st.dataframe(s["places"], hide_index=True, use_container_width=True)
+            st.bar_chart(s["places"].set_index("mjesto")["pregleda"], color=ACCENT)
+    with right:
+        st.markdown("##### Sesije po danu")
+        if s["days"].empty:
+            st.write("Još nema sesija.")
+        else:
+            st.dataframe(s["days"], hide_index=True, use_container_width=True)
+            st.bar_chart(s["days"].set_index("dan")["sesije"], color="#0F766E")
 
-        st.markdown("##### Vremenske zone")
-        if not s["tz"].empty:
-            st.dataframe(s["tz"], hide_index=True, use_container_width=True)
+    st.markdown("##### Vremenske zone")
+    if not s["tz"].empty:
+        st.dataframe(s["tz"], hide_index=True, use_container_width=True)
 
-        st.markdown("##### Zadnje sesije")
-        if not s["recent"].empty:
-            st.dataframe(s["recent"], hide_index=True, use_container_width=True)
+    st.markdown("##### Zadnje sesije")
+    if not s["recent"].empty:
+        st.dataframe(s["recent"], hide_index=True, use_container_width=True)
 
-        if st.button("Zaključaj panel", key="analytics_lock_btn"):
-            st.session_state.analytics_owner = False
-            st.rerun()
+    if st.button("Zatvori analitiku", key="analytics_lock_btn"):
+        st.session_state.analytics_owner = False
+        try:
+            del st.query_params["analitika"]
+        except Exception:
+            pass
+        st.rerun()

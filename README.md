@@ -22,7 +22,7 @@ ANALYTICS_PASSWORD = "vaša-lozinka"
 # GA_MEASUREMENT_ID = "G-XXXXXXXX"
 ```
 
-2. Otvorite panel **„Analitika posjeta (samo vlasnik)”** na dnu stranice i unesite lozinku, ili URL:
+2. Analitika **nije** na javnoj stranici. Otvorite samo tajnim linkom:
    `https://istrazimo.streamlit.app/?analitika=vaša-lozinka`
 
 Na Cloudu SQLite može nestati pri redeployu. Za trajnu analitiku dodajte Plausible ili GA4 u secrets.
