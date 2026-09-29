@@ -723,14 +723,20 @@ FLEET["Ostalo"] = (
 html(
     f"""
 <div class="bento">
-  <div class="tile hero s12">
+  <div class="tile hero s8">
     <div class="wordmark">Istražimo</div>
     <h1>ZET — javni brojevi, na jednom mjestu</h1>
     <p class="lead">
       Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
-      (od 28.&nbsp;rujna&nbsp;2026.). Stanje na {datum_hr()}.
-      Izvori: izvješća ZET · Grad · DZS · javni vozni red.
+      (od 28.&nbsp;rujna&nbsp;2026.).
     </p>
+  </div>
+  <div class="tile brand s4">
+    <div class="big">Stanje na<br/>{datum_hr()}</div>
+    <div class="small">
+      Dosje · štrajk · alati<br/>
+      Izvješća ZET · Grad · DZS · javni vozni red
+    </div>
   </div>
 </div>
 """
