@@ -9,6 +9,8 @@ Bez stava. Otvoreno na raspolaganje.
 
 from __future__ import annotations
 
+from datetime import date
+
 import pandas as pd
 import streamlit as st
 
@@ -28,6 +30,28 @@ PAKET_HOLDING = 34.0
 MASA_IMPLIED = PAKET_ZET / 0.238
 STANOVNICI = 767_131
 EUR = 7.5345
+
+_MJ = (
+    "",
+    "siječnja",
+    "veljače",
+    "ožujka",
+    "travnja",
+    "svibnja",
+    "lipnja",
+    "srpnja",
+    "kolovoza",
+    "rujna",
+    "listopada",
+    "studenoga",
+    "prosinca",
+)
+
+
+def datum_hr(d: date | None = None) -> str:
+    d = d or date.today()
+    return f"{d.day}.&nbsp;{_MJ[d.month]}&nbsp;{d.year}."
+
 
 CHART = "#0A4D68"
 CHART_2 = "#0F766E"
@@ -691,14 +715,15 @@ FLEET = pd.DataFrame(
 )
 
 html(
-    """
+    f"""
 <div class="bento">
   <div class="tile hero s8">
     <div class="wordmark">Istražimo</div>
     <h1>ZET — javni brojevi, na jednom mjestu</h1>
     <p class="lead">
       Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
-      od 28.&nbsp;rujna&nbsp;2026. Podaci su javni — zaključke donosite sami.
+      (od 28.&nbsp;rujna&nbsp;2026.). Podaci su javni — stanje na {datum_hr()}.
+      Zaključke donosite sami.
     </p>
   </div>
   <div class="tile brand s4">
