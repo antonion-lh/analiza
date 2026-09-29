@@ -208,34 +208,30 @@ def render_sankey() -> None:
         "to je kontekst, ne sud o plaćama."
     )
 
-    ostalo_grad = RASHODI_GRADA_2025 - ALL_SUBS_2025
     ostale_sub = ALL_SUBS_2025 - ZET_DIREKTNO_2025
     operativa = max(0.0, ZET_DIREKTNO_2025 - TROSAK_RADA_2024 - FREE_TRANSPORT_M)
 
+    # Bez „ostalih rashoda Grada“ (2.600 mil.) — inače sve ostalo izgleda kao tanka crta.
     labels = [
-        "Rashodi Grada 2025.",
-        "Ostali rashodi",
-        "Sve subvencije",
-        "ZET (subvencija + kapital)",
-        "Ostale subvencije",
-        "Trošak rada ZET",
-        "Ostalo u ZET-u",
-        "Besplatni prijevoz",
+        f"Sve subvencije ({ALL_SUBS_2025:g})",
+        f"ZET sub+kap ({ZET_DIREKTNO_2025:g})",
+        f"Ostale subvencije ({ostale_sub:g})",
+        f"Trošak rada ({TROSAK_RADA_2024:g})",
+        f"Ostalo u ZET-u ({operativa:.1f})",
+        f"Besplatni prijevoz ({FREE_TRANSPORT_M:g})",
     ]
     fig = go.Figure(
         data=[
             go.Sankey(
                 arrangement="snap",
                 node=dict(
-                    pad=18,
-                    thickness=16,
-                    line=dict(color="#D5DBE3", width=0.5),
+                    pad=22,
+                    thickness=18,
+                    line=dict(color="#B7C2CC", width=0.5),
                     label=labels,
                     color=[
-                        ACCENT,
-                        "#94A3B8",
                         "#0F766E",
-                        "#0A4D68",
+                        ACCENT,
                         "#94A3B8",
                         "#9A3412",
                         "#64748B",
@@ -243,11 +239,9 @@ def render_sankey() -> None:
                     ],
                 ),
                 link=dict(
-                    source=[0, 0, 2, 2, 3, 3, 3],
-                    target=[1, 2, 3, 4, 5, 6, 7],
+                    source=[0, 0, 1, 1, 1],
+                    target=[1, 2, 3, 4, 5],
                     value=[
-                        ostalo_grad,
-                        ALL_SUBS_2025,
                         ZET_DIREKTNO_2025,
                         ostale_sub,
                         TROSAK_RADA_2024,
@@ -255,10 +249,8 @@ def render_sankey() -> None:
                         FREE_TRANSPORT_M,
                     ],
                     color=[
-                        "rgba(148,163,184,0.35)",
-                        "rgba(15,118,110,0.45)",
-                        "rgba(26,75,110,0.55)",
-                        "rgba(148,163,184,0.35)",
+                        "rgba(10,77,104,0.55)",
+                        "rgba(148,163,184,0.4)",
                         "rgba(154,52,18,0.45)",
                         "rgba(100,116,139,0.4)",
                         "rgba(71,85,105,0.4)",
@@ -268,18 +260,22 @@ def render_sankey() -> None:
         ]
     )
     fig.update_layout(
-        margin=dict(l=8, r=8, t=8, b=8),
-        height=420,
+        margin=dict(l=8, r=8, t=12, b=8),
+        height=380,
         font=dict(family="IBM Plex Sans, sans-serif", size=12, color="#0C1821"),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
     )
     st.plotly_chart(
-        fig, use_container_width=True, config={"displayModeBar": False, "responsive": True}
+        fig,
+        use_container_width=True,
+        config={"displayModeBar": False, "responsive": True},
     )
     st.caption(
-        "„Ostalo u ZET-u“ = ostatak nakon troška rada i besplatnog prijevoza — "
-        "pojednostavljenje radi čitljivosti. Na mobitelu dijagram možete povući ustranu."
+        f"Rashodi Grada 2025. ukupno: {RASHODI_GRADA_2025:g} mil. € — "
+        f"subvencije su oko {100 * ALL_SUBS_2025 / RASHODI_GRADA_2025:.0f} % toga. "
+        "„Ostalo u ZET-u“ = ostatak nakon troška rada i besplatnog prijevoza."
     )
 
 

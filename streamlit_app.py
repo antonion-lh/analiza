@@ -60,16 +60,9 @@ st.markdown(
 
 html, body, [data-testid="stAppViewContainer"] {
   background-color: var(--bg) !important;
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 47px,
-      rgba(12, 24, 33, 0.035) 47px,
-      rgba(12, 24, 33, 0.035) 48px
-    ) !important;
+  background-image: none !important;
 }
-.stMarkdown, .stText, p, label, span {
+.stMarkdown, .stText, label, span {
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   color: var(--ink);
 }
@@ -87,8 +80,7 @@ h1, h2, h3 {
   max-width: 1040px;
 }
 
-[data-testid="stHeader"] { background: transparent; }
-[data-testid="stHeader"] { backdrop-filter: none; }
+[data-testid="stHeader"] { background: transparent; backdrop-filter: none; }
 [data-testid="stElementToolbar"] { display: none !important; }
 section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
@@ -114,66 +106,78 @@ div[data-testid="stSegmentedControl"] > div {
   gap: 0.3rem !important;
 }
 
-/* Izbornik — otvoren, ne „pill dashboard“ */
+/* Izbornik */
 .nav-menu {
-  margin: 0.2rem 0 0;
-  padding: 0.55rem 0 0.35rem;
+  margin: 0.15rem 0 0.25rem;
+  padding: 0;
   background: transparent;
   border: none;
-  border-bottom: 2px solid var(--ink);
-  border-radius: 0;
 }
 .nav-menu-label {
   display: block;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--ink) !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
 }
 .nav-menu-hint {
   display: block;
-  margin-top: 0.1rem;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.86rem;
-  color: var(--muted);
-  line-height: 1.35;
+  margin-top: 0.15rem !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 0.86rem !important;
+  font-weight: 400 !important;
+  color: var(--muted) !important;
+  line-height: 1.35 !important;
 }
-div[data-testid="stPills"] {
-  margin: 0 0 1.25rem;
-  padding: 0.55rem 0 0.2rem;
-  background: transparent;
+.nav-rule {
   border: none;
-  border-radius: 0;
+  border-bottom: 2px solid var(--ink);
+  margin: 0.45rem 0 1.15rem;
+  height: 0;
 }
-div[data-testid="stPills"] > div {
+
+/* Pills — Streamlit emotion klase variraju; ciljaj šire */
+div[data-testid="stPills"],
+div[data-testid="stButtonGroup"] {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+div[data-testid="stPills"] > div,
+div[data-testid="stButtonGroup"] > div {
   flex-wrap: wrap !important;
   overflow-x: visible !important;
-  gap: 0.35rem 0.45rem !important;
+  gap: 0.4rem 0.5rem !important;
 }
-div[data-testid="stPills"] label {
+div[data-testid="stPills"] label,
+div[data-testid="stButtonGroup"] label,
+div[data-testid="stPills"] [role="radio"],
+div[data-testid="stButtonGroup"] [role="radio"] {
   font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600 !important;
-  letter-spacing: 0;
-  min-height: 38px;
-  padding-left: 0.7rem !important;
-  padding-right: 0.7rem !important;
+  letter-spacing: 0 !important;
+  min-height: 40px !important;
+  padding: 0.45rem 0.85rem !important;
   flex: 0 0 auto !important;
   white-space: nowrap !important;
-  border: none !important;
-  border-bottom: 2px solid transparent !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: var(--muted) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 2px !important;
+  background: var(--panel) !important;
+  color: var(--ink) !important;
   box-shadow: none !important;
 }
 div[data-testid="stPills"] label[data-checked="true"],
 div[data-testid="stPills"] label:has(input:checked),
-div[data-testid="stPills"] [aria-checked="true"] {
-  background: transparent !important;
-  border-bottom: 2px solid var(--accent) !important;
-  color: var(--ink) !important;
+div[data-testid="stPills"] [aria-checked="true"],
+div[data-testid="stButtonGroup"] [aria-checked="true"] {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
 }
 
 div[data-testid="stSelectbox"] {
@@ -189,10 +193,13 @@ div[data-testid="stSelectbox"] > div > div {
 }
 
 .bento {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 14px;
-  margin: 0 0 1.1rem;
+  display: grid !important;
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 0 0 1.1rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 .tile {
   background: var(--panel);
@@ -202,46 +209,52 @@ div[data-testid="stSelectbox"] > div > div {
   padding: 1rem 1.05rem 1.05rem 1.1rem;
   min-width: 0;
   box-shadow: none;
+  box-sizing: border-box !important;
 }
-.s12 { grid-column: span 12; }
-.s8 { grid-column: span 8; }
-.s6 { grid-column: span 6; }
-.s5 { grid-column: span 5; }
-.s4 { grid-column: span 4; }
-.s3 { grid-column: span 3; }
-.s2 { grid-column: span 2; }
+.s12 { grid-column: span 12 !important; }
+.s8 { grid-column: span 8 !important; }
+.s6 { grid-column: span 6 !important; }
+.s5 { grid-column: span 5 !important; }
+.s4 { grid-column: span 4 !important; }
+.s3 { grid-column: span 3 !important; }
+.s2 { grid-column: span 2 !important; }
 @media (max-width: 820px) {
-  .s8, .s6, .s5, .s4, .s3, .s2 { grid-column: span 12; }
+  .s8, .s6, .s5, .s4, .s3, .s2 { grid-column: span 12 !important; }
 }
 
 .hero {
-  background: transparent;
-  border-left: none;
-  padding: 0.35rem 0.2rem 0.6rem 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.4rem;
-  min-height: 0;
+  background: transparent !important;
+  border-left: none !important;
+  padding: 0.2rem 0.2rem 0.5rem 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  gap: 0.4rem !important;
+  min-height: 0 !important;
 }
+/* Streamlit forsira font-size na p — wordmark je div + !important */
+[data-testid="stMarkdownContainer"] .wordmark,
 .wordmark {
-  margin: 0;
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(2.4rem, 7vw, 3.6rem);
-  line-height: 0.95;
-  letter-spacing: -0.035em;
-  color: var(--ink);
+  display: block !important;
+  margin: 0 0 0.2rem !important;
+  padding: 0 !important;
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(2.35rem, 6.5vw, 3.45rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -0.035em !important;
+  color: var(--ink) !important;
 }
 .kicker {
-  margin: 0;
-  color: var(--accent);
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
+  margin: 0 !important;
+  color: var(--accent) !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+[data-testid="stMarkdownContainer"] .hero h1,
 .hero h1 {
   margin: 0 !important;
   color: var(--ink) !important;
@@ -252,102 +265,109 @@ div[data-testid="stSelectbox"] > div > div {
   letter-spacing: -0.01em !important;
   max-width: 28rem;
 }
+[data-testid="stMarkdownContainer"] .lead,
 .lead {
-  margin: 0.15rem 0 0;
-  color: var(--muted);
-  font-size: 0.98rem;
-  line-height: 1.5;
+  margin: 0.15rem 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 0.98rem !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
   max-width: 36rem;
 }
 .brand {
-  background: var(--ink);
-  border-left: none;
-  color: #F2F5F7;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 0;
-  padding: 1.15rem 1.15rem 1.05rem;
+  background: var(--ink) !important;
+  border-left: none !important;
+  color: #F2F5F7 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  min-height: 0 !important;
+  padding: 1.15rem 1.15rem 1.05rem !important;
 }
+[data-testid="stMarkdownContainer"] .brand .big,
 .brand .big {
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 600;
-  font-size: 1.22rem;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
-  color: #F2F5F7;
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 600 !important;
+  font-size: 1.22rem !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.015em !important;
+  color: #F2F5F7 !important;
+  margin: 0 !important;
 }
 .brand .small {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #A8B7C2;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  color: #A8B7C2 !important;
   letter-spacing: 0.02em;
+  margin: 0 !important;
 }
 
 .kpi {
-  background: transparent;
-  border-left: none;
-  border-top: 2px solid var(--ink);
-  border-radius: 0;
-  padding: 0.75rem 0.15rem 0.35rem;
+  background: transparent !important;
+  border-left: none !important;
+  border-top: 2px solid var(--ink) !important;
+  border-radius: 0 !important;
+  padding: 0.75rem 0.15rem 0.35rem !important;
 }
+[data-testid="stMarkdownContainer"] .kpi .v,
 .kpi .v {
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
-  letter-spacing: -0.03em;
-  line-height: 1.02;
-  color: var(--ink);
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem) !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.02 !important;
+  color: var(--ink) !important;
+  margin: 0 !important;
 }
 .kpi .l {
-  margin-top: 0.45rem;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.35;
+  margin-top: 0.45rem !important;
+  color: var(--muted) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.35 !important;
 }
-.kpi.y .v, .kpi.t .v { color: var(--accent); }
-.kpi.c .v { color: var(--signal); }
+.kpi.y .v, .kpi.t .v { color: var(--accent) !important; }
+.kpi.c .v { color: var(--signal) !important; }
 
 .note {
-  background: var(--accent-soft);
-  border-left: 3px solid var(--accent);
+  background: var(--accent-soft) !important;
+  border-left: 3px solid var(--accent) !important;
 }
 .note h4, .qa .tag, .sidebox h4 {
-  margin: 0 0 0.4rem;
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 650;
+  margin: 0 0 0.4rem !important;
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 650 !important;
   letter-spacing: -0.01em;
 }
-.note h4 { color: var(--ink); font-size: 1.05rem; }
-.note p { margin: 0; color: #24333D; font-size: 0.95rem; line-height: 1.55; }
+.note h4 { color: var(--ink) !important; font-size: 1.05rem !important; }
+.note p { margin: 0 !important; color: #24333D !important; font-size: 0.95rem !important; line-height: 1.55 !important; }
 .qa {
-  background: transparent;
-  border-left: none;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
-  padding: 0.85rem 0.1rem 0.55rem;
+  background: transparent !important;
+  border-left: none !important;
+  border-top: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  padding: 0.85rem 0.1rem 0.55rem !important;
 }
 .qa .tag {
-  color: var(--accent);
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
+  color: var(--accent) !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .qa .head {
-  margin: 0 0 0.35rem;
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 650;
-  font-size: 1.08rem;
+  margin: 0 0 0.35rem !important;
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 650 !important;
+  font-size: 1.08rem !important;
   letter-spacing: -0.015em;
-  color: var(--ink);
-  line-height: 1.3;
+  color: var(--ink) !important;
+  line-height: 1.3 !important;
 }
-.qa .body { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+.qa .body { margin: 0 !important; color: var(--muted) !important; font-size: 0.88rem !important; line-height: 1.45 !important; }
 
-.fact-list { gap: 0; }
+.fact-list { gap: 0 !important; }
 .fact {
   background: transparent !important;
   border-left: none !important;
@@ -356,38 +376,39 @@ div[data-testid="stSelectbox"] > div > div {
   padding: 0.8rem 0.1rem !important;
 }
 .fact-k {
-  margin: 0;
-  color: var(--muted);
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+[data-testid="stMarkdownContainer"] .fact-v,
 .fact-v {
-  margin: 0.25rem 0 0;
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 650;
-  font-size: 1.12rem;
+  margin: 0.25rem 0 0 !important;
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 650 !important;
+  font-size: 1.12rem !important;
   letter-spacing: -0.015em;
-  color: var(--ink);
-  line-height: 1.35;
+  color: var(--ink) !important;
+  line-height: 1.35 !important;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 .fact-note {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.45;
+  margin: 0.35rem 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 0.86rem !important;
+  line-height: 1.45 !important;
   overflow-wrap: anywhere;
 }
 
 .sidebox {
-  background: var(--panel);
-  border-left: 3px solid var(--ink);
+  background: var(--panel) !important;
+  border-left: 3px solid var(--ink) !important;
 }
-.sidebox h4 { color: var(--ink); font-size: 1rem; }
+.sidebox h4 { color: var(--ink) !important; font-size: 1rem !important; }
 .sidebox ul { margin: 0; padding-left: 1.1rem; color: #24333D; }
 .sidebox li { margin-bottom: 0.35rem; line-height: 1.45; }
 
@@ -401,11 +422,11 @@ div[data-testid="stSelectbox"] > div > div {
 }
 
 div[data-testid="stMetricValue"] {
-  font-family: "Newsreader", Georgia, serif;
-  font-weight: 700;
-  color: var(--accent);
+  font-family: "Newsreader", Georgia, serif !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
 }
-div[data-testid="stMetricLabel"] { color: var(--muted); }
+div[data-testid="stMetricLabel"] { color: var(--muted) !important; }
 
 div[data-testid="stDownloadButton"] button,
 div[data-testid="stLinkButton"] a,
@@ -432,10 +453,19 @@ div[data-testid="stDataFrame"] td {
   word-break: break-word !important;
 }
 
-/* Streamlit info/warning — manje „chat bubble“ */
 div[data-testid="stAlert"] {
   border-radius: 0 !important;
   border-left-width: 3px !important;
+}
+
+/* Plotly / chartovi ne smiju izlaziti iz širine */
+.js-plotly-plot, .plotly, [data-testid="stArrowVegaLiteChart"],
+[data-testid="stVegaLiteChart"] {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+iframe {
+  max-width: 100% !important;
 }
 
 @media (max-width: 700px) {
@@ -444,18 +474,20 @@ div[data-testid="stAlert"] {
     padding-right: 0.85rem !important;
     padding-top: 0.75rem !important;
   }
-  .wordmark { font-size: 2.35rem; }
-  .brand .big { font-size: 1.1rem; }
-  .lead { font-size: 0.94rem; }
-  .kpi .v { font-size: 1.5rem; }
+  [data-testid="stMarkdownContainer"] .wordmark,
+  .wordmark { font-size: 2.2rem !important; }
+  .brand .big { font-size: 1.1rem !important; }
+  .lead { font-size: 0.94rem !important; }
+  .kpi .v { font-size: 1.5rem !important; }
   .tile { padding: 0.9rem 0.95rem; }
   div[data-testid="stHorizontalBlock"] {
     flex-wrap: wrap !important;
-    gap: 0.35rem !important;
+    gap: 0.45rem !important;
   }
-  div[data-testid="stHorizontalBlock"] > div {
+  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
     min-width: 100% !important;
     flex: 1 1 100% !important;
+    width: 100% !important;
   }
   div[data-testid="stMetric"] {
     padding: 0.55rem 0 !important;
@@ -465,9 +497,6 @@ div[data-testid="stAlert"] {
   }
   div[data-testid="stDataFrame"] table {
     font-size: 0.82rem;
-  }
-  .js-plotly-plot, .plotly {
-    max-width: 100% !important;
   }
   div[data-testid="stVerticalBlockBorderWrapper"] {
     padding-left: 0.6rem !important;
@@ -517,6 +546,7 @@ def nav_pick(
         label_visibility="collapsed",
         key=key,
     )
+    html('<div class="nav-rule" aria-hidden="true"></div>')
     return choice or default
 
 
@@ -664,7 +694,7 @@ html(
     """
 <div class="bento">
   <div class="tile hero s8">
-    <p class="wordmark">Istražimo</p>
+    <div class="wordmark">Istražimo</div>
     <h1>ZET — javni brojevi, na jednom mjestu</h1>
     <p class="lead">
       Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
