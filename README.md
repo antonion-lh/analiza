@@ -2,7 +2,27 @@
 
 Javni podaci i analitika — [istrazimo.streamlit.app](https://istrazimo.streamlit.app/)
 
-Trenutno: **ZET — javni podaci** (plaće, zaposleni, novac, udio u gradu, mreža, flota) + zaseban segment uz štrajk (pregovori, scenariji A–D).
+Trenutno na **live (`main`)**: **ZET — javni podaci**.
+
+## Lokalni rad (Holding / Grad)
+
+Holding se razvija na branchu `holding-local` i **ne ide na live** dok se ne odobri.
+
+```bash
+git checkout holding-local
+uv sync   # ili .venv
+# Lokalno je Holding UI uključen automatski (Cloud ostaje isključen).
+.venv/bin/streamlit run streamlit_app.py --server.port 8506 --server.headless true
+```
+
+Otvori http://localhost:8506 — gore: **ZET | Holding | Grad**.
+
+Isključi Holding lokalno: `HOLDING_DEV=0` ili `?holding=0`.  
+Na Cloudu Holding je OFF osim `?holding=1`.
+
+Inventura podataka: `holding-inventura/` · taskovi: `holding-inventura/TASKOVI.md`.
+
+## ZET (klasično)
 
 ```bash
 uv sync

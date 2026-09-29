@@ -25,6 +25,8 @@ from analytics import (
     track_page,
 )
 from charts import bars, trend, trend_multi
+from holding_flag import holding_enabled
+from holding_panels import render_grad_section, render_holding_section
 
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
@@ -790,6 +792,71 @@ html(
 </div>
 """
 )
+
+analytics_place = "ZET"
+
+if holding_enabled():
+    realm = (
+        st.segmented_control(
+            "Područje",
+            options=["ZET", "Holding", "Grad"],
+            default="ZET",
+            key="realm_pick",
+            label_visibility="collapsed",
+        )
+        or "ZET"
+    )
+    if realm == "Holding":
+        st.caption(
+            "Dev prikaz Holdinga (lokalno / `?holding=1`). "
+            "Live ostaje na ZET-u dok ne odobrite objavu."
+        )
+        page = nav_pick(
+            "Izbornik",
+            ["Pregled Grupe", "Uz štrajk", "Društva", "Što nedostaje"],
+            default="Pregled Grupe",
+            key="holding_page",
+            hint="Holding — grupa, štrajk, ovisna društva.",
+        )
+        analytics_place = f"Holding · {page}"
+        render_holding_section(page)
+        track_page(analytics_place)
+        inject_optional_web_analytics()
+        html(
+            """
+<div class="foot" role="contentinfo">
+  Izvori (Holding): ZGH GI konsolidirano/nekonsolidirano; ESRS aneksi; kratki vodiči proračuna Grada.
+  ZET nije dio Holdinga (izdvojen 2018.).
+</div>
+"""
+        )
+        render_owner_analytics()
+        st.stop()
+    if realm == "Grad":
+        st.caption(
+            "Dev prikaz Grada (lokalno / `?holding=1`). "
+            "Live ostaje na ZET-u dok ne odobrite objavu."
+        )
+        page = nav_pick(
+            "Izbornik",
+            ["Subvencije", "Jamstva"],
+            default="Subvencije",
+            key="grad_page",
+            hint="Novac iz proračuna Grada prema društvima.",
+        )
+        analytics_place = f"Grad · {page}"
+        render_grad_section(page)
+        track_page(analytics_place)
+        inject_optional_web_analytics()
+        html(
+            """
+<div class="foot" role="contentinfo">
+  Izvori (Grad): kratki vodiči izvršenja proračuna Grada Zagreba.
+</div>
+"""
+        )
+        render_owner_analytics()
+        st.stop()
 
 segment = st.segmented_control(
     "Odjeljak",
