@@ -24,6 +24,7 @@ from analytics import (
     render_owner_analytics,
     track_page,
 )
+from charts import bars, trend, trend_multi
 
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
@@ -527,11 +528,17 @@ div[data-testid="stAlert"] {
   border-left-width: 4px !important;
 }
 
-/* Plotly / chartovi ne smiju izlaziti iz širine */
+/* Plotly — čitljivije na uskom zaslonu */
 .js-plotly-plot, .plotly, [data-testid="stArrowVegaLiteChart"],
 [data-testid="stVegaLiteChart"] {
   max-width: 100% !important;
   overflow: hidden !important;
+}
+.js-plotly-plot .plotly {
+  font-size: 13px !important;
+}
+div[data-testid="stPlotlyChart"] {
+  margin: 0.35rem 0 0.85rem !important;
 }
 iframe {
   max-width: 100% !important;
@@ -920,7 +927,20 @@ if segment == "Javni dosje":
                 ("Medijan RH, XII/2025. (DZS)", "1.280 €", "Središnja vrijednost — polovica zarađuje manje"),
             ]
         )
-        st.bar_chart(WAGES.set_index("Kategorija")["Neto €"], color=CHART)
+        bars(
+            [
+                "Vozač ZET",
+                "Prosjek ZET",
+                "Komunalac Čistoća",
+                "Prosjek RH 2025.",
+                "Medijan RH XII/2025.",
+            ],
+            WAGES["Neto €"].tolist(),
+            title="Isplata na račun (€) — usporedba",
+            color=CHART,
+            unit=" €",
+            horizontal=True,
+        )
 
         st.subheader("Osnovica plaće (kolektivni ugovor)")
         st.write(
@@ -945,7 +965,14 @@ if segment == "Javni dosje":
                 {"Datum": "1. 1. 2026.", "Osnovica €": 592.20},
             ]
         )
-        st.line_chart(osnovice.set_index("Datum")["Osnovica €"], color=CHART)
+        trend(
+            osnovice["Datum"],
+            osnovice["Osnovica €"],
+            title="Osnovica plaće (€)",
+            color=CHART,
+            unit=" €",
+            decimals=2,
+        )
         st.caption(
             "Cjelovite serije osnovice 2021.–2024. ovdje nema. "
             "Za vozača: osnovica × koeficijent (npr. 2,60) + dodaci."
@@ -977,7 +1004,12 @@ if segment == "Javni dosje":
             "Na 30. lipnja 2025. stoji **3.692** — 6,7 % manje nego na vrhuncu. "
             "Oko 36 % zaposlenih starije je od 55 godina."
         )
-        st.line_chart(EMP.set_index("Godina")["Zaposleni"], color=CHART)
+        trend(
+            EMP["Godina"],
+            EMP["Zaposleni"],
+            title="Broj zaposlenih",
+            color=CHART,
+        )
         st.caption("Izvor: Poslovna izvješća ZET.")
         st.subheader("Trošak rada po zaposlenom")
         st.write(
@@ -995,7 +1027,13 @@ if segment == "Javni dosje":
                 for _, r in LABOR.iterrows()
             ]
         )
-        st.line_chart(LABOR.set_index("Godina")["€ / zap."], color=CHART_3)
+        trend(
+            LABOR["Godina"],
+            LABOR["€ / zap."],
+            title="Trošak rada po zaposlenom (€)",
+            color=CHART_3,
+            unit=" €",
+        )
         a, b = st.columns(2)
         a.metric("Udio 55+", "36,7 %")
         b.metric("Prosječna dob", "48,3 god.")
@@ -1064,17 +1102,14 @@ if segment == "Javni dosje":
             "u financiranju ZET-a (subvencije + ugovor ≈ **71 %** prihoda 2024.)."
         )
         st.subheader("Putnici (milijuni)")
-        st.bar_chart(
-            pd.DataFrame(
-                [
-                    {"Godina": "2018", "Putnici": 273.3},
-                    {"Godina": "2021", "Putnici": 187.9},
-                    {"Godina": "2022", "Putnici": 170.7},
-                    {"Godina": "2023", "Putnici": 158.7},
-                    {"Godina": "2024", "Putnici": 179.1},
-                ]
-            ).set_index("Godina"),
+        bars(
+            ["2018", "2021", "2022", "2023", "2024"],
+            [273.3, 187.9, 170.7, 158.7, 179.1],
+            title="Putnici (milijuni)",
             color=CHART,
+            unit=" mil.",
+            decimals=1,
+            horizontal=False,
         )
 
     elif page == "Udio u gradu":
@@ -1115,20 +1150,22 @@ if segment == "Javni dosje":
         )
         st.info("Dijagram toka novca: **Alati → Tok novca**.")
         st.subheader("Subvencija po stanovniku (orijentacija)")
-        st.bar_chart(
-            pd.DataFrame(
-                [
-                    {"Grad": "Stockholm", "€/stan.": 373},
-                    {"Grad": "Oslo", "€/stan.": 273},
-                    {"Grad": "Helsinki", "€/stan.": 262},
-                    {"Grad": "Berlin", "€/stan.": 258},
-                    {"Grad": "Prag", "€/stan.": 251},
-                    {"Grad": "Zagreb (sub+kap)", "€/stan.": 218},
-                    {"Grad": "Madrid", "€/stan.": 209},
-                    {"Grad": "EMTA prosjek", "€/stan.": 188},
-                ]
-            ).set_index("Grad")["€/stan."],
+        bars(
+            [
+                "Stockholm",
+                "Oslo",
+                "Helsinki",
+                "Berlin",
+                "Prag",
+                "Zagreb (sub+kap)",
+                "Madrid",
+                "EMTA prosjek",
+            ],
+            [373, 273, 262, 258, 251, 218, 209, 188],
+            title="Subvencija po stanovniku (€)",
             color=CHART_2,
+            unit=" €",
+            horizontal=True,
         )
         st.caption(
             "Zagreb: izvršenje 2024. Ostali gradovi: EMTA/EIT 2019. "
@@ -1162,7 +1199,11 @@ if segment == "Javni dosje":
                 ),
             ]
         )
-        st.line_chart(BUS_LINES.set_index("Godina")[["Dnevne", "Noćne"]])
+        trend_multi(
+            BUS_LINES.set_index("Godina")[["Dnevne", "Noćne"]],
+            title="Autobusne linije",
+            colors=[CHART, CHART_2],
+        )
         st.caption(
             "Tramvajski kilometri padaju tri godine zaredom: "
             "11,85 (2022.) → 11,15 (2023.) → 10,57 (2024.) milijuna."
@@ -1170,7 +1211,12 @@ if segment == "Javni dosje":
 
     elif page == "Flota":
         st.subheader("Flota")
-        st.line_chart(FLEET.set_index("Godina")["Ukupno"], color=CHART)
+        trend(
+            FLEET["Godina"],
+            FLEET["Ukupno"],
+            title="Ukupno vozila",
+            color=CHART,
+        )
         f24 = FLEET.loc[FLEET["Godina"] == "2024"].iloc[0]
         fact_list(
             [

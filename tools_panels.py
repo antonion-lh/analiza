@@ -11,6 +11,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from charts import CFG, FONT, GRID, INK, bars
+
 TROSAK_RADA_2024 = 117.1
 RASHODI_GRADA_2025 = 2604.5
 ZET_DIREKTNO_2025 = 176.8
@@ -183,93 +185,111 @@ def render_myths() -> None:
             "brojka koju sindikati često ističu kao neposredni trošak. "
             f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa."
         )
-        st.bar_chart(
-            pd.DataFrame(
-                {
-                    "Scenarij": ["Procjena +13 % osnovice", "Paket (uprava)"],
-                    "mil. €": [UNION_BASE_ONLY_M, PAKET_ZET],
-                }
-            ).set_index("Scenarij"),
+        bars(
+            ["Procjena +13 % osnovice", "Paket (uprava)"],
+            [UNION_BASE_ONLY_M, PAKET_ZET],
+            title="Godišnji iznos (mil. €)",
             color=ACCENT,
+            unit=" mil. €",
+            decimals=1,
+            horizontal=True,
         )
 
 
 def render_sankey() -> None:
     st.subheader("Tok novca: od proračuna do ZET-a")
     st.write(
-        "Debljina trake = milijuni eura. "
+        "Prvo vidi **gdje ide novac** (čitljivo na mobitelu). "
         f"Operativna subvencija ZET-u: {154.5} mil. € "
         f"(oko {100 * 154.5 / ALL_SUBS_2025:.0f} % od {ALL_SUBS_2025} mil. € svih subvencija). "
         f"Sa kapitalom: {ZET_DIREKTNO_2025} mil. € "
-        f"(oko {100 * ZET_DIREKTNO_2025 / ALL_SUBS_2025:.0f} %). "
-        "Svaki novi milijun za plaće koji padne na Grad konkurira drugim stavkama proračuna — "
-        "to je kontekst, ne sud o plaćama."
+        f"(oko {100 * ZET_DIREKTNO_2025 / ALL_SUBS_2025:.0f} %)."
     )
 
     ostale_sub = ALL_SUBS_2025 - ZET_DIREKTNO_2025
     operativa = max(0.0, ZET_DIREKTNO_2025 - TROSAK_RADA_2024 - FREE_TRANSPORT_M)
 
-    # Bez „ostalih rashoda Grada“ (2.600 mil.) — inače sve ostalo izgleda kao tanka crta.
-    labels = [
-        f"Sve subvencije ({ALL_SUBS_2025:g})",
-        f"ZET sub+kap ({ZET_DIREKTNO_2025:g})",
-        f"Ostale subvencije ({ostale_sub:g})",
-        f"Trošak rada ({TROSAK_RADA_2024:g})",
-        f"Ostalo u ZET-u ({operativa:.1f})",
-        f"Besplatni prijevoz ({FREE_TRANSPORT_M:g})",
-    ]
-    fig = go.Figure(
-        data=[
-            go.Sankey(
-                arrangement="snap",
-                node=dict(
-                    pad=22,
-                    thickness=18,
-                    line=dict(color="#B7C2CC", width=0.5),
-                    label=labels,
-                    color=[
-                        "#003F99",
-                        "#00B8E1",
-                        "#94A3B8",
-                        "#E07A1A",
-                        "#64748B",
-                        "#546673",
-                    ],
-                ),
-                link=dict(
-                    source=[0, 0, 1, 1, 1],
-                    target=[1, 2, 3, 4, 5],
-                    value=[
-                        ZET_DIREKTNO_2025,
-                        ostale_sub,
-                        TROSAK_RADA_2024,
-                        operativa,
-                        FREE_TRANSPORT_M,
-                    ],
-                    color=[
-                        "rgba(0,63,153,0.55)",
-                        "rgba(0,184,225,0.4)",
-                        "rgba(224,122,26,0.45)",
-                        "rgba(100,116,139,0.4)",
-                        "rgba(84,102,115,0.4)",
-                    ],
-                ),
-            )
+    bars(
+        ["ZET (subvencija + kapital)", "Ostale gradske subvencije"],
+        [ZET_DIREKTNO_2025, ostale_sub],
+        title=f"Od {ALL_SUBS_2025:g} mil. € svih subvencija Grada",
+        color=ACCENT,
+        unit=" mil. €",
+        decimals=1,
+        horizontal=True,
+    )
+    bars(
+        [
+            "Trošak rada u ZET-u",
+            "Besplatni prijevoz (ugovor)",
+            "Ostalo u ZET-u (sub+kap)",
+        ],
+        [TROSAK_RADA_2024, FREE_TRANSPORT_M, round(operativa, 1)],
+        title=f"Kako se raspoređuje {ZET_DIREKTNO_2025:g} mil. € za ZET",
+        color="#003F99",
+        unit=" mil. €",
+        decimals=1,
+        horizontal=True,
+    )
+
+    with st.expander("Dijagram toka (bolje na većem zaslonu)"):
+        labels = [
+            f"Sve subvencije\n{ALL_SUBS_2025:g}",
+            f"ZET sub+kap\n{ZET_DIREKTNO_2025:g}",
+            f"Ostale sub.\n{ostale_sub:g}",
+            f"Trošak rada\n{TROSAK_RADA_2024:g}",
+            f"Ostalo ZET\n{operativa:.1f}",
+            f"Besplatni\n{FREE_TRANSPORT_M:g}",
         ]
-    )
-    fig.update_layout(
-        margin=dict(l=8, r=8, t=12, b=8),
-        height=380,
-        font=dict(family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif", size=12, color="#0A2036"),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        autosize=True,
-    )
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-        config={"displayModeBar": False, "responsive": True},
-    )
+        fig = go.Figure(
+            data=[
+                go.Sankey(
+                    arrangement="snap",
+                    node=dict(
+                        pad=18,
+                        thickness=16,
+                        line=dict(color=GRID, width=0.5),
+                        label=labels,
+                        color=[
+                            "#003F99",
+                            "#00B8E1",
+                            "#94A3B8",
+                            "#E07A1A",
+                            "#64748B",
+                            "#546673",
+                        ],
+                    ),
+                    link=dict(
+                        source=[0, 0, 1, 1, 1],
+                        target=[1, 2, 3, 4, 5],
+                        value=[
+                            ZET_DIREKTNO_2025,
+                            ostale_sub,
+                            TROSAK_RADA_2024,
+                            operativa,
+                            FREE_TRANSPORT_M,
+                        ],
+                        color=[
+                            "rgba(0,63,153,0.55)",
+                            "rgba(0,184,225,0.4)",
+                            "rgba(224,122,26,0.45)",
+                            "rgba(100,116,139,0.4)",
+                            "rgba(84,102,115,0.4)",
+                        ],
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(
+            margin=dict(l=4, r=4, t=8, b=4),
+            height=420,
+            font=dict(family=FONT, size=12, color=INK),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            autosize=True,
+        )
+        st.plotly_chart(fig, use_container_width=True, config=CFG)
+
     st.caption(
         f"Rashodi Grada 2025. ukupno: {RASHODI_GRADA_2025:g} mil. € — "
         f"subvencije su oko {100 * ALL_SUBS_2025 / RASHODI_GRADA_2025:.0f} % toga. "
@@ -342,7 +362,12 @@ def render_pulse() -> None:
                 f"- **{r['odgovor']}** — {int(r['n'])} "
                 f"({100 * r['n'] / n:.0f} %)"
             )
-        st.bar_chart(df1.set_index("odgovor")["n"], color=ACCENT)
+        bars(
+            df1["odgovor"].tolist(),
+            df1["n"].tolist(),
+            color=ACCENT,
+            horizontal=True,
+        )
     with right:
         st.markdown("##### Cijena karte 0,53 → 0,80?")
         for _, r in df2.iterrows():
@@ -350,4 +375,9 @@ def render_pulse() -> None:
                 f"- **{r['odgovor']}** — {int(r['n'])} "
                 f"({100 * r['n'] / n:.0f} %)"
             )
-        st.bar_chart(df2.set_index("odgovor")["n"], color="#00B8E1")
+        bars(
+            df2["odgovor"].tolist(),
+            df2["n"].tolist(),
+            color="#00B8E1",
+            horizontal=True,
+        )
