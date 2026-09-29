@@ -782,7 +782,7 @@ if segment == "Javni dosje":
                 ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
                 (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
                 ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
-                ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
+                ("67 %", "Udio subvencija u prihodima ZET-a (knjige ZET, 2024.)", "c"),
             ],
             spans=["s3", "s3", "s3", "s3"],
         )
@@ -820,9 +820,9 @@ if segment == "Javni dosje":
                     f"Od 2018.; +{labor_growth_2y} % od 2022. — druga serija od neto isplata.",
                 ),
                 (
-                    "Tko plaća",
-                    "Subvencije ~67 %, karte ~18 %",
-                    "Veći trošak rada u pravilu pada na Grad.",
+                    "Tko plaća ZET",
+                    "Grad ~71 % · putnici ~13 % · ostalo ~16 %",
+                    "Grad: subvencije 143,4 + ugovor za besplatne kategorije 8,9. Putnici: izravna prodaja karata 29. Ostalo: ostali prihodi ZET-a 33,8 mil. € (2024.).",
                 ),
                 (
                     "Udio u gradu",
@@ -963,47 +963,63 @@ if segment == "Javni dosje":
 
     elif page == "Novac":
         st.subheader("Novac ZET-a 2024.")
-        st.markdown("##### Prihodi")
+        st.markdown("##### Prihodi — tko plaća (2024.)")
         fact_list(
             [
-                ("Subvencije Grada (u knjigama ZET-a)", "143,4 mil. €", "Oko 67 % svih prihoda ZET-a 2024."),
-                ("Karte / prodaja", "37,9 mil. €", "Oko 18 % prihoda"),
-                ("Ostalo", "33,8 mil. €", "Oko 16 % prihoda"),
+                (
+                    "Grad — subvencije (knjige ZET-a)",
+                    "143,4 mil. € · ~67 %",
+                    "Glavni izvor; u proračunu Grada tekuća subvencija = 142,2 mil. €",
+                ),
+                (
+                    "Putnici — izravna prodaja karata",
+                    "29,0 mil. € · ~13 %",
+                    "Ono što putnici stvarno plate na blagajni / u vozilu",
+                ),
+                (
+                    "Grad — ugovor za besplatne kategorije",
+                    "8,9 mil. € · ~4 %",
+                    "65+, mladi… — u izvješću ide uz „karte“, a plaća Grad",
+                ),
+                (
+                    "Ostali prihodi ZET-a",
+                    "33,8 mil. € · ~16 %",
+                    "Sve ostalo u strukturi prihoda (nije subvencija ni karte)",
+                ),
             ]
         )
         st.caption(
-            "143,4 mil. € = stavka „subvencije“ u Poslovnom izvješću ZET 2024. "
-            "U izvršenju proračuna Grada tekuća subvencija ZET-u za 2024. stoji **142,2 mil. €** — "
-            "bliska, ali nije ista knjiga (ZET vs Grad)."
+            "Zbroj ≈ 215 mil. € prihoda. Ako Gradove stavke zbrojimo (143,4 + 8,9), "
+            "Grad pokriva **oko 71 %** prihoda; „karte“ kao linija 37,9 mil. € = 29,0 + 8,9."
         )
-        st.markdown("##### Rashodi (glavne stavke)")
+        st.markdown("##### Rashodi (glavne stavke, 2024.)")
         fact_list(
             [
-                ("Zaposleni (trošak rada)", "117,1 mil. €", "Oko 55 % rashoda"),
-                ("Materijal", "54,5 mil. €", None),
-                ("Amortizacija", "26,1 mil. €", None),
-                ("Ostalo", "16,0 mil. €", None),
+                ("Zaposleni (trošak rada)", "117,1 mil. € · ~55 %", None),
+                ("Materijal", "54,5 mil. € · ~26 %", "Gorivo, dijelovi, materijal…"),
+                ("Amortizacija", "26,1 mil. € · ~12 %", "Trošenje vozila i imovine"),
+                ("Ostali rashodi", "16,0 mil. € · ~7 %", "Sve ostalo u strukturi rashoda"),
             ]
         )
-        st.subheader("Što stoji iza „prihoda od karata“")
+        st.caption("Postotci su orijentiri na zbroj prikazanih stavki (~213,7 mil. €).")
+        st.subheader("Što stoji iza linije „karte“ (37,9 mil. €)")
         fact_list(
             [
-                ("Izravna prodaja karata", "29,0 mil. €", "Ono što putnici stvarno plate"),
+                ("Izravna prodaja karata", "29,0 mil. €", "Plaćaju putnici"),
                 (
                     "Ugovor s Gradom (besplatne kategorije)",
                     "8,9 mil. €",
-                    "65+, mladi… — vodi se uz karte, a plaća Grad",
+                    "Plaća Grad — 65+, mladi…",
                 ),
             ]
         )
         st.caption(
             "Od 2024. besplatan prijevoz za 65+; od 1. travnja 2025. i za mlađe od 18. "
-            "Dio onoga što se vodi kao prihod od karata zapravo plaća Grad."
+            "Zato „prihod od karata“ nije isto što „putnici plate“."
         )
         st.info(
-            "**Što to znači za proračun:** besplatne kategorije građani često pozdravljaju, "
-            "ali smanjuju zaradu od karata i povećavaju ovisnost ZET-a o Gradu "
-            "(subvencije ~67 % prihoda). Ugovor za te kategorije u strukturi „karata“: **8,9 mil. €**."
+            "Besplatne kategorije smanjuju izravnu zaradu od karata i povećavaju udio Grada "
+            "u financiranju ZET-a (subvencije + ugovor ≈ **71 %** prihoda 2024.)."
         )
         st.subheader("Putnici (milijuni)")
         st.bar_chart(
@@ -1040,8 +1056,9 @@ if segment == "Javni dosje":
             ]
         )
         st.caption(
-            "U knjigama ZET-a za 2024. „subvencije Grada“ stoje **143,4 mil. €** (udio ~67 % prihoda). "
-            "Ovdje **142,2** je tekuća subvencija iz izvršenja proračuna Grada — dva izvora, bliski iznosi."
+            "U knjigama ZET-a za 2024. sama stavka „subvencije Grada“ = **143,4 mil. € (~67 %)**. "
+            "Ako ubrojimo i ugovor za besplatne kategorije (8,9), Grad pokriva **oko 71 %** prihoda ZET-a. "
+            "Ovdje **142,2** je tekuća subvencija iz izvršenja proračuna Grada — druga knjiga, blizak iznos."
         )
         st.warning(
             "**Zašto Grad ne može „samo dati“:** ZET već prima velik dio gradskih subvencija — "
@@ -1200,7 +1217,11 @@ if segment == "Javni dosje":
                 ("Osnovica", "592,20 € od I/2026.", "Dodatak III.; +63 % je druga serija"),
                 ("Zaposleni", "3.956 → 3.692", "Oko 36 % starijih od 55"),
                 ("Trošak rada", f"+{labor_growth} % po zaposlenom", "Od 2018. — druga serija"),
-                ("Tko plaća", "Subvencije ~67 %", "Besplatne kategorije 8,9 mil. €"),
+                (
+                    "Tko plaća",
+                    "Grad ~71 % · putnici ~13 % · ostalo ~16 %",
+                    "Uključuje 8,9 mil. € ugovora za besplatne kategorije uz „karte“",
+                ),
                 ("Udio u gradu", "6,8 % rashoda", "Subvencija ≈62 % / sa kapitalom ≈71 %"),
                 ("Rupe", "Što nedostaje", "Nema razrade 32,4; nema mjerenja kašnjenja"),
                 ("Dalje", "Uz štrajk i Alati", "Uprava i sindikat; računica"),
