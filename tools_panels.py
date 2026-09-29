@@ -57,9 +57,9 @@ def render_share_bar(pdf_bytes: bytes) -> None:
     c1, c2 = st.columns([1, 1])
     with c1:
         st.download_button(
-            label="Preuzmi dosje (PDF)",
+            label="Preuzmi kratki sažetak (PDF)",
             data=pdf_bytes,
-            file_name="istrazimo-zet-javni-podaci.pdf",
+            file_name="istrazimo-zet-sazetak.pdf",
             mime="application/pdf",
             use_container_width=True,
         )
@@ -74,9 +74,14 @@ def render_share_bar(pdf_bytes: bytes) -> None:
 def render_simulator() -> None:
     st.subheader("Simulator pregovora — što ako?")
     st.write(
-        "Pomaknite klizač i uključite stavke paketa. Izračun je orijentacijski: "
-        "osnovica na trošak rada 117,1 mil. € (2024.); dodaci oko "
-        f"{ADDONS_EST_M} mil. € prema razlici paketa uprave i same osnovice +13 %."
+        "Pomaknite klizač i uključite stavke paketa. Izračun je **orijentacijski proxy**: "
+        f"postotak × trošak rada {TROSAK_RADA_2024} mil. € (2024.) — nije službeni €-iznos "
+        f"koji je Grad objavio. Dodaci ≈ {ADDONS_EST_M} mil. € = ostatak paketa uprave "
+        f"({PAKET_ZET}) minus sama osnovica +13 %."
+    )
+    st.caption(
+        f"„Ponuda ≈ {GRAD_OFFER_M} mil. €“ = 4,5 % × {TROSAK_RADA_2024}. "
+        "+4,5 % na osnovicu KU nije nužno točno 4,5 % ukupnog troška rada."
     )
 
     pct_base = st.slider(
@@ -88,12 +93,12 @@ def render_simulator() -> None:
         key="sim_pct",
     )
     include_addons = st.toggle(
-        f"Uključi ostale sindikalne zahtjeve (dodaci, prijevoz, vjernost… ≈ {ADDONS_EST_M} mil. €)",
+        f"Uključi ostale sindikalne zahtjeve (dodaci, prijevoz, vjernost… ≈ {ADDONS_EST_M} mil. €, rekonstrukcija)",
         value=False,
         key="sim_addons",
     )
     include_holding = st.toggle(
-        "Uključi Zagrebački holding (grubo: osnovica skalirana + dodaci ako su uključeni)",
+        "Uključi Zagrebački holding (model: ~17 mil. € pri +12 %, nije razrada mirenja)",
         value=False,
         key="sim_holding",
     )
@@ -132,17 +137,17 @@ def render_simulator() -> None:
     st.markdown("##### Gdje je ZET-dio na skali Grad ↔ sindikat")
     st.progress(pos)
     s1, s2, s3 = st.columns(3)
-    s1.caption(f"Ponuda Grada ≈ {GRAD_OFFER_M} mil. €")
+    s1.caption(f"Proxy ponude (+4,5 %) ≈ {GRAD_OFFER_M} mil. €")
     s2.caption(
         "Vaš ZET scenarij ≈ "
         + f"{zet_total:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
         + " mil. €"
     )
-    s3.caption(f"Pun paket sindikata ≈ {PAKET_ZET} mil. €")
+    s3.caption(f"Pun paket (uprava) ≈ {PAKET_ZET} mil. €")
 
     st.info(
-        f"Referentne točke: sama osnovica +13 % ≈ {UNION_BASE_ONLY_M} mil. €; "
-        f"puni paket ZET (uprava) {PAKET_ZET} mil. €; Holding (uprava) >{PAKET_HOLDING} mil. €."
+        f"Referentne točke: proxy +13 % na trošak rada ≈ {UNION_BASE_ONLY_M} mil. €; "
+        f"puni paket ZET (uprava, mirenje) {PAKET_ZET} mil. €; Holding (uprava) >{PAKET_HOLDING} mil. €."
     )
 
 
@@ -152,23 +157,48 @@ def render_myths() -> None:
 
     with st.expander("Mit: Grad nudi 14 %, sindikati traže 13 % — zašto onda ne potpišu?"):
         st.write(
-            "To nisu iste mjere. Sindikat traži **novo** povećanje osnovice (+13 %). "
-            "Gradovih „oko 14 %“ zbraja već dano i buduće stavke."
+            "To nisu iste mjere. Sindikat traži **novo** +13 % na osnovicu. "
+            "Uprava ZET-a „oko 14 %“ računa **prozor I/2026.–I/2027.**: već +4,4 % "
+            "(od 1. 1. 2026.), ponuda +4,5 % (od IX/2026.) i indeksacija ≈ 4–4,5 % (I/2027.). "
+            "Povećanje od **svibnja 2025. (+15,6 %)** dogodilo se ranije i **nije** u tom zbroju."
         )
         st.dataframe(
             pd.DataFrame(
                 [
-                    {"Stavka": "Već isplaćeno V/2025.", "Što je": "+15,6 % osnovice", "U „14 %“?": "Da (prošlost)"},
-                    {"Stavka": "Već isplaćeno I/2026.", "Što je": "+4,4 % osnovice", "U „14 %“?": "Da (prošlost)"},
-                    {"Stavka": "Ponuda na stolu", "Što je": "+4,5 % od IX/2026.", "U „14 %“?": "Da"},
-                    {"Stavka": "Indeksacija 2027.", "Što je": "≈ 4–4,5 % (neizvjesno)", "U „14 %“?": "Da (budućnost)"},
-                    {"Stavka": "Sindikalni zahtjev", "Što je": "+13 % odmah na osnovicu", "U „14 %“?": "Ne — druga baža"},
+                    {
+                        "Stavka": "Već isplaćeno V/2025.",
+                        "Što je": "+15,6 % osnovice",
+                        "U „14 %“ (I/2026.–I/2027.)?": "Ne — raniji korak",
+                    },
+                    {
+                        "Stavka": "Već isplaćeno I/2026.",
+                        "Što je": "+4,4 % osnovice",
+                        "U „14 %“ (I/2026.–I/2027.)?": "Da",
+                    },
+                    {
+                        "Stavka": "Ponuda na stolu",
+                        "Što je": "+4,5 % od IX/2026.",
+                        "U „14 %“ (I/2026.–I/2027.)?": "Da",
+                    },
+                    {
+                        "Stavka": "Indeksacija 2027.",
+                        "Što je": "≈ 4–4,5 % (procjena)",
+                        "U „14 %“ (I/2026.–I/2027.)?": "Da (budućnost)",
+                    },
+                    {
+                        "Stavka": "Sindikalni zahtjev",
+                        "Što je": "+13 % odmah na osnovicu",
+                        "U „14 %“ (I/2026.–I/2027.)?": "Ne — druga baža",
+                    },
                 ]
             ),
             hide_index=True,
             use_container_width=True,
         )
-        st.caption("Vremenska crta: već dano → ponuda → buduća indeksacija ≠ jedno novo +13 %.")
+        st.caption(
+            "Izvor zbroja „14 %“: priopćenje uprave ZET (prozor od 1. 1. 2026. do 1. 1. 2027.). "
+            "To nije isto što jedno novo +13 %."
+        )
 
     with st.expander("Mit: Vozači imaju plaću 2.000 € i još traže više!"):
         st.write(
@@ -295,15 +325,16 @@ def render_pulse() -> None:
     q1 = st.radio(
         "Koji scenarij smatrate najpoštenijim?",
         [
-            "Ponuda Grada (~5,3 mil. € / +4,5 %)",
-            "Kompromis na sredini (~9–15 mil. €)",
-            "Puni zahtjev sindikata (32,4 mil. € paket)",
+            "Ponuda +4,5 % (proxy ≈ 5,3 mil. € na trošak rada)",
+            "Kompromis na sredini (proxy ≈ 9–15 mil. €)",
+            "Puni paket sindikata (32,4 mil. € — broj uprave)",
         ],
         index=None,
         key="pulse_q1",
     )
     q2 = st.radio(
-        "Biste li podržali poskupljenje pojedinačne karte s 0,53 € na 0,80 € ako bi to pomoglo riješiti plaće vozača?",
+        "Biste li podržali izjednačavanje jeftinije 30-min karte (0,53 € na kiosku/app) "
+        "s već postojećom cijenom kod vozača (0,80 €), ako bi to pomoglo financirati plaće vozača?",
         ["Da", "Ne", "Ne znam / ovisi"],
         index=None,
         key="pulse_q2",
@@ -344,7 +375,7 @@ def render_pulse() -> None:
         st.dataframe(df1, hide_index=True, use_container_width=True)
         st.bar_chart(df1.set_index("odgovor")["n"], color=ACCENT)
     with right:
-        st.markdown("##### Karta 0,53 → 0,80 €")
+        st.markdown("##### Kiosk 0,53 € = cijena kod vozača 0,80 €?")
         df2["udio %"] = (100 * df2["n"] / n).round(1)
         st.dataframe(df2, hide_index=True, use_container_width=True)
         st.bar_chart(df2.set_index("odgovor")["n"], color="#0F766E")
@@ -359,14 +390,15 @@ def build_pdf_bytes() -> bytes:
     w = pdf.epw
 
     pdf.set_font("Helvetica", "B", 16)
-    pdf.multi_cell(w, 8, "Istrazimo - ZET javni podaci")
+    pdf.multi_cell(w, 8, "Istrazimo - ZET (kratki sazetak)")
     pdf.ln(2)
     pdf.set_font("Helvetica", "", 11)
     pdf.multi_cell(
         w,
         6,
-        "Dosje javnih brojeva uz strajk od 28. 9. 2026. Nije stav. "
-        "Izvori: Poslovna izvjesca ZET, proracun Grada, priopcenja, DZS, GTFS.",
+        "Kratki PDF sazetak (nije 13-stranicni dosje). Strajk od 28. 9. 2026. Nije stav. "
+        "Izvori: Poslovna izvjesca ZET, proracun Grada, priopcenja, DZS, GTFS. "
+        "Cjeloviti interaktivni alat: https://istrazimo.streamlit.app",
     )
     pdf.ln(4)
 
@@ -392,7 +424,7 @@ def build_pdf_bytes() -> bytes:
         ),
         (
             "Scenariji (orijentacija)",
-            "A ponuda ~5,3 | B sredina ~9,4 | C samo +13% ~15,2 | D pun paket 32,4 mil. EUR/god.",
+            "A ponuda proxy ~5,3 | B sredina ~9,4 | C samo +13% ~15,2 | D pun paket 32,4 mil. EUR/god.",
         ),
         (
             "Mreza / flota / kasnjenja",
@@ -419,9 +451,10 @@ def build_pdf_bytes() -> bytes:
     pdf.multi_cell(
         w,
         5,
-        "1) 13% != Gradovih ~14%: novo vs kumulativ (vec dano + ponuda + indeksacija).\n"
+        "1) 13% != Gradovih ~14%: novo vs prozor I/2026.-I/2027. "
+        "(+4,4 vec dano + ponuda +4,5 + indeksacija; V/2025. +15,6 nije u tom zbroju).\n"
         "2) 1.992 EUR je neto s dodacima, ne osnovica pregovora.\n"
-        "3) ~15 mil. EUR je sama osnovica +13%; paket uprave je 32,4 mil. EUR.",
+        "3) ~15 mil. EUR je proxy +13% na trosak rada; paket uprave je 32,4 mil. EUR.",
     )
     pdf.ln(4)
     pdf.set_font("Helvetica", "B", 13)

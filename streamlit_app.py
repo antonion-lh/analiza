@@ -548,7 +548,7 @@ if segment == "Javni dosje":
         st.write(
             "Najviše zaposlenih bilo je **3.956** krajem 2019. "
             "Na dan 30. lipnja 2025. stoji **3.692** — pad od 6,7 % s vrhunca. "
-            "Oko 36 % zaposlenih starije je od 55 godina."
+            "Oko 36 % zaposlenih starije je od 55 godina (poslovna izvješća)."
         )
         st.line_chart(EMP.set_index("Godina")["Zaposleni"], color=CHART)
         st.caption("Izvor: Poslovna izvješća ZET, 2018.–2024. i I.–VI. 2025.")
@@ -768,7 +768,7 @@ if segment == "Javni dosje":
         qa_tiles(
             [
                 ("Plaća", "1.992 € neto s dodacima", "+63 % od 2021.; DZS RH 1.449 €"),
-                ("Zaposleni", "3.956 → 3.692", "Oko 37 % starijih od 55"),
+                ("Zaposleni", "3.956 → 3.692", "Oko 36 % starijih od 55"),
                 ("Trošak rada", f"+{labor_growth} % po zaposlenom", "Od 2018. — druga serija"),
                 ("Tko plaća", "Subvencije ~67 %", "Karte oko 18 %"),
                 ("Udio u gradu", "oko 6,8 % rashoda", "oko 230 € po stanovniku 2025."),
@@ -829,8 +829,8 @@ elif segment == "Uz štrajk":
                 ),
                 (
                     "Ponuda Grada",
-                    "+4,5 % ≈ +14 % kum.",
-                    "Već +15,6 % (V/2025.) i +4,4 % (I/2026.).",
+                    "+4,5 % + indeksacija ≈ ~14 %",
+                    "U prozoru I/2026.–I/2027.: već +4,4 % (I/2026.), ponuda +4,5 %, indeksacija ~4–4,5 %. (+15,6 % V/2025. je ranije.)",
                 ),
                 (
                     "Ako prođe 32,4 mil.",
@@ -861,8 +861,8 @@ elif segment == "Uz štrajk":
 <div class="tile sidebox s12">
   <h4>Grad / uprava</h4>
   <ul>
-    <li>Ponuda: <strong>+4,5 %</strong> od 1. rujna 2026. + indeksacija ≈ kumulativno ~14 %</li>
-    <li>Već dano: +15,6 % (V/2025.) i +4,4 % (I/2026.)</li>
+    <li>Ponuda: <strong>+4,5 %</strong> od 1. rujna 2026. + indeksacija ≈ ~14 % u prozoru I/2026.–I/2027. (uz već +4,4 % od I/2026.)</li>
+    <li>Ranije dano: +15,6 % (V/2025.) — nije u tom zbroju „14 %“</li>
     <li>„Oko 14 %“ nije isto što novo +13 % na osnovicu</li>
   </ul>
 </div>
@@ -921,7 +921,7 @@ elif segment == "Uz štrajk":
                 [
                     {"": "Zaposleni", "ZET": "oko 3,7 tisuće", "Holding / komunalne": "Holding d.o.o. 5.356 (31.12.2024.)"},
                     {"": "Subvencija Grada 2025.", "ZET": "154,5 mil. €", "Holding / komunalne": "Otpad / Čistoća 46,4 mil. €"},
-                    {"": "Rast plaća od 2021. (uprava)", "ZET": "vozač +63 % / svi +59 %", "Holding / komunalne": "komunalci oko +70 %"},
+                    {"": "Rast plaća od 2021. (uprava)", "ZET": "vozač +63 % / svi +59 %", "Holding / komunalne": "komunalci Čistoća +87 %"},
                     {"": "Zahtjev sindikata (osnovica)", "ZET": "+13 %", "Holding / komunalne": "+12 %"},
                     {"": "Procjena troška (uprava)", "ZET": "32,4 mil. € / god.", "Holding / komunalne": "više od 34 mil. € / god."},
                 ]
@@ -958,14 +958,17 @@ elif segment == "Uz štrajk":
                 }
             )
         st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
-        st.caption("A–C = postotak × 117,1. D = broj koji navodi uprava (cijeli paket).")
+        st.caption(
+            "A–C = proxy (postotak × trošak rada 117,1) — nije službeni €-iznos Grada. "
+            "D = broj koji navodi uprava (cijeli paket mirenja)."
+        )
 
         kpi_tiles(
             [
-                ("~5,3 mil.", "A — ponuda +4,5 %", "t"),
-                ("~9,4 mil.", "B — sredina +8 %", ""),
-                ("~15,2 mil.", "C — samo +13 %", "y"),
-                ("32,4 mil.", "D — puni paket", "c"),
+                ("~5,3 mil.", "A — proxy +4,5 %", "t"),
+                ("~9,4 mil.", "B — proxy +8 %", ""),
+                ("~15,2 mil.", "C — proxy +13 %", "y"),
+                ("32,4 mil.", "D — paket uprave", "c"),
             ]
         )
 
