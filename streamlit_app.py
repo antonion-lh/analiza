@@ -82,9 +82,8 @@ h1, h2, h3 {
 section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
 
-/* Navigacija: veći tap targeti + horizontalni scroll na uskom ekranu */
-div[data-testid="stSegmentedControl"] label,
-div[data-testid="stPills"] label {
+/* Glavni odjeljak (3 gumba) — horizontalno */
+div[data-testid="stSegmentedControl"] label {
   font-family: "Source Sans 3", sans-serif !important;
   font-weight: 600 !important;
   letter-spacing: 0;
@@ -92,26 +91,78 @@ div[data-testid="stPills"] label {
   padding-left: 0.95rem !important;
   padding-right: 0.95rem !important;
 }
-div[data-testid="stSegmentedControl"],
-div[data-testid="stPills"] {
+div[data-testid="stSegmentedControl"] {
   margin: 0.2rem 0 1rem;
 }
-div[data-testid="stPills"] > div,
 div[data-testid="stSegmentedControl"] > div {
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   gap: 0.35rem !important;
-  padding-bottom: 0.15rem;
-}
-div[data-testid="stPills"] label,
-div[data-testid="stSegmentedControl"] label {
-  flex: 0 0 auto !important;
-  white-space: nowrap !important;
 }
 
-/* Selectbox navigacija — puni širinu, lakše na mobitelu */
+/* Podizbornik (teme) — kao meni, sve vidljivo */
+.nav-menu {
+  margin: 0.35rem 0 0;
+  padding: 0.7rem 0.9rem 0.15rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+}
+.nav-menu-label {
+  display: block;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.nav-menu-hint {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+div[data-testid="stPills"] {
+  margin: 0 0 1.15rem;
+  padding: 0.45rem 0.75rem 0.8rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+div[data-testid="stPills"] > div {
+  flex-wrap: wrap !important;
+  overflow-x: visible !important;
+  gap: 0.4rem !important;
+}
+div[data-testid="stPills"] label {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  min-height: 40px;
+  padding-left: 0.85rem !important;
+  padding-right: 0.85rem !important;
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  border: 1px solid var(--line) !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+}
+div[data-testid="stPills"] label[data-checked="true"],
+div[data-testid="stPills"] label:has(input:checked),
+div[data-testid="stPills"] [aria-checked="true"] {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Selectbox — ako ostane negdje drugdje */
 div[data-testid="stSelectbox"] {
   margin: 0.15rem 0 1rem;
 }
@@ -383,19 +434,21 @@ def nav_pick(
     *,
     default: str,
     key: str,
-    force: str | None = None,
+    hint: str | None = None,
 ) -> str:
-    """Kratki meni: selectbox ako ima >4 opcije (bolje na mobitelu), inače pills."""
-    mode = force or ("select" if len(options) > 4 else "pills")
+    """Podizbornik: sve opcije vidljive kao gumbi (ne padajući popis)."""
     if default not in options:
         default = options[0]
-    if mode == "select":
-        return st.selectbox(
-            label,
-            options,
-            index=options.index(default),
-            key=key,
-        )
+    hint_html = (
+        f'<span class="nav-menu-hint">{hint}</span>'
+        if hint
+        else '<span class="nav-menu-hint">Odaberite temu — aktivna je označena.</span>'
+    )
+    html(
+        f'<div class="nav-menu">'
+        f'<span class="nav-menu-label">{label}</span>'
+        f"{hint_html}</div>"
+    )
     choice = st.pills(
         label,
         options,
@@ -585,18 +638,8 @@ if not segment:
 # JAVNI DOSJE
 # ---------------------------------------------------------------------------
 if segment == "Javni dosje":
-    kpi_tiles(
-        [
-            ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
-            (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
-            ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
-            ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
-        ],
-        spans=["s3", "s3", "s3", "s3"],
-    )
-
     page = nav_pick(
-        "Tema",
+        "Izbornik",
         [
             "Pregled",
             "Plaće",
@@ -611,6 +654,17 @@ if segment == "Javni dosje":
         ],
         default="Pregled",
         key="dosje_page",
+        hint="Teme javnog dosjea — kliknite da otvorite.",
+    )
+
+    kpi_tiles(
+        [
+            ("3.692", "Zaposleni na 30. lipnja 2025.", "t"),
+            (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", "y"),
+            ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija i kapital)", ""),
+            ("67 %", "Koliko prihoda ZET-a dolazi od subvencija", "c"),
+        ],
+        spans=["s3", "s3", "s3", "s3"],
     )
 
     if page == "Pregled":
@@ -1079,6 +1133,14 @@ elif segment == "Uz štrajk":
 """
     )
 
+    page = nav_pick(
+        "Izbornik",
+        ["Pregovori i paket", "Scenariji A–D"],
+        default="Pregovori i paket",
+        key="strajk_page",
+        hint="Odaberite temu uz štrajk.",
+    )
+
     kpi_tiles(
         [
             ("1.992 €", "Isplata vozača u srpnju 2026. (s dodacima)", "t"),
@@ -1087,13 +1149,6 @@ elif segment == "Uz štrajk":
             ("≈71 %", "ZET (subvencija+kapital) u zbroju subvencija", ""),
         ],
         spans=["s3", "s3", "s4", "s2"],
-    )
-
-    page = nav_pick(
-        "Tema",
-        ["Pregovori i paket", "Scenariji A–D"],
-        default="Pregovori i paket",
-        key="strajk_page",
     )
 
     if page == "Pregovori i paket":
@@ -1293,10 +1348,11 @@ elif segment == "Alati":
         "Brojevi su javni; zaključak je vaš."
     )
     tool = nav_pick(
-        "Alat",
+        "Izbornik",
         ["Računica", "Često čujemo", "Tok novca", "Anketa"],
         default="Računica",
         key="alat_tab",
+        hint="Odaberite alat.",
     )
     if tool == "Računica":
         render_simulator()
