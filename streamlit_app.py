@@ -648,7 +648,6 @@ if segment == "Javni dosje":
             "Udio u gradu",
             "Mreža",
             "Flota",
-            "Kašnjenja",
             "Što nedostaje",
             "Sažetak",
         ],
@@ -721,11 +720,6 @@ if segment == "Javni dosje":
                     "Flota",
                     "Modernizacija da, vozila manje",
                     "TMK 2400, električni autobusi, rabljena vozila. Ukupan broj blago pada.",
-                ),
-                (
-                    "Kašnjenja",
-                    "Nema javnog pokazatelja",
-                    "U štrajku nema usluge. Podaci u stvarnom vremenu nisu uporabivi.",
                 ),
             ]
         )
@@ -1012,35 +1006,6 @@ if segment == "Javni dosje":
             ]
         )
 
-    elif page == "Kašnjenja":
-        st.subheader("Kašnjenja")
-        st.warning(
-            "Javnog broja kašnjenja u minutama nema. "
-            "Od 28. rujna 2026. u štrajku praktički nema usluge — "
-            "to više nije kašnjenje, nego prekid. "
-            "Podaci u stvarnom vremenu trenutačno nisu uporabivi."
-        )
-        st.caption("Širi popis rupa → **Što nedostaje**.")
-        qa_tiles(
-            [
-                (
-                    "1",
-                    "Dosje štrajka",
-                    "Serije iz izvješća, isplate ZET-u, dani bez usluge.",
-                ),
-                (
-                    "2",
-                    "Promjene mreže",
-                    "Usporedba arhive voznog reda (linije, stajališta) po kvartalu.",
-                ),
-                (
-                    "3",
-                    "Kad se promet vrati",
-                    "Prvi javni pregled kašnjenja za Zagreb.",
-                ),
-            ]
-        )
-
     elif page == "Što nedostaje":
         st.subheader("Što još nije javno")
         st.write(
@@ -1080,7 +1045,7 @@ if segment == "Javni dosje":
                 (
                     "Kašnjenja tramvaja i autobusa u minutama",
                     "Nije objavljeno",
-                    "Kvaliteta usluge ostaje anegdota ili „štrajk = nula“. Objaviti: ZET / Grad.",
+                    "Nema javnog pokazatelja; u štrajku ionako nema usluge. Objaviti: ZET / Grad.",
                 ),
                 (
                     "Cjelovita serija osnovice 2018.–2024.",
