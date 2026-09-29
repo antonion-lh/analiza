@@ -82,16 +82,47 @@ h1, h2, h3 {
 section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
 
+/* Navigacija: veći tap targeti + horizontalni scroll na uskom ekranu */
 div[data-testid="stSegmentedControl"] label,
 div[data-testid="stPills"] label {
   font-family: "Source Sans 3", sans-serif !important;
   font-weight: 600 !important;
   letter-spacing: 0;
-  min-height: 42px;
+  min-height: 44px;
   padding-left: 0.95rem !important;
   padding-right: 0.95rem !important;
 }
-div[data-testid="stSegmentedControl"] { margin: 0.2rem 0 1rem; }
+div[data-testid="stSegmentedControl"],
+div[data-testid="stPills"] {
+  margin: 0.2rem 0 1rem;
+}
+div[data-testid="stPills"] > div,
+div[data-testid="stSegmentedControl"] > div {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  gap: 0.35rem !important;
+  padding-bottom: 0.15rem;
+}
+div[data-testid="stPills"] label,
+div[data-testid="stSegmentedControl"] label {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+/* Selectbox navigacija — puni širinu, lakše na mobitelu */
+div[data-testid="stSelectbox"] {
+  margin: 0.15rem 0 1rem;
+}
+div[data-testid="stSelectbox"] label {
+  font-size: 0.85rem !important;
+  color: var(--muted) !important;
+  font-weight: 600 !important;
+}
+div[data-testid="stSelectbox"] > div > div {
+  min-height: 48px;
+}
 
 .bento {
   display: grid;
@@ -234,12 +265,61 @@ div[data-testid="stMetricValue"] {
 }
 div[data-testid="stMetricLabel"] { color: var(--muted); }
 
+/* Gumbi — lakše tipkalo */
+div[data-testid="stDownloadButton"] button,
+div[data-testid="stLinkButton"] a,
+.stButton > button {
+  min-height: 48px !important;
+  font-weight: 600 !important;
+}
+
+/* Tablice: horizontalni scroll umjesto preklapanja */
+div[data-testid="stDataFrame"],
+div[data-testid="stDataFrameResizable"] {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+div[data-testid="stDataFrame"] table {
+  font-size: 0.9rem;
+}
+
 @media (max-width: 700px) {
+  .block-container {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+    padding-top: 0.85rem !important;
+  }
+  .hero { min-height: 0; }
+  .brand { min-height: 0; }
+  .brand .big { font-size: 1.12rem; }
+  .lead { font-size: 0.95rem; }
+  .kpi .v { font-size: 1.45rem; }
+  .tile { padding: 0.9rem 0.95rem; border-radius: 10px; }
   div[data-testid="stHorizontalBlock"] {
     flex-wrap: wrap !important;
+    gap: 0.35rem !important;
   }
   div[data-testid="stHorizontalBlock"] > div {
     min-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+  div[data-testid="stMetric"] {
+    padding: 0.55rem 0 !important;
+  }
+  div[data-testid="stMetricValue"] {
+    font-size: 1.55rem !important;
+  }
+  div[data-testid="stDataFrame"] table {
+    font-size: 0.82rem;
+  }
+  /* Plotly na uskom ekranu */
+  .js-plotly-plot, .plotly {
+    max-width: 100% !important;
+  }
+  div[data-testid="stVerticalBlockBorderWrapper"] {
+    padding-left: 0.6rem !important;
+    padding-right: 0.6rem !important;
   }
 }
 </style>
@@ -255,6 +335,35 @@ def mil(x: float) -> str:
 
 def pct(x: float) -> str:
     return f"{x:.2f} %".replace(".", ",")
+
+
+def nav_pick(
+    label: str,
+    options: list[str],
+    *,
+    default: str,
+    key: str,
+    force: str | None = None,
+) -> str:
+    """Kratki meni: selectbox ako ima >4 opcije (bolje na mobitelu), inače pills."""
+    mode = force or ("select" if len(options) > 4 else "pills")
+    if default not in options:
+        default = options[0]
+    if mode == "select":
+        return st.selectbox(
+            label,
+            options,
+            index=options.index(default),
+            key=key,
+        )
+    choice = st.pills(
+        label,
+        options,
+        default=default,
+        label_visibility="collapsed",
+        key=key,
+    )
+    return choice or default
 
 
 def scenario_cost(pct_base: float | None, fixed: float | None = None) -> float:
@@ -432,8 +541,8 @@ if segment == "Javni dosje":
         spans=["s3", "s3", "s3", "s3"],
     )
 
-    page = st.pills(
-        "Podstranica",
+    page = nav_pick(
+        "Podstranica dosjea",
         [
             "Pregled",
             "Plaće",
@@ -447,7 +556,7 @@ if segment == "Javni dosje":
             "Sažetak",
         ],
         default="Pregled",
-        label_visibility="collapsed",
+        key="dosje_page",
     )
 
     if page == "Pregled":
@@ -937,11 +1046,11 @@ elif segment == "Uz štrajk":
         spans=["s3", "s3", "s4", "s2"],
     )
 
-    page = st.pills(
+    page = nav_pick(
         "Podstranica štrajka",
         ["Pregovori i paket", "Scenariji A–D"],
         default="Pregovori i paket",
-        label_visibility="collapsed",
+        key="strajk_page",
     )
 
     if page == "Pregovori i paket":
@@ -1131,15 +1240,12 @@ elif segment == "Alati":
         "Interaktivni sloj: simulator, fact-check, tok novca i anonimna anketa. "
         "Brojevi ostaju javni; tumačenje ostaje vama."
     )
-    tool = st.pills(
+    tool = nav_pick(
         "Alat",
         ["Simulator", "Mitovi vs. stvarnost", "Tok novca", "Anketa"],
         default="Simulator",
-        label_visibility="collapsed",
         key="alat_tab",
     )
-    if not tool:
-        tool = "Simulator"
     if tool == "Simulator":
         render_simulator()
     elif tool == "Mitovi vs. stvarnost":

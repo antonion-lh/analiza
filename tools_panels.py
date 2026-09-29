@@ -310,15 +310,16 @@ def render_sankey() -> None:
     )
     fig.update_layout(
         margin=dict(l=8, r=8, t=8, b=8),
-        height=460,
-        font=dict(family="Source Sans 3, sans-serif", size=13, color="#12151A"),
+        height=420,
+        font=dict(family="Source Sans 3, sans-serif", size=12, color="#12151A"),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False, "responsive": True})
     st.caption(
         "Napomena: „Operativa / ostalo“ ovdje je ostatak direktnog ZET iznosa nakon "
-        "troška rada i stavke besplatnog prijevoza — pojednostavljenje radi čitljivosti Sankeya."
+        "troška rada i stavke besplatnog prijevoza — pojednostavljenje radi čitljivosti Sankeya. "
+        "Na mobitelu povucite dijagram horizontalno ako treba."
     )
 
 
