@@ -202,26 +202,34 @@ def render_myths() -> None:
 
     with st.expander("Mit: Vozači imaju plaću 2.000 € i još traže više!"):
         st.write(
-            "Broj **1.992 €** (uprava, VII/2026.) je **neto s dodacima** — isplata na račun. "
-            "Predmet pregovora je **osnovica** kolektivnog ugovora (npr. 592,20 € × koeficijent), "
-            "na koju se nadovezuju prekovremeni, nedjelja, blagdani, noćne smjene i drugi dodaci."
+            "Broj **1.992 €** (uprava, VII/2026.) je **ukupna neto isplata na račun** za taj mjesec — "
+            "osnovica × koeficijent + stalni dodaci + prekovremeni + vikendi/noć/blagdani. "
+            "**Nije** plaća za redovnih ~160 sati bez dodataka (taj iznos nije javno dostupan i niži je). "
+            "Srpanj često nosi više prekovremenih. Predmet pregovora je **osnovica** (npr. 592,20 € × koef.)."
+        )
+        st.caption(
+            "Kontekst rasporeda (sindikalni opis): split-smjene (jutro / pauza / popodne) nisu "
+            "vidljive u broju na isplatnoj listi."
         )
         c1, c2, c3 = st.columns(3)
-        c1.metric("Neto + dodaci (uprava)", "1.992 €")
+        c1.metric("Isplata VII (uprava)", "1.992 €")
         c2.metric("Osnovica (okvir)", "592,20 € × koef.")
         c3.metric("DZS prosjek RH 2025.", "1.449 €")
-        st.caption("Neto ≠ osnovica ≠ trošak rada po zaposlenom iz izvješća.")
+        st.caption("Isplata ≠ osnovica ≠ trošak rada po zaposlenom iz izvješća.")
 
     with st.expander("Mit: Zahtjev sindikata košta „samo“ 15 milijuna eura."):
         st.write(
-            f"Samo **+13 % na trošak rada** (~117,1 mil. €) iznosi oko **{UNION_BASE_ONLY_M} mil. €**. "
-            f"Uprava u mirenju računa **cijeli paket** — osnovica + dodaci + indeksacija + ostalo — "
-            f"na **{PAKET_ZET} mil. €** godišnje (~{ADDONS_EST_M} mil. € iznad čiste osnovice)."
+            f"**Uprava** (mirenje): cijeli paket = **{PAKET_ZET} mil. €**/god "
+            f"(osnovica + dodaci + indeksacija + ostalo; 23,8 % mase). "
+            f"**Proxy osnovice:** +13 % na trošak rada ~117,1 ≈ **{UNION_BASE_ONLY_M} mil. €** — "
+            "razina koju sindikati često ističu kao neposredni trošak zahtjeva za osnovicom. "
+            f"Razlika (~{ADDONS_EST_M} mil. €) nastaje u ostatku paketa. "
+            "Dosje imenuje izvore; ne proglašava tko je u pravu."
         )
         st.bar_chart(
             pd.DataFrame(
                 {
-                    "Scenarij": ["Samo +13 % osnovice", "Pun paket (uprava)"],
+                    "Scenarij": ["Proxy +13 % osnovice", "Paket (uprava)"],
                     "mil. €": [UNION_BASE_ONLY_M, PAKET_ZET],
                 }
             ).set_index("Scenarij"),
@@ -233,9 +241,12 @@ def render_sankey() -> None:
     st.subheader("Tok novca — od proračuna Grada do ZET-a")
     st.write(
         "Širina trake = milijuni eura (izvršenje / izvješća). "
-        f"ZET direktno {ZET_DIREKTNO_2025} mil. € čini "
-        f"{100 * ZET_DIREKTNO_2025 / ALL_SUBS_2025:.0f} % zbroja gradskih subvencija u našoj bazi "
-        f"({ALL_SUBS_2025} mil. €, 2025.)."
+        f"Operativna subvencija ZET {154.5} mil. € ≈ "
+        f"{100 * 154.5 / ALL_SUBS_2025:.0f} % zbroja subvencija ({ALL_SUBS_2025} mil. €). "
+        f"Direktno (sub+kap) {ZET_DIREKTNO_2025} mil. € ≈ "
+        f"{100 * ZET_DIREKTNO_2025 / ALL_SUBS_2025:.0f} %. "
+        "Svaki novi milijun za plaće koji padne na Grad konkurira ostalim javnim stavkama — "
+        "to je fiskalni kontekst, ne sud o „pravednoj“ plaći."
     )
 
     ostalo_grad = RASHODI_GRADA_2025 - ALL_SUBS_2025
@@ -405,8 +416,8 @@ def build_pdf_bytes() -> bytes:
     sections = [
         (
             "Place",
-            "Vozac neto + dodaci VII/2026: 1.992 EUR (+63% vs 2021). Prosjek ZET 1.931. DZS RH 1.449. "
-            "Neto != osnovica KU != trosak rada / zaposleni.",
+            "Vozac: isplata VII/2026. 1.992 EUR s dodacima (+63% vs 2021. isplata). "
+            "To nije neto za 160 h. Osnovica KU 592,20 od I/2026. DZS RH 1.449.",
         ),
         (
             "Zaposleni i trosak rada",
@@ -414,22 +425,22 @@ def build_pdf_bytes() -> bytes:
         ),
         (
             "Novac i grad",
-            "Subvencije ~67% prihoda ZET. Direktno ZET 176,8 mil. EUR = 6,8% rashoda Grada 2025. "
-            "Sve subvencije Grada u bazi ~250,5 mil. EUR.",
+            "Subvencije ~67% prihoda ZET. Direktno ZET 176,8 = ~71% zbroja subvencija 250,5; "
+            "samo operativna 154,5 ~62%. Besplatne kategorije 8,9 mil. EUR.",
         ),
         (
-            "Pregovori",
-            "Zahtjev +13% osnovice. Ponuda +4,5% (+ kumulativ ~14% po Gradu). "
-            "Paket ZET (uprava) 32,4 mil. EUR/god; Holding >34. Samo +13% na 117,1 ~15,2 mil. EUR.",
+            "Pregovori (izvori)",
+            "Uprava: paket ZET 32,4 mil. EUR/god (23,8% mase). Proxy +13% na 117,1 ~15,2. "
+            "Sindikati: neposredni trosak osnovice blizi ~15. Holding uprava >34.",
         ),
         (
             "Scenariji (orijentacija)",
-            "A ponuda proxy ~5,3 | B sredina ~9,4 | C samo +13% ~15,2 | D pun paket 32,4 mil. EUR/god.",
+            "A proxy ~5,3 | B ~9,4 | C ~15,2 | D paket uprave 32,4 mil. EUR/god.",
         ),
         (
-            "Mreza / flota / kasnjenja",
-            "Nove tram pruge: 0. Bus dnevne 149->135. Flota blago pada uz modernizaciju. "
-            "Nema javnog KPI-ja kasnjenja; u strajku usluga = 0.",
+            "Ogranicenja",
+            "Nema javne neto 160 h; nema razrade 32,4 stavka-po-stavci; nema KPI kasnjenja; "
+            "nema pune serije osnovice 2018-2024.",
         ),
         (
             "Metodologija",
@@ -453,8 +464,9 @@ def build_pdf_bytes() -> bytes:
         5,
         "1) 13% != Gradovih ~14%: novo vs prozor I/2026.-I/2027. "
         "(+4,4 vec dano + ponuda +4,5 + indeksacija; V/2025. +15,6 nije u tom zbroju).\n"
-        "2) 1.992 EUR je neto s dodacima, ne osnovica pregovora.\n"
-        "3) ~15 mil. EUR je proxy +13% na trosak rada; paket uprave je 32,4 mil. EUR.",
+        "2) 1.992 EUR je isplata VII s dodacima, ne neto za 160 h ni osnovica.\n"
+        "3) ~15 mil. EUR je proxy +13% na trosak rada; paket uprave je 32,4 mil. EUR.\n"
+        "4) Rupe: nema razrade 32,4 stavka-po-stavci; nema javnog KPI kasnjenja.",
     )
     pdf.ln(4)
     pdf.set_font("Helvetica", "B", 13)
