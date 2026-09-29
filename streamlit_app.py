@@ -21,9 +21,9 @@ MASA_IMPLIED = PAKET_ZET / 0.238
 STANOVNICI = 767_131
 EUR = 7.5345
 
-CHART = "#F5C400"
-CHART_2 = "#4DE8C2"
-CHART_3 = "#FF6B4A"
+CHART = "#1A4B6E"
+CHART_2 = "#0F766E"
+CHART_3 = "#475569"
 
 st.set_page_config(
     page_title="Istražimo · ZET — javni podaci",
@@ -32,27 +32,39 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Minimal CSS: tipografija + bento. Bez light-mode overridea koji je
-# pretvarao cijelu temu u krem i rušio dizajn.
+# Urednička tipografija + suzdržana paleta.
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
-html, body, [data-testid="stAppViewContainer"], .stMarkdown, .stText {
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
+:root {
+  --bg: #F7F8FA;
+  --panel: #FFFFFF;
+  --ink: #12151A;
+  --muted: #5C6570;
+  --line: #D5DBE3;
+  --accent: #1A4B6E;
+  --accent-soft: #EAF1F6;
+  --warn: #9A3412;
 }
 
-h1, h2, h3, .syne {
-  font-family: Syne, system-ui, sans-serif !important;
-  letter-spacing: -0.03em;
-  font-weight: 800 !important;
+html, body, [data-testid="stAppViewContainer"], .stMarkdown, .stText {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  color: var(--ink);
+}
+
+h1, h2, h3 {
+  font-family: "Source Serif 4", Georgia, serif !important;
+  letter-spacing: -0.02em;
+  font-weight: 650 !important;
+  color: var(--ink) !important;
 }
 
 .block-container {
-  padding-top: 1.25rem;
+  padding-top: 1.35rem;
   padding-bottom: 3rem;
-  max-width: 1120px;
+  max-width: 1080px;
 }
 
 [data-testid="stHeader"] { background: transparent; }
@@ -60,19 +72,16 @@ h1, h2, h3, .syne {
 section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
 
-/* Veće navigacijske tipke (Fitts) */
 div[data-testid="stSegmentedControl"] label,
 div[data-testid="stPills"] label {
-  font-family: Syne, system-ui, sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.02em;
-  min-height: 44px;
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
+  font-family: "Source Sans 3", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  min-height: 42px;
+  padding-left: 0.95rem !important;
+  padding-right: 0.95rem !important;
 }
-div[data-testid="stSegmentedControl"] {
-  margin: 0.15rem 0 1rem;
-}
+div[data-testid="stSegmentedControl"] { margin: 0.2rem 0 1rem; }
 
 .bento {
   display: grid;
@@ -81,14 +90,12 @@ div[data-testid="stSegmentedControl"] {
   margin: 0 0 1rem;
 }
 .tile {
-  background: #171B20;
-  border: 1px solid #2C333C;
-  border-radius: 16px;
-  padding: 1.1rem 1.15rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.05rem 1.1rem;
   min-width: 0;
-  transition: border-color 0.15s ease;
 }
-.tile:hover { border-color: #3D4652; }
 .s12 { grid-column: span 12; }
 .s8 { grid-column: span 8; }
 .s6 { grid-column: span 6; }
@@ -101,124 +108,126 @@ div[data-testid="stSegmentedControl"] {
 }
 
 .hero {
-  background: #1A1F26;
-  border-color: #3A3420;
+  background: var(--panel);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 0.5rem;
-  min-height: 150px;
+  gap: 0.45rem;
+  min-height: 148px;
 }
 .kicker {
   margin: 0;
-  color: #F5C400;
-  font-size: 0.7rem;
+  color: var(--accent);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .hero h1 {
   margin: 0 !important;
-  color: #F2F0EA !important;
-  font-size: clamp(1.7rem, 4vw, 2.45rem) !important;
-  line-height: 1.05 !important;
+  color: var(--ink) !important;
+  font-size: clamp(1.65rem, 3.6vw, 2.25rem) !important;
+  line-height: 1.12 !important;
+  font-weight: 650 !important;
 }
 .lead {
   margin: 0;
-  color: #A8B0B8;
+  color: var(--muted);
   font-size: 1rem;
-  line-height: 1.45;
-  max-width: 36rem;
+  line-height: 1.5;
+  max-width: 38rem;
 }
 .brand {
-  background: #F5C400;
-  border-color: #F5C400;
-  color: #111;
+  background: var(--accent-soft);
+  border-color: #C5D6E4;
+  border-left: 3px solid var(--accent);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 150px;
+  min-height: 148px;
 }
 .brand .big {
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 1.35rem;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 650;
+  font-size: 1.28rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
 }
-.brand .small { font-size: 0.82rem; font-weight: 600; opacity: 0.75; }
+.brand .small {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
 
 .kpi .v {
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: clamp(1.45rem, 2.6vw, 1.9rem);
-  letter-spacing: -0.035em;
-  line-height: 1;
-  color: #F2F0EA;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 650;
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
 }
 .kpi .l {
-  margin-top: 0.55rem;
-  color: #9AA3AD;
+  margin-top: 0.5rem;
+  color: var(--muted);
   font-size: 0.84rem;
   line-height: 1.35;
 }
-.kpi.y .v { color: #F5C400; }
-.kpi.t .v { color: #4DE8C2; }
-.kpi.c .v { color: #FF6B4A; }
+.kpi.y .v, .kpi.t .v { color: var(--accent); }
+.kpi.c .v { color: var(--warn); }
 
-.note h4, .qa .tag {
+.note h4, .qa .tag, .sidebox h4 {
   margin: 0 0 0.4rem;
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
-.note h4 { color: #F2F0EA; font-size: 0.95rem; }
-.note p { margin: 0; color: #C8C4BC; font-size: 0.94rem; line-height: 1.5; }
+.note h4 { color: var(--ink); font-size: 1rem; }
+.note p { margin: 0; color: #3A424C; font-size: 0.95rem; line-height: 1.55; }
 .qa .tag {
-  color: #F5C400;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .qa .head {
   margin: 0 0 0.35rem;
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.02rem;
-  letter-spacing: -0.02em;
-  color: #F2F0EA;
-  line-height: 1.25;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 650;
+  font-size: 1.05rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  line-height: 1.3;
 }
-.qa .body { margin: 0; color: #9AA3AD; font-size: 0.86rem; line-height: 1.4; }
+.qa .body { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
 
-.sidebox h4 {
-  margin: 0 0 0.45rem;
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 700;
-  color: #F2F0EA;
-  font-size: 0.95rem;
-}
-.sidebox ul { margin: 0; padding-left: 1.1rem; color: #C8C4BC; }
-.sidebox li { margin-bottom: 0.35rem; line-height: 1.4; }
+.sidebox h4 { color: var(--ink); font-size: 1rem; }
+.sidebox ul { margin: 0; padding-left: 1.1rem; color: #3A424C; }
+.sidebox li { margin-bottom: 0.35rem; line-height: 1.45; }
 
 .foot {
   margin-top: 1.75rem;
   padding-top: 0.9rem;
-  border-top: 1px solid #2C333C;
-  color: #8B949E;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
   font-size: 0.8rem;
   line-height: 1.5;
 }
 
 div[data-testid="stMetricValue"] {
-  font-family: Syne, system-ui, sans-serif;
-  font-weight: 800;
-  color: #F5C400;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 650;
+  color: var(--accent);
 }
+div[data-testid="stMetricLabel"] { color: var(--muted); }
 </style>
 """,
     unsafe_allow_html=True,
 )
+
 
 
 def mil(x: float) -> str:
