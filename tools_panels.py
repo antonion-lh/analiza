@@ -27,7 +27,7 @@ HOLDING_BASE_AT_12_M = 17.0
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DB_PATH = DATA_DIR / "pulse.db"
-ACCENT = "#1A4B6E"
+ACCENT = "#0A4D68"
 
 
 def mil(x: float) -> str:
@@ -254,7 +254,7 @@ def render_sankey() -> None:
                         ACCENT,
                         "#94A3B8",
                         "#0F766E",
-                        "#1A4B6E",
+                        "#0A4D68",
                         "#94A3B8",
                         "#9A3412",
                         "#64748B",
@@ -289,7 +289,7 @@ def render_sankey() -> None:
     fig.update_layout(
         margin=dict(l=8, r=8, t=8, b=8),
         height=420,
-        font=dict(family="Source Sans 3, sans-serif", size=12, color="#12151A"),
+        font=dict(family="IBM Plex Sans, sans-serif", size=12, color="#0C1821"),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )

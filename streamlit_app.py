@@ -31,138 +31,153 @@ MASA_IMPLIED = PAKET_ZET / 0.238
 STANOVNICI = 767_131
 EUR = 7.5345
 
-CHART = "#1A4B6E"
+CHART = "#0A4D68"
 CHART_2 = "#0F766E"
-CHART_3 = "#475569"
+CHART_3 = "#5B6B76"
 
 st.set_page_config(
     page_title="Istražimo · ZET — javni podaci",
-    page_icon="📊",
+    page_icon="·",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# Urednička tipografija + suzdržana paleta.
+# Urednički dosje — ne „AI kartice“.
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap');
 
 :root {
-  --bg: #F7F8FA;
-  --panel: #FFFFFF;
-  --ink: #12151A;
-  --muted: #5C6570;
-  --line: #D5DBE3;
-  --accent: #1A4B6E;
-  --accent-soft: #EAF1F6;
-  --warn: #9A3412;
+  --bg: #E3E8ED;
+  --panel: #F6F8F9;
+  --ink: #0C1821;
+  --muted: #4E5D68;
+  --line: #B7C2CC;
+  --accent: #0A4D68;
+  --accent-soft: #D7E6EC;
+  --signal: #A85A00;
+  --rail: #0A4D68;
 }
 
-html, body, [data-testid="stAppViewContainer"], .stMarkdown, .stText {
-  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+html, body, [data-testid="stAppViewContainer"] {
+  background-color: var(--bg) !important;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 47px,
+      rgba(12, 24, 33, 0.035) 47px,
+      rgba(12, 24, 33, 0.035) 48px
+    ) !important;
+}
+.stMarkdown, .stText, p, label, span {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   color: var(--ink);
 }
 
 h1, h2, h3 {
-  font-family: "Source Serif 4", Georgia, serif !important;
+  font-family: "Newsreader", Georgia, serif !important;
   letter-spacing: -0.02em;
   font-weight: 650 !important;
   color: var(--ink) !important;
 }
 
 .block-container {
-  padding-top: 1.35rem;
+  padding-top: 1.1rem;
   padding-bottom: 3rem;
-  max-width: 1080px;
+  max-width: 1040px;
 }
 
 [data-testid="stHeader"] { background: transparent; }
+[data-testid="stHeader"] { backdrop-filter: none; }
 [data-testid="stElementToolbar"] { display: none !important; }
 section[data-testid="stSidebar"] { display: none !important; }
 button[kind="headerNoPadding"] { display: none !important; }
 
-/* Glavni odjeljak (3 gumba) — horizontalno */
+/* Glavni odjeljak */
 div[data-testid="stSegmentedControl"] label {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600 !important;
   letter-spacing: 0;
   min-height: 44px;
   padding-left: 0.95rem !important;
   padding-right: 0.95rem !important;
+  border-radius: 2px !important;
 }
 div[data-testid="stSegmentedControl"] {
-  margin: 0.2rem 0 1rem;
+  margin: 0.35rem 0 1.1rem;
 }
 div[data-testid="stSegmentedControl"] > div {
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  gap: 0.35rem !important;
+  gap: 0.3rem !important;
 }
 
-/* Podizbornik (teme) — kao meni, sve vidljivo */
+/* Izbornik — otvoren, ne „pill dashboard“ */
 .nav-menu {
-  margin: 0.35rem 0 0;
-  padding: 0.7rem 0.9rem 0.15rem;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
+  margin: 0.2rem 0 0;
+  padding: 0.55rem 0 0.35rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  border-radius: 0;
 }
 .nav-menu-label {
   display: block;
-  font-family: "Source Sans 3", sans-serif;
-  font-size: 0.72rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink);
 }
 .nav-menu-hint {
   display: block;
-  margin-top: 0.15rem;
-  font-family: "Source Sans 3", sans-serif;
-  font-size: 0.88rem;
+  margin-top: 0.1rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.86rem;
   color: var(--muted);
   line-height: 1.35;
 }
 div[data-testid="stPills"] {
-  margin: 0 0 1.15rem;
-  padding: 0.45rem 0.75rem 0.8rem;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-top: none;
-  border-radius: 0 0 12px 12px;
+  margin: 0 0 1.25rem;
+  padding: 0.55rem 0 0.2rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 }
 div[data-testid="stPills"] > div {
   flex-wrap: wrap !important;
   overflow-x: visible !important;
-  gap: 0.4rem !important;
+  gap: 0.35rem 0.45rem !important;
 }
 div[data-testid="stPills"] label {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600 !important;
   letter-spacing: 0;
-  min-height: 40px;
-  padding-left: 0.85rem !important;
-  padding-right: 0.85rem !important;
+  min-height: 38px;
+  padding-left: 0.7rem !important;
+  padding-right: 0.7rem !important;
   flex: 0 0 auto !important;
   white-space: nowrap !important;
-  border: 1px solid var(--line) !important;
-  background: #fff !important;
-  color: var(--ink) !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
 }
 div[data-testid="stPills"] label[data-checked="true"],
 div[data-testid="stPills"] label:has(input:checked),
 div[data-testid="stPills"] [aria-checked="true"] {
-  background: var(--accent) !important;
-  border-color: var(--accent) !important;
-  color: #fff !important;
+  background: transparent !important;
+  border-bottom: 2px solid var(--accent) !important;
+  color: var(--ink) !important;
 }
 
-/* Selectbox — ako ostane negdje drugdje */
 div[data-testid="stSelectbox"] {
   margin: 0.15rem 0 1rem;
 }
@@ -178,15 +193,17 @@ div[data-testid="stSelectbox"] > div > div {
 .bento {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0 0 1rem;
+  gap: 14px;
+  margin: 0 0 1.1rem;
 }
 .tile {
   background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 1.05rem 1.1rem;
+  border: none;
+  border-left: 3px solid var(--rail);
+  border-radius: 0;
+  padding: 1rem 1.05rem 1.05rem 1.1rem;
   min-width: 0;
+  box-shadow: none;
 }
 .s12 { grid-column: span 12; }
 .s8 { grid-column: span 8; }
@@ -200,121 +217,160 @@ div[data-testid="stSelectbox"] > div > div {
 }
 
 .hero {
-  background: var(--panel);
+  background: transparent;
+  border-left: none;
+  padding: 0.35rem 0.2rem 0.6rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 0.45rem;
-  min-height: 148px;
+  gap: 0.4rem;
+  min-height: 0;
+}
+.wordmark {
+  margin: 0;
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--ink);
 }
 .kicker {
   margin: 0;
   color: var(--accent);
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .hero h1 {
   margin: 0 !important;
   color: var(--ink) !important;
-  font-size: clamp(1.65rem, 3.6vw, 2.25rem) !important;
-  line-height: 1.12 !important;
-  font-weight: 650 !important;
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  max-width: 28rem;
 }
 .lead {
-  margin: 0;
+  margin: 0.15rem 0 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.5;
-  max-width: 38rem;
+  max-width: 36rem;
 }
 .brand {
-  background: var(--accent-soft);
-  border-color: #C5D6E4;
-  border-left: 3px solid var(--accent);
-  color: var(--ink);
+  background: var(--ink);
+  border-left: none;
+  color: #F2F5F7;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 148px;
+  gap: 1rem;
+  min-height: 0;
+  padding: 1.15rem 1.15rem 1.05rem;
 }
 .brand .big {
-  font-family: "Source Serif 4", Georgia, serif;
-  font-weight: 650;
-  font-size: 1.28rem;
-  line-height: 1.25;
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.22rem;
+  line-height: 1.3;
   letter-spacing: -0.015em;
+  color: #F2F5F7;
 }
 .brand .small {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #A8B7C2;
+  letter-spacing: 0.02em;
 }
 
+.kpi {
+  background: transparent;
+  border-left: none;
+  border-top: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 0.75rem 0.15rem 0.35rem;
+}
 .kpi .v {
-  font-family: "Source Serif 4", Georgia, serif;
-  font-weight: 650;
-  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
   color: var(--ink);
 }
 .kpi .l {
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   line-height: 1.35;
 }
 .kpi.y .v, .kpi.t .v { color: var(--accent); }
-.kpi.c .v { color: var(--warn); }
+.kpi.c .v { color: var(--signal); }
 
+.note {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+}
 .note h4, .qa .tag, .sidebox h4 {
   margin: 0 0 0.4rem;
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Newsreader", Georgia, serif;
   font-weight: 650;
   letter-spacing: -0.01em;
 }
-.note h4 { color: var(--ink); font-size: 1rem; }
-.note p { margin: 0; color: #3A424C; font-size: 0.95rem; line-height: 1.55; }
+.note h4 { color: var(--ink); font-size: 1.05rem; }
+.note p { margin: 0; color: #24333D; font-size: 0.95rem; line-height: 1.55; }
+.qa {
+  background: transparent;
+  border-left: none;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0.85rem 0.1rem 0.55rem;
+}
 .qa .tag {
   color: var(--accent);
-  font-family: "Source Sans 3", sans-serif;
-  font-size: 0.7rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .qa .head {
   margin: 0 0 0.35rem;
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Newsreader", Georgia, serif;
   font-weight: 650;
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   letter-spacing: -0.015em;
   color: var(--ink);
   line-height: 1.3;
 }
 .qa .body { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
 
-/* Vertikalne „kartice“ umjesto širokih tablica */
-.fact-list { gap: 8px; }
+.fact-list { gap: 0; }
 .fact {
-  padding: 0.85rem 1rem !important;
+  background: transparent !important;
+  border-left: none !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  padding: 0.8rem 0.1rem !important;
 }
 .fact-k {
   margin: 0;
-  color: var(--accent);
-  font-family: "Source Sans 3", sans-serif;
+  color: var(--muted);
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .fact-v {
-  margin: 0.28rem 0 0;
-  font-family: "Source Serif 4", Georgia, serif;
+  margin: 0.25rem 0 0;
+  font-family: "Newsreader", Georgia, serif;
   font-weight: 650;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   letter-spacing: -0.015em;
   color: var(--ink);
   line-height: 1.35;
@@ -322,42 +378,45 @@ div[data-testid="stSelectbox"] > div > div {
   word-break: break-word;
 }
 .fact-note {
-  margin: 0.4rem 0 0;
+  margin: 0.35rem 0 0;
   color: var(--muted);
   font-size: 0.86rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
+.sidebox {
+  background: var(--panel);
+  border-left: 3px solid var(--ink);
+}
 .sidebox h4 { color: var(--ink); font-size: 1rem; }
-.sidebox ul { margin: 0; padding-left: 1.1rem; color: #3A424C; }
+.sidebox ul { margin: 0; padding-left: 1.1rem; color: #24333D; }
 .sidebox li { margin-bottom: 0.35rem; line-height: 1.45; }
 
 .foot {
   margin-top: 1.75rem;
   padding-top: 0.9rem;
-  border-top: 1px solid var(--line);
+  border-top: 2px solid var(--ink);
   color: var(--muted);
   font-size: 0.8rem;
   line-height: 1.5;
 }
 
 div[data-testid="stMetricValue"] {
-  font-family: "Source Serif 4", Georgia, serif;
-  font-weight: 650;
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 700;
   color: var(--accent);
 }
 div[data-testid="stMetricLabel"] { color: var(--muted); }
 
-/* Gumbi — lakše tipkalo */
 div[data-testid="stDownloadButton"] button,
 div[data-testid="stLinkButton"] a,
 .stButton > button {
-  min-height: 48px !important;
+  min-height: 46px !important;
   font-weight: 600 !important;
+  border-radius: 2px !important;
 }
 
-/* Tablice: bez forsiranog H-scrolla; tekst se lomi */
 div[data-testid="stDataFrame"],
 div[data-testid="stDataFrameResizable"] {
   max-width: 100%;
@@ -375,18 +434,23 @@ div[data-testid="stDataFrame"] td {
   word-break: break-word !important;
 }
 
+/* Streamlit info/warning — manje „chat bubble“ */
+div[data-testid="stAlert"] {
+  border-radius: 0 !important;
+  border-left-width: 3px !important;
+}
+
 @media (max-width: 700px) {
   .block-container {
     padding-left: 0.85rem !important;
     padding-right: 0.85rem !important;
-    padding-top: 0.85rem !important;
+    padding-top: 0.75rem !important;
   }
-  .hero { min-height: 0; }
-  .brand { min-height: 0; }
-  .brand .big { font-size: 1.12rem; }
-  .lead { font-size: 0.95rem; }
-  .kpi .v { font-size: 1.45rem; }
-  .tile { padding: 0.9rem 0.95rem; border-radius: 10px; }
+  .wordmark { font-size: 2.35rem; }
+  .brand .big { font-size: 1.1rem; }
+  .lead { font-size: 0.94rem; }
+  .kpi .v { font-size: 1.5rem; }
+  .tile { padding: 0.9rem 0.95rem; }
   div[data-testid="stHorizontalBlock"] {
     flex-wrap: wrap !important;
     gap: 0.35rem !important;
@@ -404,7 +468,6 @@ div[data-testid="stDataFrame"] td {
   div[data-testid="stDataFrame"] table {
     font-size: 0.82rem;
   }
-  /* Plotly na uskom ekranu */
   .js-plotly-plot, .plotly {
     max-width: 100% !important;
   }
@@ -603,8 +666,8 @@ html(
     """
 <div class="bento">
   <div class="tile hero s8">
-    <p class="kicker">Istražimo · javni podaci</p>
-    <h1>ZET — brojevi na jednom mjestu</h1>
+    <p class="wordmark">Istražimo</p>
+    <h1>ZET — javni brojevi, na jednom mjestu</h1>
     <p class="lead">
       Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
       od 28.&nbsp;rujna&nbsp;2026. Podaci su javni — zaključke donosite sami.
