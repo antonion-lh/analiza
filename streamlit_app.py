@@ -56,9 +56,9 @@ def datum_hr(d: date | None = None) -> str:
     return f"{d.day}.&nbsp;{_MJ[d.month]}&nbsp;{d.year}."
 
 
-CHART = "#0A4D68"
-CHART_2 = "#0F766E"
-CHART_3 = "#5B6B76"
+CHART = "#003F99"
+CHART_2 = "#00B8E1"
+CHART_3 = "#546673"
 
 st.set_page_config(
     page_title="Istražimo · ZET — javni podaci",
@@ -67,37 +67,41 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Urednički dosje — ne „AI kartice“.
+# Aviva-inspired: petrol + cyan, soft surfaces, rounded UI, system sans.
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap');
-
 :root {
-  --bg: #E3E8ED;
-  --panel: #F6F8F9;
-  --ink: #0C1821;
-  --muted: #4E5D68;
-  --line: #B7C2CC;
-  --accent: #0A4D68;
-  --accent-soft: #D7E6EC;
-  --signal: #A85A00;
-  --rail: #0A4D68;
+  --bg: #F5FBFF;
+  --panel: #FFFFFF;
+  --ink: #0A2036;
+  --muted: #546673;
+  --line: #DEE6E9;
+  --accent: #00B8E1;
+  --accent-soft: #CCEFFB;
+  --brand: #003F99;
+  --brand-2: #092A6C;
+  --signal: #E07A1A;
+  --rail: #00B8E1;
+  --radius: 1rem;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
 }
 
 html, body, [data-testid="stAppViewContainer"] {
   background-color: var(--bg) !important;
-  background-image: none !important;
+  background-image:
+    radial-gradient(1200px 480px at 10% -10%, rgba(0, 184, 225, 0.10), transparent 55%),
+    radial-gradient(900px 420px at 95% 0%, rgba(0, 63, 153, 0.08), transparent 50%) !important;
 }
-.stMarkdown, .stText, label, span {
-  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+.stMarkdown, .stText, label, span, p, li {
+  font-family: var(--font);
   color: var(--ink);
 }
 
 h1, h2, h3 {
-  font-family: "Newsreader", Georgia, serif !important;
+  font-family: var(--font) !important;
   letter-spacing: -0.02em;
-  font-weight: 650 !important;
+  font-weight: 600 !important;
   color: var(--ink) !important;
 }
 
@@ -115,13 +119,13 @@ button[kind="headerNoPadding"] { display: none !important; }
 /* Glavni odjeljak */
 div[data-testid="stSegmentedControl"] label,
 div[data-testid="stSegmentedControl"] [role="radio"] {
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-weight: 600 !important;
   letter-spacing: 0;
   min-height: 44px;
-  padding-left: 0.95rem !important;
-  padding-right: 0.95rem !important;
-  border-radius: 2px !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  border-radius: 999px !important;
   color: var(--ink) !important;
 }
 div[data-testid="stSegmentedControl"] {
@@ -132,7 +136,7 @@ div[data-testid="stSegmentedControl"] > div {
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  gap: 0.3rem !important;
+  gap: 0.35rem !important;
 }
 div[data-testid="stSegmentedControl"] [aria-checked="true"],
 div[data-testid="stSegmentedControl"] label:has(input:checked),
@@ -157,19 +161,19 @@ div[data-testid="stSegmentedControl"] label[data-checked="true"] * {
 }
 .nav-menu-label {
   display: block;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink) !important;
+  color: var(--brand) !important;
   line-height: 1.3 !important;
   margin: 0 !important;
 }
 .nav-menu-hint {
   display: block;
   margin-top: 0.15rem !important;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: 0.86rem !important;
   font-weight: 400 !important;
   color: var(--muted) !important;
@@ -177,8 +181,8 @@ div[data-testid="stSegmentedControl"] label[data-checked="true"] * {
 }
 .nav-rule {
   border: none;
-  border-bottom: 2px solid var(--ink);
-  margin: 0.45rem 0 1.15rem;
+  border-bottom: 1px solid var(--line);
+  margin: 0.55rem 0 1.15rem;
   height: 0;
 }
 
@@ -194,21 +198,21 @@ div[data-testid="stPills"] > div,
 div[data-testid="stButtonGroup"] > div {
   flex-wrap: wrap !important;
   overflow-x: visible !important;
-  gap: 0.4rem 0.5rem !important;
+  gap: 0.45rem 0.55rem !important;
 }
 div[data-testid="stPills"] label,
 div[data-testid="stButtonGroup"] label,
 div[data-testid="stPills"] [role="radio"],
 div[data-testid="stButtonGroup"] [role="radio"] {
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-weight: 600 !important;
   letter-spacing: 0 !important;
   min-height: 40px !important;
-  padding: 0.45rem 0.85rem !important;
+  padding: 0.5rem 1rem !important;
   flex: 0 0 auto !important;
   white-space: nowrap !important;
   border: 1px solid var(--line) !important;
-  border-radius: 2px !important;
+  border-radius: 999px !important;
   background: var(--panel) !important;
   color: var(--ink) !important;
   box-shadow: none !important;
@@ -244,6 +248,7 @@ div[data-testid="stSelectbox"] label {
 }
 div[data-testid="stSelectbox"] > div > div {
   min-height: 48px;
+  border-radius: 0.75rem !important;
 }
 
 .bento {
@@ -257,12 +262,11 @@ div[data-testid="stSelectbox"] > div > div {
 }
 .tile {
   background: var(--panel);
-  border: none;
-  border-left: 3px solid var(--rail);
-  border-radius: 0;
-  padding: 1rem 1.05rem 1.05rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.05rem 1.1rem 1.1rem;
   min-width: 0;
-  box-shadow: none;
+  box-shadow: 0 1px 2px rgba(10, 32, 54, 0.04);
   box-sizing: border-box !important;
 }
 .s12 { grid-column: span 12 !important; }
@@ -278,8 +282,9 @@ div[data-testid="stSelectbox"] > div > div {
 
 .hero {
   background: transparent !important;
-  border-left: none !important;
-  padding: 0.2rem 0.2rem 0.5rem 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.35rem 0.2rem 0.55rem 0 !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-end !important;
@@ -292,17 +297,17 @@ div[data-testid="stSelectbox"] > div > div {
   display: block !important;
   margin: 0 0 0.2rem !important;
   padding: 0 !important;
-  font-family: "Newsreader", Georgia, serif !important;
+  font-family: var(--font) !important;
   font-weight: 700 !important;
-  font-size: clamp(2.35rem, 6.5vw, 3.45rem) !important;
-  line-height: 0.95 !important;
-  letter-spacing: -0.035em !important;
-  color: var(--ink) !important;
+  font-size: clamp(2.2rem, 6vw, 3.2rem) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--brand) !important;
 }
 .kicker {
   margin: 0 !important;
   color: var(--accent) !important;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: 0.72rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.12em;
@@ -312,9 +317,9 @@ div[data-testid="stSelectbox"] > div > div {
 .hero h1 {
   margin: 0 !important;
   color: var(--ink) !important;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
-  line-height: 1.3 !important;
+  line-height: 1.35 !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   max-width: 28rem;
@@ -324,58 +329,60 @@ div[data-testid="stSelectbox"] > div > div {
   margin: 0.15rem 0 0 !important;
   color: var(--muted) !important;
   font-size: 0.98rem !important;
-  line-height: 1.5 !important;
+  line-height: 1.55 !important;
   font-weight: 400 !important;
   max-width: 36rem;
 }
 .brand {
-  background: var(--ink) !important;
-  border-left: none !important;
-  color: #F2F5F7 !important;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important;
+  border: none !important;
+  border-radius: var(--radius) !important;
+  color: #F7FBFF !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   gap: 1rem !important;
   min-height: 0 !important;
-  padding: 1.15rem 1.15rem 1.05rem !important;
+  padding: 1.2rem 1.2rem 1.1rem !important;
+  box-shadow: 0 8px 24px rgba(0, 63, 153, 0.18);
 }
 [data-testid="stMarkdownContainer"] .brand .big,
 .brand .big {
-  font-family: "Newsreader", Georgia, serif !important;
+  font-family: var(--font) !important;
   font-weight: 600 !important;
-  font-size: 1.22rem !important;
-  line-height: 1.3 !important;
+  font-size: 1.2rem !important;
+  line-height: 1.35 !important;
   letter-spacing: -0.015em !important;
-  color: #F2F5F7 !important;
+  color: #F7FBFF !important;
   margin: 0 !important;
 }
 .brand .small {
   font-size: 0.78rem !important;
   font-weight: 500 !important;
-  color: #A8B7C2 !important;
+  color: rgba(247, 251, 255, 0.72) !important;
   letter-spacing: 0.02em;
   margin: 0 !important;
 }
 
 .kpi {
-  background: transparent !important;
-  border-left: none !important;
-  border-top: 2px solid var(--ink) !important;
-  border-radius: 0 !important;
-  padding: 0.75rem 0.15rem 0.35rem !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  padding: 0.95rem 1rem 0.85rem !important;
+  box-shadow: 0 1px 2px rgba(10, 32, 54, 0.04);
 }
 [data-testid="stMarkdownContainer"] .kpi .v,
 .kpi .v {
-  font-family: "Newsreader", Georgia, serif !important;
+  font-family: var(--font) !important;
   font-weight: 700 !important;
-  font-size: clamp(1.55rem, 2.6vw, 1.95rem) !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.02 !important;
-  color: var(--ink) !important;
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem) !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.05 !important;
+  color: var(--brand) !important;
   margin: 0 !important;
 }
 .kpi .l {
-  margin-top: 0.45rem !important;
+  margin-top: 0.4rem !important;
   color: var(--muted) !important;
   font-size: 0.82rem !important;
   line-height: 1.35 !important;
@@ -385,26 +392,27 @@ div[data-testid="stSelectbox"] > div > div {
 
 .note {
   background: var(--accent-soft) !important;
-  border-left: 3px solid var(--accent) !important;
+  border: 1px solid rgba(0, 184, 225, 0.25) !important;
+  border-radius: var(--radius) !important;
 }
 .note h4, .qa .tag, .sidebox h4 {
   margin: 0 0 0.4rem !important;
-  font-family: "Newsreader", Georgia, serif !important;
-  font-weight: 650 !important;
+  font-family: var(--font) !important;
+  font-weight: 600 !important;
   letter-spacing: -0.01em;
 }
-.note h4 { color: var(--ink) !important; font-size: 1.05rem !important; }
-.note p { margin: 0 !important; color: #24333D !important; font-size: 0.95rem !important; line-height: 1.55 !important; }
+.note h4 { color: var(--brand) !important; font-size: 1.05rem !important; }
+.note p { margin: 0 !important; color: var(--ink) !important; font-size: 0.95rem !important; line-height: 1.55 !important; }
 .qa {
-  background: transparent !important;
-  border-left: none !important;
-  border-top: 1px solid var(--line) !important;
-  border-radius: 0 !important;
-  padding: 0.85rem 0.1rem 0.55rem !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  padding: 0.95rem 1rem 0.85rem !important;
+  box-shadow: 0 1px 2px rgba(10, 32, 54, 0.04);
 }
 .qa .tag {
   color: var(--accent) !important;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: 0.68rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.1em;
@@ -412,8 +420,8 @@ div[data-testid="stSelectbox"] > div > div {
 }
 .qa .head {
   margin: 0 0 0.35rem !important;
-  font-family: "Newsreader", Georgia, serif !important;
-  font-weight: 650 !important;
+  font-family: var(--font) !important;
+  font-weight: 600 !important;
   font-size: 1.08rem !important;
   letter-spacing: -0.015em;
   color: var(--ink) !important;
@@ -421,18 +429,17 @@ div[data-testid="stSelectbox"] > div > div {
 }
 .qa .body { margin: 0 !important; color: var(--muted) !important; font-size: 0.88rem !important; line-height: 1.45 !important; }
 
-.fact-list { gap: 0 !important; }
+.fact-list { gap: 0.55rem !important; }
 .fact {
-  background: transparent !important;
-  border-left: none !important;
-  border-bottom: 1px solid var(--line) !important;
-  border-radius: 0 !important;
-  padding: 0.8rem 0.1rem !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.85rem 0.95rem !important;
 }
 .fact-k {
   margin: 0 !important;
   color: var(--muted) !important;
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: var(--font) !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em;
@@ -441,9 +448,9 @@ div[data-testid="stSelectbox"] > div > div {
 [data-testid="stMarkdownContainer"] .fact-v,
 .fact-v {
   margin: 0.25rem 0 0 !important;
-  font-family: "Newsreader", Georgia, serif !important;
-  font-weight: 650 !important;
-  font-size: 1.12rem !important;
+  font-family: var(--font) !important;
+  font-weight: 600 !important;
+  font-size: 1.08rem !important;
   letter-spacing: -0.015em;
   color: var(--ink) !important;
   line-height: 1.35 !important;
@@ -460,25 +467,26 @@ div[data-testid="stSelectbox"] > div > div {
 
 .sidebox {
   background: var(--panel) !important;
-  border-left: 3px solid var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
 }
-.sidebox h4 { color: var(--ink) !important; font-size: 1rem !important; }
-.sidebox ul { margin: 0; padding-left: 1.1rem; color: #24333D; }
+.sidebox h4 { color: var(--brand) !important; font-size: 1rem !important; }
+.sidebox ul { margin: 0; padding-left: 1.1rem; color: var(--ink); }
 .sidebox li { margin-bottom: 0.35rem; line-height: 1.45; }
 
 .foot {
   margin-top: 1.75rem;
   padding-top: 0.9rem;
-  border-top: 2px solid var(--ink);
+  border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.8rem;
   line-height: 1.5;
 }
 
 div[data-testid="stMetricValue"] {
-  font-family: "Newsreader", Georgia, serif !important;
+  font-family: var(--font) !important;
   font-weight: 700 !important;
-  color: var(--accent) !important;
+  color: var(--brand) !important;
 }
 div[data-testid="stMetricLabel"] { color: var(--muted) !important; }
 
@@ -487,7 +495,14 @@ div[data-testid="stLinkButton"] a,
 .stButton > button {
   min-height: 46px !important;
   font-weight: 600 !important;
-  border-radius: 2px !important;
+  border-radius: 999px !important;
+  font-family: var(--font) !important;
+}
+.stButton > button[kind="primary"],
+div[data-testid="stDownloadButton"] button {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #ffffff !important;
 }
 
 div[data-testid="stDataFrame"],
@@ -508,8 +523,8 @@ div[data-testid="stDataFrame"] td {
 }
 
 div[data-testid="stAlert"] {
-  border-radius: 0 !important;
-  border-left-width: 3px !important;
+  border-radius: var(--radius) !important;
+  border-left-width: 4px !important;
 }
 
 /* Plotly / chartovi ne smiju izlaziti iz širine */
@@ -529,10 +544,10 @@ iframe {
     padding-top: 0.75rem !important;
   }
   [data-testid="stMarkdownContainer"] .wordmark,
-  .wordmark { font-size: 2.2rem !important; }
+  .wordmark { font-size: 2.1rem !important; }
   .brand .big { font-size: 1.1rem !important; }
   .lead { font-size: 0.94rem !important; }
-  .kpi .v { font-size: 1.5rem !important; }
+  .kpi .v { font-size: 1.45rem !important; }
   .tile { padding: 0.9rem 0.95rem; }
   div[data-testid="stHorizontalBlock"] {
     flex-wrap: wrap !important;

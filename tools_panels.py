@@ -26,7 +26,7 @@ HOLDING_BASE_AT_12_M = 17.0
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DB_PATH = DATA_DIR / "pulse.db"
-ACCENT = "#0A4D68"
+ACCENT = "#00B8E1"
 
 
 def mil(x: float) -> str:
@@ -228,12 +228,12 @@ def render_sankey() -> None:
                     line=dict(color="#B7C2CC", width=0.5),
                     label=labels,
                     color=[
-                        "#0F766E",
-                        ACCENT,
+                        "#003F99",
+                        "#00B8E1",
                         "#94A3B8",
-                        "#9A3412",
+                        "#E07A1A",
                         "#64748B",
-                        "#475569",
+                        "#546673",
                     ],
                 ),
                 link=dict(
@@ -247,11 +247,11 @@ def render_sankey() -> None:
                         FREE_TRANSPORT_M,
                     ],
                     color=[
-                        "rgba(10,77,104,0.55)",
-                        "rgba(148,163,184,0.4)",
-                        "rgba(154,52,18,0.45)",
+                        "rgba(0,63,153,0.55)",
+                        "rgba(0,184,225,0.4)",
+                        "rgba(224,122,26,0.45)",
                         "rgba(100,116,139,0.4)",
-                        "rgba(71,85,105,0.4)",
+                        "rgba(84,102,115,0.4)",
                     ],
                 ),
             )
@@ -260,7 +260,7 @@ def render_sankey() -> None:
     fig.update_layout(
         margin=dict(l=8, r=8, t=12, b=8),
         height=380,
-        font=dict(family="IBM Plex Sans, sans-serif", size=12, color="#0C1821"),
+        font=dict(family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif", size=12, color="#0A2036"),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         autosize=True,
@@ -350,4 +350,4 @@ def render_pulse() -> None:
                 f"- **{r['odgovor']}** — {int(r['n'])} "
                 f"({100 * r['n'] / n:.0f} %)"
             )
-        st.bar_chart(df2.set_index("odgovor")["n"], color="#0F766E")
+        st.bar_chart(df2.set_index("odgovor")["n"], color="#00B8E1")

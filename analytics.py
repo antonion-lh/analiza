@@ -19,7 +19,7 @@ import streamlit.components.v1 as components
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DB_PATH = DATA_DIR / "pulse.db"
-ACCENT = "#0A4D68"
+ACCENT = "#00B8E1"
 
 
 def _now() -> str:
@@ -323,7 +323,7 @@ def render_owner_analytics() -> None:
             st.write("Još nema sesija.")
         else:
             st.dataframe(s["days"], hide_index=True, use_container_width=True)
-            st.bar_chart(s["days"].set_index("dan")["sesije"], color="#0F766E")
+            st.bar_chart(s["days"].set_index("dan")["sesije"], color="#00B8E1")
 
     st.markdown("##### Vremenske zone")
     if not s["tz"].empty:
