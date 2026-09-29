@@ -23,159 +23,321 @@ EUR = 7.5345
 
 st.set_page_config(
     page_title="Istražimo · ZET — javni podaci",
-    page_icon="🚊",
+    page_icon="tram",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
-html, body, [class*="css"] {
-  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+:root {
+  --ink: #0E1114;
+  --panel: #171B20;
+  --panel-2: #1E242B;
+  --line: #2A323C;
+  --text: #F2F0EA;
+  --muted: #9AA3AD;
+  --yellow: #F5C400;
+  --teal: #4DE8C2;
+  --coral: #FF6B4A;
+  --radius: 18px;
+}
+
+html, body, [class*="css"], .stApp {
+  font-family: "IBM Plex Sans", system-ui, sans-serif !important;
+  background: var(--ink) !important;
+  color: var(--text) !important;
+}
+
+.stApp {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(245,196,0,0.12), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(77,232,194,0.08), transparent 50%);
 }
 
 .block-container {
-  padding-top: 1.4rem;
-  padding-bottom: 3rem;
-  max-width: 1080px;
+  padding-top: 1.1rem !important;
+  padding-bottom: 3.5rem !important;
+  max-width: 1180px !important;
 }
 
-h1, h2, h3, .hero-title {
-  font-family: Fraunces, Georgia, serif !important;
-  letter-spacing: -0.02em;
-  font-weight: 650 !important;
-  color: #0B3D4A !important;
+h1, h2, h3 {
+  font-family: Syne, system-ui, sans-serif !important;
+  letter-spacing: -0.035em !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1.1 !important;
 }
+h2 { font-size: 1.65rem !important; margin-top: 0.4rem !important; }
+h3 { font-size: 1.2rem !important; }
 
 [data-testid="stSidebar"] {
-  background: #0B3D4A;
+  background: #12161A !important;
+  border-right: 1px solid var(--line) !important;
 }
-[data-testid="stSidebar"] * { color: #F2F0EB !important; }
-[data-testid="stSidebar"] a { color: #B8D4DA !important; text-decoration: underline; }
-[data-testid="stSidebar"] .stMarkdown p,
-[data-testid="stSidebar"] .stCaption { color: #D7E2E5 !important; }
+[data-testid="stSidebar"] * { color: var(--text) !important; }
+[data-testid="stSidebar"] a { color: var(--teal) !important; }
 [data-testid="stSidebar"] [data-testid="stAlert"] {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(245,196,0,0.1) !important;
+  border: 1px solid rgba(245,196,0,0.35) !important;
+  color: var(--text) !important;
 }
 
-.hero {
-  background: #0B3D4A;
-  color: #F7F5F1;
-  border-radius: 18px;
-  padding: 1.55rem 1.7rem 1.35rem;
-  margin-bottom: 1.1rem;
+/* —— Bento shell —— */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.75rem;
+  margin: 0 0 1.15rem;
 }
-.hero-kicker {
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+.cell {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.2rem;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.cell:hover { border-color: #3D4854; }
+.span-12 { grid-column: span 12; }
+.span-8 { grid-column: span 8; }
+.span-7 { grid-column: span 7; }
+.span-6 { grid-column: span 6; }
+.span-5 { grid-column: span 5; }
+.span-4 { grid-column: span 4; }
+.span-3 { grid-column: span 3; }
+.span-2 { grid-column: span 2; }
+@media (max-width: 900px) {
+  .span-8, .span-7, .span-6, .span-5, .span-4, .span-3, .span-2 { grid-column: span 12; }
+}
+
+.hero.cell {
+  background:
+    linear-gradient(135deg, rgba(245,196,0,0.16) 0%, transparent 42%),
+    var(--panel-2);
+  border-color: #3A3420;
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+.kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9BC0C8;
-  margin: 0 0 0.45rem 0;
-  font-weight: 600;
+  color: var(--yellow);
+  margin: 0;
 }
 .hero-title {
-  color: #F7F5F1 !important;
-  font-size: 2rem !important;
-  line-height: 1.15;
-  margin: 0 0 0.55rem 0 !important;
+  font-family: Syne, system-ui, sans-serif !important;
+  font-size: clamp(1.85rem, 4.5vw, 2.75rem) !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  margin: 0 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.98 !important;
 }
 .hero-lead {
-  color: #D5E4E8;
-  font-size: 1.05rem;
+  color: var(--muted);
+  font-size: 1.02rem;
   line-height: 1.45;
-  max-width: 46rem;
+  max-width: 38rem;
   margin: 0;
 }
 
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin: 0.85rem 0 1.15rem;
+.brand-tile {
+  background: var(--yellow);
+  color: #111;
+  border-color: var(--yellow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 168px;
 }
-@media (max-width: 900px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+.brand-tile .big {
+  font-family: Syne, system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.55rem;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
+.brand-tile .small {
+  font-size: 0.86rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
 .kpi {
-  background: #fff;
-  border: 1px solid #E4E0D8;
-  border-radius: 14px;
-  padding: 0.95rem 1rem 0.85rem;
-  min-height: 5.4rem;
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .kpi-val {
-  font-family: Fraunces, Georgia, serif;
-  font-size: 1.55rem;
-  font-weight: 650;
-  color: #0B3D4A;
-  line-height: 1.1;
-  margin-bottom: 0.28rem;
+  font-family: Syne, system-ui, sans-serif;
+  font-size: clamp(1.55rem, 3vw, 2.05rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1;
 }
+.kpi.accent .kpi-val { color: var(--yellow); }
+.kpi.teal .kpi-val { color: var(--teal); }
+.kpi.coral .kpi-val { color: var(--coral); }
 .kpi-lab {
-  font-size: 0.84rem;
-  color: #5A6670;
-  line-height: 1.3;
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.35;
+  margin-top: 0.65rem;
 }
-.kpi.warn .kpi-val { color: #9A3412; }
-.kpi.info .kpi-val { color: #0F5C6B; }
+
+.panel.cell h4, .qa h4 {
+  font-family: Syne, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.45rem 0;
+  color: var(--text);
+}
+.panel.cell p, .panel.cell li, .qa p {
+  color: #D5D2CA;
+  line-height: 1.5;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.qa .q {
+  color: var(--yellow);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem 0;
+}
+.qa .a {
+  font-family: Syne, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.25;
+  margin: 0 0 0.45rem 0;
+}
+.qa .d { color: var(--muted); font-size: 0.88rem; line-height: 1.4; margin: 0; }
 
 .seg-hint {
-  font-size: 0.9rem;
-  color: #5A6670;
-  margin: 0.15rem 0 0.7rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0.15rem 0 0.55rem;
+  font-weight: 500;
 }
-
-.panel {
-  background: #fff;
-  border: 1px solid #E4E0D8;
-  border-radius: 14px;
-  padding: 1rem 1.15rem;
-  margin: 0.65rem 0 1rem;
-}
-.panel h4 {
-  font-family: Fraunces, Georgia, serif;
-  margin: 0 0 0.45rem 0;
-  color: #0B3D4A;
-  font-size: 1.05rem;
-}
-.panel p, .panel li { color: #2A3339; line-height: 1.45; }
-.muted { color: #66737C; font-size: 0.9rem; }
 
 .foot {
-  margin-top: 1.5rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid #E4E0D8;
-  color: #66737C;
-  font-size: 0.84rem;
-  line-height: 1.45;
+  margin-top: 1.75rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 div[data-testid="stMetricValue"] {
-  font-family: Fraunces, Georgia, serif;
-  font-size: 1.45rem;
-  color: #0B3D4A;
+  font-family: Syne, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  color: var(--yellow) !important;
+  font-size: 1.4rem !important;
+}
+div[data-testid="stMetricLabel"] { color: var(--muted) !important; }
+
+div[data-testid="stTabs"] [data-baseweb="tab-list"] {
+  gap: 0.35rem;
+  background: transparent;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.35rem;
+  flex-wrap: wrap;
 }
 div[data-testid="stTabs"] button {
-  font-weight: 600;
+  font-family: Syne, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  border-radius: 999px !important;
+  padding: 0.45rem 0.9rem !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  color: var(--muted) !important;
 }
+div[data-testid="stTabs"] button[aria-selected="true"] {
+  background: var(--yellow) !important;
+  color: #111 !important;
+  border-color: var(--yellow) !important;
+}
+
 div[data-testid="stRadio"] > label { display: none; }
 div[data-testid="stRadio"] [role="radiogroup"] {
-  gap: 0.5rem !important;
-  background: #fff;
-  border: 1px solid #E4E0D8;
-  border-radius: 999px;
-  padding: 0.35rem;
-  width: fit-content;
-  max-width: 100%;
+  gap: 0.55rem !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
 }
 div[data-testid="stRadio"] [role="radiogroup"] label {
-  border-radius: 999px !important;
-  padding: 0.35rem 0.95rem !important;
+  border-radius: var(--radius) !important;
+  padding: 0.95rem 1.1rem !important;
   margin: 0 !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  min-height: 64px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: Syne, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.02rem !important;
+  transition: border-color .15s ease, background .15s ease;
+}
+div[data-testid="stRadio"] [role="radiogroup"] label:hover {
+  border-color: #4A5560 !important;
+}
+div[data-testid="stRadio"] [role="radiogroup"] label[data-checked="true"],
+div[data-testid="stRadio"] [role="radiogroup"] label:has(input:checked) {
+  background: var(--yellow) !important;
+  color: #111 !important;
+  border-color: var(--yellow) !important;
+}
+
+[data-testid="stAlert"] {
+  border-radius: var(--radius) !important;
+  border: 1px solid var(--line) !important;
+}
+div[data-testid="stDataFrame"] {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ink: #F4F2EC;
+    --panel: #FFFFFF;
+    --panel-2: #FFFFFF;
+    --line: #E2DDD2;
+    --text: #14181C;
+    --muted: #5C6670;
+  }
+  .stApp {
+    background: var(--ink) !important;
+    background-image:
+      radial-gradient(ellipse 70% 45% at 0% 0%, rgba(245,196,0,0.18), transparent 50%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(77,232,194,0.12), transparent 45%) !important;
+  }
+  h1, h2, h3, .hero-title { color: var(--text) !important; }
+  .brand-tile { color: #111; }
+  div[data-testid="stMetricValue"] { color: #B8860B !important; }
 }
 </style>
 """,
@@ -207,14 +369,44 @@ def city_impact(extra: float) -> dict:
     }
 
 
-def kpi_card(value: str, label: str, kind: str = "") -> str:
-    cls = f"kpi {kind}".strip()
-    return f'<div class="{cls}"><div class="kpi-val">{value}</div><div class="kpi-lab">{label}</div></div>'
+def kpi_card(value: str, label: str, kind: str = "", span: str = "span-3") -> str:
+    cls = f"cell kpi {kind} {span}".strip()
+    return (
+        f'<div class="{cls}">'
+        f'<div class="kpi-val">{value}</div>'
+        f'<div class="kpi-lab">{label}</div>'
+        f"</div>"
+    )
 
 
 def kpi_row(items: list[tuple[str, str, str]]) -> None:
-    cards = "".join(kpi_card(v, lab, k) for v, lab, k in items)
-    st.markdown(f'<div class="kpi-grid">{cards}</div>', unsafe_allow_html=True)
+    """Bento KPI: 4 | 4 | 2 | 2 na 12 stupaca."""
+    spans = ["span-4", "span-4", "span-2", "span-2"]
+    cards = "".join(
+        kpi_card(v, lab, k, spans[i] if i < len(spans) else "span-3")
+        for i, (v, lab, k) in enumerate(items)
+    )
+    st.markdown(f'<div class="bento">{cards}</div>', unsafe_allow_html=True)
+
+
+def qa_bento(rows: list[tuple[str, str, str]]) -> None:
+    """(kicker, naslov, detalj) → bento pločice."""
+    cells = []
+    for i, (q, a, d) in enumerate(rows):
+        span = "span-6" if i < 2 else "span-4"
+        if len(rows) == 4 and i >= 2:
+            span = "span-6"
+        if len(rows) >= 6 and i >= 2:
+            span = "span-4"
+        cells.append(
+            f'<div class="cell qa {span}">'
+            f'<p class="q">{q}</p>'
+            f'<p class="a">{a}</p>'
+            f'<p class="d">{d}</p>'
+            f"</div>"
+        )
+    st.markdown(f'<div class="bento">{"".join(cells)}</div>', unsafe_allow_html=True)
+
 
 
 EMP = pd.DataFrame(
@@ -312,20 +504,26 @@ with st.sidebar:
 
 st.markdown(
     """
-<div class="hero">
-  <p class="hero-kicker">Istražimo · otvoreno na raspolaganje</p>
-  <h1 class="hero-title">ZET — javni podaci</h1>
-  <p class="hero-lead">
-    Dosje godišnjih serija iz izvješća i proračuna, uz zaseban odjeljak o štrajku
-    od 28.&nbsp;rujna&nbsp;2026. Brojevi su javni; tumačenje ostaje čitatelju.
-  </p>
+<div class="bento">
+  <div class="cell hero span-8">
+    <p class="kicker">Istražimo · otvoreno na raspolaganje</p>
+    <h1 class="hero-title">ZET — javni podaci</h1>
+    <p class="hero-lead">
+      Godišnje serije iz izvješća i proračuna, uz zaseban odjeljak o štrajku
+      od 28.&nbsp;rujna&nbsp;2026. Brojevi su javni; tumačenje ostaje vama.
+    </p>
+  </div>
+  <div class="cell brand-tile span-4">
+    <div class="big">Bez stava.<br/>Samo mjere<br/>koje se ne miješaju.</div>
+    <div class="small">Poslovna izvješća · Grad · DZS · GTFS</div>
+  </div>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
 st.markdown(
-    '<p class="seg-hint">Najprije odaberite što želite čitati.</p>',
+    '<p class="seg-hint">Odaberite odjeljak — tipke su velike namjerno.</p>',
     unsafe_allow_html=True,
 )
 
@@ -342,24 +540,26 @@ segment = st.radio(
 if segment == "Javni dosje":
     kpi_row(
         [
-            ("3.692", "Zaposleni na 30. lipnja 2025.", "info"),
+            ("3.692", "Zaposleni na 30. lipnja 2025.", "teal"),
             (f"+{labor_growth} %", "Trošak rada po zaposlenom, 2018.–2024.", ""),
             ("6,8 %", "Udio ZET-a u rashodima Grada (subvencija + kapital)", ""),
-            ("67 %", "Udio subvencija u prihodima ZET-a", "warn"),
+            ("67 %", "Udio subvencija u prihodima ZET-a", "coral"),
         ]
     )
 
     st.markdown(
         f"""
-<div class="panel">
-  <h4>Dvije serije plaća — ne miješati</h4>
-  <p>
-    Uprava navodi <strong>neto isplate s dodacima</strong> (vozač 1.992&nbsp;€, +63&nbsp;% od 2021.).
-    Poslovna izvješća mjere <strong>trošak rada po zaposlenom</strong>
-    (+{labor_growth}&nbsp;% od 2018.), što uključuje doprinose.
-    Sindikati gledaju rast <strong>osnovice</strong> i kupovnu moć.
-    Sve tri baže su legitimne; u ovom dosjeu ostaju odvojene.
-  </p>
+<div class="bento">
+  <div class="cell panel span-12">
+    <h4>Dvije serije plaća — ne miješati</h4>
+    <p>
+      Uprava navodi <strong>neto isplate s dodacima</strong> (vozač 1.992&nbsp;€, +63&nbsp;% od 2021.).
+      Poslovna izvješća mjere <strong>trošak rada po zaposlenom</strong>
+      (+{labor_growth}&nbsp;% od 2018.), što uključuje doprinose.
+      Sindikati gledaju rast <strong>osnovice</strong> i kupovnu moć.
+      Sve tri baže su legitimne; u ovom dosjeu ostaju odvojene.
+    </p>
+  </div>
 </div>
 """,
         unsafe_allow_html=True,
@@ -391,75 +591,58 @@ if segment == "Javni dosje":
 
     with t_pregled:
         st.subheader("Što brojevi kažu na jednoj stranici")
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {
-                        "Pitanje": "Kolika je plaća vozača (uprava)?",
-                        "Odgovor": (
-                            "1.992 € neto s dodacima (srpanj 2026.), +63 % naspram srpnja 2021. "
-                            "Prosjek ZET-a 1.931 €; prosjek RH (DZS) 1.449 €."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Raste li broj zaposlenih?",
-                        "Odgovor": (
-                            "Ne. Vrhunac 3.956 (2019.) → 3.692 (lipanj 2025.). "
-                            "Manje ljudi, starija dobna struktura."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Raste li trošak rada (izvješća)?",
-                        "Odgovor": (
-                            f"Da. Po zaposlenom +{labor_growth} % od 2018., "
-                            f"+{labor_growth_2y} % od 2022. — druga serija od neto plaća."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Tko zapravo plaća prijevoz?",
-                        "Odgovor": (
-                            "Subvencije čine oko 67 % prihoda ZET-a, karte oko 18 %. "
-                            "Rast plaća zato se prevaljuje na Grad."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Koliki je udio u gradu?",
-                        "Odgovor": (
-                            "Izravno oko 6,8 % rashoda; oko 65 % svih subvencija; "
-                            "oko 218 € po stanovniku (iznad EMTA-prosjeka 188 €, ispod nordijskih gradova)."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Šire li se linije i pruge?",
-                        "Odgovor": (
-                            "Nove tramvajske linije i pruge: ne. "
-                            "Autobusne dnevne: 149 → 135. GTFS stajališta blago padaju."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Modernizira li se flota?",
-                        "Odgovor": (
-                            "Da — TMK 2400, električni autobusi, rabljena vozila. "
-                            "Ukupan broj vozila ipak blago pada."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Kolika su kašnjenja?",
-                        "Odgovor": (
-                            "Javnog pokazatelja u minutama nema. "
-                            "U štrajku usluga iznosi nula; RT-prijenos trenutačno nije uporabiv."
-                        ),
-                    },
-                ]
-            ),
-            hide_index=True,
-            use_container_width=True,
+        qa_bento(
+            [
+                (
+                    "Plaća",
+                    "1.992 € neto s dodacima",
+                    "Srpanj 2026., +63 % naspram 2021. Prosjek ZET 1.931 € · DZS RH 1.449 €.",
+                ),
+                (
+                    "Zaposleni",
+                    "Manje ljudi nego 2019.",
+                    "Vrhunac 3.956 → 3.692 (lipanj 2025.). Starija dobna struktura.",
+                ),
+                (
+                    "Trošak rada",
+                    f"+{labor_growth} % po zaposlenom",
+                    f"Od 2018.; +{labor_growth_2y} % od 2022. — druga serija od neto plaća.",
+                ),
+                (
+                    "Tko plaća",
+                    "Subvencije ~67 %, karte ~18 %",
+                    "Rast plaća prevaljuje se na Grad.",
+                ),
+                (
+                    "Udio u gradu",
+                    "6,8 % rashoda · ~218 €/stan.",
+                    "Iznad EMTA-prosjeka (188 €), ispod nordijskih gradova.",
+                ),
+                (
+                    "Mreža",
+                    "Novih tramvajskih pruga: 0",
+                    "Bus dnevne 149→135. GTFS stajališta blago padaju.",
+                ),
+                (
+                    "Flota",
+                    "Modernizacija da, broj pada",
+                    "TMK 2400, e-bus, rabljeni. Ukupno vozila blago pada.",
+                ),
+                (
+                    "Kašnjenja",
+                    "Javnog KPI-ja nema",
+                    "U štrajku usluga = 0. RT-prijenos nije uporabiv.",
+                ),
+            ]
         )
-        a, b, c, d = st.columns(4)
-        a.metric("Putnici 2024.", "179 mil.")
-        b.metric("Prihodi 2024.", "215 mil. €")
-        c.metric("Zaposleni, VI/2025.", "3.692")
-        d.metric("Subvencija Grada 2025.", "154,5 mil. €")
+        kpi_row(
+            [
+                ("179 mil.", "Putnici 2024.", "accent"),
+                ("215 mil. €", "Prihodi 2024.", "teal"),
+                ("3.692", "Zaposleni, VI/2025.", ""),
+                ("154,5 mil.", "Subvencija Grada 2025.", "coral"),
+            ]
+        )
         st.caption("Pitanja o pregovorima i paketu od 32,4 mil. € → odjeljak „Uz štrajk“.")
 
     with t_place:
@@ -469,7 +652,7 @@ if segment == "Javni dosje":
             "ne osnovicu ugovora i ne trošak rada iz godišnjih izvješća."
         )
         st.dataframe(WAGES, hide_index=True, use_container_width=True)
-        st.bar_chart(WAGES.set_index("Kategorija")["Neto €"], color="#0B3D4A")
+        st.bar_chart(WAGES.set_index("Kategorija")["Neto €"], color="#F5C400")
         x, y = st.columns(2)
         x.metric("Već isplaćeno — V/2025.", "+15,6 % osnovice")
         y.metric("Već isplaćeno — I/2026.", "+4,4 % osnovice")
@@ -492,11 +675,11 @@ if segment == "Javni dosje":
             "Na dan 30. lipnja 2025. stoji **3.692** — pad od 6,7 % s vrhunca. "
             "Oko 36 % zaposlenih starije je od 55 godina."
         )
-        st.line_chart(EMP.set_index("Godina")["Zaposleni"], color="#0B3D4A")
+        st.line_chart(EMP.set_index("Godina")["Zaposleni"], color="#F5C400")
         st.caption("Izvor: Poslovna izvješća ZET, 2018.–2024. i I.–VI. 2025.")
         st.subheader("Trošak rada po zaposlenom")
         st.dataframe(LABOR, hide_index=True, use_container_width=True)
-        st.line_chart(LABOR.set_index("Godina")["€ / zap."], color="#9A3412")
+        st.line_chart(LABOR.set_index("Godina")["€ / zap."], color="#FF6B4A")
         e, f, g, h = st.columns(4)
         e.metric("Udio 55+", "36,7 %")
         f.metric("Prosječna dob", "48,3 god.")
@@ -559,7 +742,7 @@ if segment == "Javni dosje":
                     {"Godina": "2024", "Putnici": 179.1},
                 ]
             ).set_index("Godina"),
-            color="#0B3D4A",
+            color="#F5C400",
         )
 
     with t_grad:
@@ -596,7 +779,7 @@ if segment == "Javni dosje":
                 {"Grad": "EMTA prosjek", "€/stan.": 188},
             ]
         )
-        st.bar_chart(bench.set_index("Grad")["€/stan."], color="#0F5C6B")
+        st.bar_chart(bench.set_index("Grad")["€/stan."], color="#4DE8C2")
         st.caption(
             "Zagreb: izvršenje 2024. Ostali: EMTA/EIT Urban Mobility 2019. "
             "Usporedbu valja čitati kao orijentaciju, ne kao strogu rang-listu."
@@ -646,7 +829,7 @@ if segment == "Javni dosje":
     with t_flota:
         st.subheader("Flota")
         st.dataframe(FLEET, hide_index=True, use_container_width=True)
-        st.line_chart(FLEET.set_index("Godina")["Ukupno"], color="#0B3D4A")
+        st.line_chart(FLEET.set_index("Godina")["Ukupno"], color="#F5C400")
         st.dataframe(
             pd.DataFrame(
                 [
@@ -683,14 +866,14 @@ if segment == "Javni dosje":
         )
         st.markdown(
             """
-<div class="panel">
+<div class="bento"><div class="cell panel span-12">
   <h4>Što bi Gradovi mogli pratiti dalje</h4>
   <ol>
     <li><strong>Dosje štrajka</strong> — serije iz PDF-ova, Radar isplata ZET-u, dani bez usluge.</li>
     <li><strong>Razlika mreže</strong> — automatska usporedba GTFS arhive (linije, stajališta, razmaci) po kvartalu.</li>
     <li><strong>RT kad se vrati</strong> — snimanje GTFS-RT i prvi javni pregled kašnjenja za Zagreb.</li>
   </ol>
-</div>
+</div></div>
 """,
             unsafe_allow_html=True,
         )
@@ -744,12 +927,14 @@ if segment == "Javni dosje":
 else:
     st.markdown(
         """
-<div class="panel">
-  <h4>Dodatni odjeljak — u kontekstu štrajka</h4>
-  <p>
-    Ovdje su tvrdnje stranaka o pregovorima i fiskalni scenariji A–D.
-    Godišnje serije (zaposleni, mreža, flota…) ostaju u „Javnom dosjeu“.
-  </p>
+<div class="bento">
+  <div class="cell panel span-12">
+    <h4>Dodatni odjeljak — u kontekstu štrajka</h4>
+    <p>
+      Ovdje su tvrdnje stranaka o pregovorima i fiskalni scenariji A–D.
+      Godišnje serije (zaposleni, mreža, flota…) ostaju u „Javnom dosjeu“.
+    </p>
+  </div>
 </div>
 """,
         unsafe_allow_html=True,
@@ -757,9 +942,9 @@ else:
 
     kpi_row(
         [
-            ("1.992 €", "Vozač ZET — neto s dodacima (VII/2026.)", "info"),
-            ("+63 %", "Vozač naspram VII/2021. (uprava)", ""),
-            (mil(PAKET_ZET).replace(" mil. €", ""), "Sindikalni paket ZET, mil. € / god. (uprava)", "warn"),
+            ("1.992 €", "Vozač ZET — neto s dodacima (VII/2026.)", "teal"),
+            ("+63 %", "Vozač naspram VII/2021. (uprava)", "accent"),
+            (mil(PAKET_ZET).replace(" mil. €", ""), "Sindikalni paket ZET, mil. € / god. (uprava)", "coral"),
             ("6,8 %", "Udio ZET-a u rashodima Grada", ""),
         ]
     )
@@ -768,49 +953,36 @@ else:
 
     with t_preg:
         st.subheader("Što kažu javni i priopćeni brojevi")
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {
-                        "Pitanje": "Koliko stoji dogovor?",
-                        "Odgovor": (
-                            "A ponuda ~5,3 · B sredina ~9,4 · C samo +13 % ~15,2 · "
-                            "D puni paket 32,4 mil. € godišnje (ZET). Holding više od 34. "
-                            "Zbroj punih paketa premašuje 66 mil. €."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Je li 13 % isto što Gradovih „oko 14 %“?",
-                        "Odgovor": (
-                            "Nije. Sindikat traži novo povećanje osnovice. "
-                            "Grad zbraja već dano, ponudu i buduću indeksaciju."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Što nudi Grad?",
-                        "Odgovor": (
-                            "+4,5 % uz usklađenje, otprilike +14 % kumulativno; "
-                            "već +15,6 % (V/2025.) i +4,4 % (I/2026.)."
-                        ),
-                    },
-                    {
-                        "Pitanje": "Što ako prođe 32,4 mil. €?",
-                        "Odgovor": (
-                            "Ako se sve prevali na subvenciju, udio ZET-a izravno "
-                            "penje se prema otprilike 8 % rashoda Grada (baza 2025.)."
-                        ),
-                    },
-                ]
-            ),
-            hide_index=True,
-            use_container_width=True,
+        qa_bento(
+            [
+                (
+                    "Trošak dogovora",
+                    "A 5,3 · B 9,4 · C 15,2 · D 32,4",
+                    "Mil. € / god. samo ZET. Holding >34. Zbroj punih paketa premašuje 66.",
+                ),
+                (
+                    "13 % ≠ 14 %",
+                    "Novo povećanje ≠ kumulativ",
+                    "Sindikat: novo na osnovicu. Grad: već dano + ponuda + indeksacija.",
+                ),
+                (
+                    "Ponuda Grada",
+                    "+4,5 % ≈ +14 % kum.",
+                    "Već +15,6 % (V/2025.) i +4,4 % (I/2026.).",
+                ),
+                (
+                    "Ako prođe 32,4 mil.",
+                    "Udio ZET-a ≈ 8 % rashoda",
+                    "Na bazi 2025., ako se sve prevali na subvenciju.",
+                ),
+            ]
         )
 
         left, right = st.columns(2)
         with left:
             st.markdown(
                 """
-<div class="panel">
+<div class="bento"><div class="cell panel span-12">
   <h4>Sindikati</h4>
   <ul>
     <li>ZET: <strong>+13 %</strong> osnovice (spušteno s 15 %)</li>
@@ -818,21 +990,21 @@ else:
     <li>Dodatak za vjernost, puni prijevoz, indeksacija, KU na 2–3 godine</li>
     <li>Podrška štrajku: oko 78 % u ZET-u / 74 % u Holdingu</li>
   </ul>
-</div>
+</div></div>
 """,
                 unsafe_allow_html=True,
             )
         with right:
             st.markdown(
                 """
-<div class="panel">
+<div class="bento"><div class="cell panel span-12">
   <h4>Grad / uprava</h4>
   <ul>
     <li>Ponuda: <strong>+4,5 %</strong> od 1. rujna 2026. + indeksacija ≈ kumulativno ~14 %</li>
     <li>Već dano: +15,6 % (V/2025.) i +4,4 % (I/2026.)</li>
     <li>„Oko 14 %“ nije isto što novo +13 % na osnovicu</li>
   </ul>
-</div>
+</div></div>
 """,
                 unsafe_allow_html=True,
             )
@@ -976,7 +1148,7 @@ else:
 
 st.markdown(
     """
-<div class="foot">
+<div class="foot" role="contentinfo">
   Metodologija: Poslovna izvješća ZET; kratki vodiči izvršenja proračuna Grada;
   priopćenja uprava (neto plaće VII/2026., scenarij 32,4 mil. €); DZS; EMTA/EIT (2019.); GTFS.
   Tečaj 7,5345 kn/€. Proxy plaće ≠ neto isplata ≠ osnovica kolektivnog ugovora.
