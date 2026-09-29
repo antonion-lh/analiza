@@ -315,23 +315,23 @@ def render_owner_analytics() -> None:
         if s["places"].empty:
             st.write("Još nema događaja.")
         else:
-            st.dataframe(s["places"], hide_index=True, use_container_width=True)
+            st.dataframe(s["places"], hide_index=True, width="stretch")
             st.bar_chart(s["places"].set_index("mjesto")["pregleda"], color=ACCENT)
     with right:
         st.markdown("##### Sesije po danu")
         if s["days"].empty:
             st.write("Još nema sesija.")
         else:
-            st.dataframe(s["days"], hide_index=True, use_container_width=True)
+            st.dataframe(s["days"], hide_index=True, width="stretch")
             st.bar_chart(s["days"].set_index("dan")["sesije"], color="#00B8E1")
 
     st.markdown("##### Vremenske zone")
     if not s["tz"].empty:
-        st.dataframe(s["tz"], hide_index=True, use_container_width=True)
+        st.dataframe(s["tz"], hide_index=True, width="stretch")
 
     st.markdown("##### Zadnje sesije")
     if not s["recent"].empty:
-        st.dataframe(s["recent"], hide_index=True, use_container_width=True)
+        st.dataframe(s["recent"], hide_index=True, width="stretch")
 
     if st.button("Zatvori analitiku", key="analytics_lock_btn"):
         st.session_state.analytics_owner = False

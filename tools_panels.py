@@ -39,6 +39,13 @@ def pct(x: float) -> str:
     return f"{x:.2f} %".replace(".", ",")
 
 
+def num_hr(x: float, decimals: int = 1) -> str:
+    """Broj s hrvatskim decimalnim zarezom (bez jedinice)."""
+    if decimals <= 0:
+        return f"{x:,.0f}".replace(",", ".")
+    return f"{x:,.{decimals}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
 def _init_db() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(DB_PATH) as con:
@@ -59,12 +66,12 @@ def render_simulator() -> None:
     st.write(
         "Pomaknite postotak i uključite stavke. "
         f"Računamo **grubom procjenom**: postotak puta trošak rada "
-        f"({TROSAK_RADA_2024} mil. € u 2024.). To **nije** službeni iznos Grada. "
-        f"Dodaci (~{ADDONS_EST_M} mil. €) = ostatak paketa uprave ({PAKET_ZET}) "
+        f"({mil(TROSAK_RADA_2024)} u 2024.). To **nije** službeni iznos Grada. "
+        f"Dodaci (~{mil(ADDONS_EST_M)}) = ostatak paketa uprave ({mil(PAKET_ZET)}) "
         "nakon same osnovice +13 %."
     )
     st.caption(
-        f"Procjena „ponude“ (~{GRAD_OFFER_M} mil. €) = 4,5 % × {TROSAK_RADA_2024}. "
+        f"Procjena „ponude“ (~{mil(GRAD_OFFER_M)}) = 4,5 % × {num_hr(TROSAK_RADA_2024)}. "
         "Povećanje osnovice za 4,5 % ne mora točno biti 4,5 % cijelog troška rada."
     )
 
@@ -77,7 +84,7 @@ def render_simulator() -> None:
         key="sim_pct",
     )
     include_addons = st.toggle(
-        f"Uključi i ostale zahtjeve (dodaci, prijevoz, vjernost… ≈ {ADDONS_EST_M} mil. €)",
+        f"Uključi i ostale zahtjeve (dodaci, prijevoz, vjernost… ≈ {mil(ADDONS_EST_M)})",
         value=False,
         key="sim_addons",
     )
@@ -121,18 +128,14 @@ def render_simulator() -> None:
     st.markdown("##### Gdje stoji ZET: Grad ↔ sindikat")
     st.progress(pos)
     s1, s2, s3 = st.columns(3)
-    s1.caption(f"Procjena ponude (+4,5 %) ≈ {GRAD_OFFER_M} mil. €")
-    s2.caption(
-        "Ova računica ≈ "
-        + f"{zet_total:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        + " mil. €"
-    )
-    s3.caption(f"Paket uprave ≈ {PAKET_ZET} mil. €")
+    s1.caption(f"Procjena ponude (+4,5 %) ≈ {mil(GRAD_OFFER_M)}")
+    s2.caption(f"Ova računica ≈ {mil(zet_total)}")
+    s3.caption(f"Paket uprave ≈ {mil(PAKET_ZET)}")
 
     st.info(
-        f"Orijentiri: +13 % na trošak rada ≈ {UNION_BASE_ONLY_M} mil. €; "
-        f"cijeli paket ZET (uprava) {PAKET_ZET} mil. €; Holding (uprava) više od "
-        f"{PAKET_HOLDING} mil. €."
+        f"Orijentiri: +13 % na trošak rada ≈ {mil(UNION_BASE_ONLY_M)}; "
+        f"cijeli paket ZET (uprava) {mil(PAKET_ZET)}; Holding (uprava) više od "
+        f"{mil(PAKET_HOLDING)}."
     )
 
 
@@ -179,11 +182,11 @@ def render_myths() -> None:
 
     with st.expander("„Zahtjev sindikata košta samo 15 milijuna.“"):
         st.write(
-            f"**Uprava** u mirenju (pregovori uz posrednika): cijeli paket **{PAKET_ZET} mil. €** godišnje "
+            f"**Uprava** u mirenju (pregovori uz posrednika): cijeli paket **{mil(PAKET_ZET)}** godišnje "
             f"(osnovica, dodaci, usklađivanje s cijenama i ostalo; 23,8 % ukupne mase plaća). "
-            f"**Gruba procjena same osnovice:** +13 % na trošak rada ≈ **{UNION_BASE_ONLY_M} mil. €** — "
+            f"**Gruba procjena same osnovice:** +13 % na trošak rada ≈ **{mil(UNION_BASE_ONLY_M)}** — "
             "brojka koju sindikati često ističu kao neposredni trošak. "
-            f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa."
+            f"Razlika (oko {mil(ADDONS_EST_M)}) ostaje u ostatku paketa."
         )
         bars(
             ["Procjena +13 % osnovice", "Paket (uprava)"],
@@ -199,10 +202,10 @@ def render_myths() -> None:
 def render_sankey() -> None:
     st.subheader("Tok novca: od proračuna do ZET-a")
     st.write(
-        "Prvo vidi **gdje ide novac** (čitljivo na mobitelu). "
-        f"Operativna subvencija ZET-u: {154.5} mil. € "
-        f"(oko {100 * 154.5 / ALL_SUBS_2025:.0f} % od {ALL_SUBS_2025} mil. € svih subvencija). "
-        f"Sa kapitalom: {ZET_DIREKTNO_2025} mil. € "
+        "Prvo pogledajte **gdje ide novac** (čitljivo i na mobitelu). "
+        f"Operativna subvencija ZET-u: {mil(154.5)} "
+        f"(oko {100 * 154.5 / ALL_SUBS_2025:.0f} % od {mil(ALL_SUBS_2025)} svih subvencija). "
+        f"Sa kapitalom: {mil(ZET_DIREKTNO_2025)} "
         f"(oko {100 * ZET_DIREKTNO_2025 / ALL_SUBS_2025:.0f} %)."
     )
 
@@ -212,7 +215,7 @@ def render_sankey() -> None:
     bars(
         ["ZET (subvencija + kapital)", "Ostale gradske subvencije"],
         [ZET_DIREKTNO_2025, ostale_sub],
-        title=f"Od {ALL_SUBS_2025:g} mil. € svih subvencija Grada",
+        title=f"Od {num_hr(ALL_SUBS_2025)} mil. € svih subvencija Grada",
         color=ACCENT,
         unit=" mil. €",
         decimals=1,
@@ -225,7 +228,7 @@ def render_sankey() -> None:
             "Ostalo u ZET-u (sub+kap)",
         ],
         [TROSAK_RADA_2024, FREE_TRANSPORT_M, round(operativa, 1)],
-        title=f"Kako se raspoređuje {ZET_DIREKTNO_2025:g} mil. € za ZET",
+        title=f"Kako se raspoređuje {num_hr(ZET_DIREKTNO_2025)} mil. € za ZET",
         color="#003F99",
         unit=" mil. €",
         decimals=1,
@@ -288,10 +291,10 @@ def render_sankey() -> None:
             plot_bgcolor="rgba(0,0,0,0)",
             autosize=True,
         )
-        st.plotly_chart(fig, use_container_width=True, config=CFG)
+        st.plotly_chart(fig, width="stretch", config=CFG)
 
     st.caption(
-        f"Rashodi Grada 2025. ukupno: {RASHODI_GRADA_2025:g} mil. € — "
+        f"Rashodi Grada 2025. ukupno: {mil(RASHODI_GRADA_2025)} — "
         f"subvencije su oko {100 * ALL_SUBS_2025 / RASHODI_GRADA_2025:.0f} % toga. "
         "„Ostalo u ZET-u“ = ostatak nakon troška rada i besplatnog prijevoza."
     )
@@ -308,34 +311,41 @@ def render_pulse() -> None:
     if "pulse_voted" not in st.session_state:
         st.session_state.pulse_voted = False
 
-    q1 = st.radio(
-        "Koji ishod smatrate najpravednijim?",
-        [
-            "Ponuda +4,5 % (grubo ≈ 5,3 mil. € na trošak rada)",
-            "Kompromis (grubo ≈ 9–15 mil. €)",
-            "Cijeli paket uprave (32,4 mil. € — brojka iz mirenja)",
-        ],
-        index=None,
-        key="pulse_q1",
-    )
-    q2 = st.radio(
-        "Biste li pristali da jeftinija 30-minutna karta (0,53 € na kiosku) "
-        "košta koliko i kod vozača (0,80 €), ako bi to pomoglo plaćama vozača?",
-        ["Da", "Ne", "Ne znam / ovisi"],
-        index=None,
-        key="pulse_q2",
-    )
+    q1_opts = [
+        ("Ponuda +4,5 %", "Ponuda +4,5 % (grubo ≈ 5,3 mil. € na trošak rada)"),
+        ("Kompromis", "Kompromis (grubo ≈ 9–15 mil. €)"),
+        ("Cijeli paket", "Cijeli paket uprave (32,4 mil. € — brojka iz mirenja)"),
+    ]
+    q1_labels = [o[1] for o in q1_opts]
+    q1_short = {o[1]: o[0] for o in q1_opts}
 
-    if st.button("Pošalji glas", type="primary", disabled=st.session_state.pulse_voted):
-        if not q1 or not q2:
-            st.warning("Odgovorite na oba pitanja.")
-        else:
-            with sqlite3.connect(DB_PATH) as con:
-                con.execute("INSERT INTO pulse (q1, q2) VALUES (?, ?)", (q1, q2))
-            st.session_state.pulse_voted = True
+    if not st.session_state.pulse_voted:
+        q1 = st.radio(
+            "Koji ishod smatrate najpravednijim?",
+            q1_labels,
+            index=None,
+            key="pulse_q1",
+        )
+        q2 = st.radio(
+            "Biste li pristali da jeftinija 30-minutna karta (0,53 € na kiosku) "
+            "košta koliko i kod vozača (0,80 €), ako bi to pomoglo plaćama vozača?",
+            ["Da", "Ne", "Ne znam / ovisi"],
+            index=None,
+            key="pulse_q2",
+        )
+
+        if st.button("Pošalji glas", type="primary"):
+            if not q1 or not q2:
+                st.warning("Odgovorite na oba pitanja.")
+            else:
+                with sqlite3.connect(DB_PATH) as con:
+                    con.execute("INSERT INTO pulse (q1, q2) VALUES (?, ?)", (q1, q2))
+                st.session_state.pulse_voted = True
+                st.session_state.pulse_just_voted = True
+                st.rerun()
+    else:
+        if st.session_state.pop("pulse_just_voted", False):
             st.success("Hvala. Glas je zabilježen.")
-
-    if st.session_state.pulse_voted:
         st.caption("U ovoj sesiji ste već glasali.")
 
     with sqlite3.connect(DB_PATH) as con:
@@ -354,30 +364,32 @@ def render_pulse() -> None:
         st.info("Još nema glasova.")
         return
 
-    left, right = st.columns(2)
-    with left:
-        st.markdown("##### Ishod")
-        for _, r in df1.iterrows():
-            st.markdown(
-                f"- **{r['odgovor']}** — {int(r['n'])} "
-                f"({100 * r['n'] / n:.0f} %)"
-            )
-        bars(
-            df1["odgovor"].tolist(),
-            df1["n"].tolist(),
-            color=ACCENT,
-            horizontal=True,
+    if not df1.empty:
+        df1 = df1.copy()
+        df1["kratko"] = df1["odgovor"].map(lambda x: q1_short.get(x, str(x)[:28]))
+
+    st.markdown("##### Ishod")
+    for _, r in df1.iterrows():
+        st.markdown(
+            f"- **{r['kratko']}** — {int(r['n'])} "
+            f"({100 * r['n'] / n:.0f} %)"
         )
-    with right:
-        st.markdown("##### Cijena karte 0,53 → 0,80?")
-        for _, r in df2.iterrows():
-            st.markdown(
-                f"- **{r['odgovor']}** — {int(r['n'])} "
-                f"({100 * r['n'] / n:.0f} %)"
-            )
-        bars(
-            df2["odgovor"].tolist(),
-            df2["n"].tolist(),
-            color="#00B8E1",
-            horizontal=True,
+    bars(
+        df1["kratko"].tolist(),
+        df1["n"].tolist(),
+        color=ACCENT,
+        horizontal=True,
+    )
+
+    st.markdown("##### Cijena karte 0,53 → 0,80?")
+    for _, r in df2.iterrows():
+        st.markdown(
+            f"- **{r['odgovor']}** — {int(r['n'])} "
+            f"({100 * r['n'] / n:.0f} %)"
         )
+    bars(
+        df2["odgovor"].tolist(),
+        df2["n"].tolist(),
+        color="#00B8E1",
+        horizontal=True,
+    )

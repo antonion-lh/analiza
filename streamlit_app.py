@@ -1157,12 +1157,11 @@ if segment == "Javni dosje":
                 "Helsinki",
                 "Berlin",
                 "Prag",
-                "Zagreb (sub+kap)",
+                "Zagreb",
                 "Madrid",
                 "EMTA prosjek",
             ],
             [373, 273, 262, 258, 251, 218, 209, 188],
-            title="Subvencija po stanovniku (€)",
             color=CHART_2,
             unit=" €",
             horizontal=True,
@@ -1420,7 +1419,7 @@ elif segment == "Uz štrajk":
             f"(**23,8 %** njihove „mase plaća“) — osnovica, dodaci, usklađivanje s cijenama i ostalo. "
             f"**Gruba procjena same osnovice:** +13 % × trošak rada {mil(TROSAK_RADA_2024)} ≈ "
             f"**{mil(scenario_cost(13))}** — brojka koju sindikati često ističu. "
-            f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
+            f"Razlika (oko {mil(ADDONS_EST_M)}) ostaje u ostatku paketa. "
             f"Holding (uprava): više od {mil(PAKET_HOLDING)}."
         )
         st.caption(
@@ -1448,13 +1447,13 @@ elif segment == "Uz štrajk":
                     "Gruba procjena neposrednog troška osnovice — sindikati često ističu ovu razinu",
                 ),
                 (
-                    f"Procjena: +13 % na izvedenu masu ~{MASA_IMPLIED:.0f}",
+                    f"Procjena: +13 % na izvedenu masu ~{int(round(MASA_IMPLIED))}",
                     mil(MASA_IMPLIED * 0.13),
                     "Ako je 32,4 = 23,8 % mase koju koristi uprava",
                 ),
                 (
                     "Razlika: paket minus procjena na 117,1",
-                    f"oko {ADDONS_EST_M} mil. €",
+                    mil(ADDONS_EST_M).replace(" mil. €", "") + " mil. €",
                     "Dodaci, usklađivanje s cijenama, prijevoz, vjernost… — bez javne stavke",
                 ),
             ]

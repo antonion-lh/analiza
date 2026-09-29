@@ -92,6 +92,7 @@ def bars(
                         tickfont=dict(size=11, color=MUTED),
                         title=None,
                         fixedrange=True,
+                        range=[0, (max(vals) if vals else 1) * 1.28],
                     ),
                     yaxis=dict(
                         showgrid=False,
@@ -100,7 +101,7 @@ def bars(
                         fixedrange=True,
                         automargin=True,
                     ),
-                    margin=dict(l=4, r=72, t=36 if title else 12, b=8),
+                    margin=dict(l=4, r=56, t=36 if title else 12, b=8),
                 ),
             )
         )
@@ -143,7 +144,7 @@ def bars(
             )
         )
 
-    st.plotly_chart(fig, use_container_width=True, config=CFG)
+    st.plotly_chart(fig, width="stretch", config=CFG)
 
 
 def bars_from_series(
@@ -234,7 +235,7 @@ def trend(
             ),
         )
     )
-    st.plotly_chart(fig, use_container_width=True, config=CFG)
+    st.plotly_chart(fig, width="stretch", config=CFG)
 
 
 def trend_multi(
@@ -292,4 +293,4 @@ def trend_multi(
             ),
         )
     )
-    st.plotly_chart(fig, use_container_width=True, config=CFG)
+    st.plotly_chart(fig, width="stretch", config=CFG)
