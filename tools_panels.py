@@ -137,8 +137,7 @@ def render_simulator() -> None:
 def render_myths() -> None:
     st.subheader("Često čujemo — što kažu brojevi")
     st.write(
-        "Tri tvrdnje koje kruže u javnosti, uz podatke iz priopćenja i izvješća. "
-        "Nije preporuka tko treba popustiti."
+        "Tri tvrdnje koje kruže u javnosti, uz podatke iz priopćenja i izvješća."
     )
 
     with st.expander("„Grad nudi 14 %, sindikati 13 % — zašto se ne dogovore?“"):
@@ -182,8 +181,7 @@ def render_myths() -> None:
             f"(osnovica, dodaci, usklađivanje s cijenama i ostalo; 23,8 % ukupne mase plaća). "
             f"**Gruba procjena same osnovice:** +13 % na trošak rada ≈ **{UNION_BASE_ONLY_M} mil. €** — "
             "brojka koju sindikati često ističu kao neposredni trošak. "
-            f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
-            "Ovdje se samo vidi odakle dolazi jaz — ne tko je u pravu."
+            f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa."
         )
         st.bar_chart(
             pd.DataFrame(

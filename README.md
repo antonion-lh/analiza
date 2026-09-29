@@ -2,7 +2,7 @@
 
 Javni podaci i analitika — [istrazimo.streamlit.app](https://istrazimo.streamlit.app/)
 
-Trenutno: **ZET — javni podaci** (plaće, zaposleni, novac, udio u gradu, mreža, flota) + zaseban segment uz štrajk (pregovori, scenariji A–D). Bez stava.
+Trenutno: **ZET — javni podaci** (plaće, zaposleni, novac, udio u gradu, mreža, flota) + zaseban segment uz štrajk (pregovori, scenariji A–D).
 
 ```bash
 uv sync

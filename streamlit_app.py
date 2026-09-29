@@ -3,8 +3,6 @@ ZET — javni podaci (istrazimo.streamlit.app)
 
 1) Javni dosje
 2) Uz štrajk — pregovori i scenariji A–D
-
-Bez stava. Otvoreno na raspolaganje.
 """
 
 from __future__ import annotations
@@ -722,18 +720,14 @@ FLEET = pd.DataFrame(
 html(
     f"""
 <div class="bento">
-  <div class="tile hero s8">
+  <div class="tile hero s12">
     <div class="wordmark">Istražimo</div>
     <h1>ZET — javni brojevi, na jednom mjestu</h1>
     <p class="lead">
       Godišnje serije iz izvješća i proračuna, plus odjeljak o štrajku
-      (od 28.&nbsp;rujna&nbsp;2026.). Podaci su javni — stanje na {datum_hr()}.
-      Zaključke donosite sami.
+      (od 28.&nbsp;rujna&nbsp;2026.). Stanje na {datum_hr()}.
+      Izvori: izvješća ZET · Grad · DZS · javni vozni red.
     </p>
-  </div>
-  <div class="tile brand s4">
-    <div class="big">Nismo ni za jednu<br/>stranu. Tri vrste<br/>brojeva držimo odvojeno.</div>
-    <div class="small">Izvješća ZET · Grad · DZS · javni vozni red</div>
   </div>
 </div>
 """
@@ -788,13 +782,12 @@ if segment == "Javni dosje":
             f"""
 <div class="bento">
   <div class="tile note s12">
-    <h4>Tri broja za plaću — ne zbrajajte ih</h4>
+    <h4>Što znače brojke za plaću</h4>
     <p>
       <strong>Isplata na račun</strong> = što stigne s dodacima (uprava: vozač 1.992&nbsp;€, +63&nbsp;% od 2021.).
       <strong>Trošak rada po zaposlenom</strong> = plaće + doprinosi iz izvješća
       (+{labor_growth}&nbsp;% od 2018.).
       <strong>Osnovica plaće</strong> = ugovorna baza za pregovore (kolektivni ugovor).
-      Tri različite mjere; ovdje ih držimo odvojeno.
     </p>
   </div>
 </div>
@@ -1126,21 +1119,7 @@ if segment == "Javni dosje":
     elif page == "Što nedostaje":
         st.subheader("Što još nije javno")
         st.write(
-            "Nije sud o tome tko je u pravu. Samo popis onoga što **nedostaje** "
-            "za čvršći zaključak — s obje strane."
-        )
-        html(
-            """
-<div class="bento">
-  <div class="tile note s12">
-    <h4>Gdje brojevi ne dopuštaju čvrst sud</h4>
-    <p>
-      Odvajamo mjere koje se ne smiju miješati i kažemo što nije objavljeno.
-      Rupe u podacima važne su koliko i sami brojevi.
-    </p>
-  </div>
-</div>
-"""
+            "Popis onoga što **nije javno objavljeno**, a bilo bi potrebno za čvršću usporedbu."
         )
         fact_list(
             [
@@ -1303,8 +1282,7 @@ elif segment == "Uz štrajk":
             f"**Gruba procjena same osnovice:** +13 % × trošak rada {mil(TROSAK_RADA_2024)} ≈ "
             f"**{mil(scenario_cost(13))}** — brojka koju sindikati često ističu. "
             f"Razlika (oko {ADDONS_EST_M} mil. €) ostaje u ostatku paketa. "
-            f"Holding (uprava): više od {mil(PAKET_HOLDING)}. "
-            "Ovdje se ne bira strana — samo se vidi jaz."
+            f"Holding (uprava): više od {mil(PAKET_HOLDING)}."
         )
 
         st.subheader("Odakle 32,4 milijuna (nije službena razrada)")
@@ -1336,8 +1314,7 @@ elif segment == "Uz štrajk":
             ]
         )
         st.caption(
-            "Uprava kaže 32,4. Sindikati odgovaraju da je neposredni trošak osnovice bliži ~15. "
-            "Brojevi pokazuju jaz."
+            "Uprava kaže 32,4. Sindikati odgovaraju da je neposredni trošak osnovice bliži ~15."
         )
 
         st.subheader("ZET i Holding — paralelni štrajk")
@@ -1427,8 +1404,7 @@ elif segment == "Uz štrajk":
 # ---------------------------------------------------------------------------
 elif segment == "Alati":
     st.caption(
-        "Računica, raspletanje čestih tvrdnji, tok novca i kratka anketa. "
-        "Brojevi su javni; zaključak je vaš."
+        "Računica, raspletanje čestih tvrdnji, tok novca i kratka anketa."
     )
     tool = nav_pick(
         "Izbornik",
@@ -1456,7 +1432,6 @@ html(
   Izvori: poslovna izvješća ZET; kratki vodiči izvršenja proračuna Grada;
   priopćenja uprava (isplate VII/2026., paket 32,4 mil. €); DZS; EMTA/EIT (2019.); javni vozni red.
   Tečaj 7,5345 kn/€. Isplata ≠ trošak rada po zaposlenom ≠ osnovica kolektivnog ugovora.
-  Ovo nije stav u pregovorima.
 </div>
 """
 )
@@ -1466,7 +1441,7 @@ render_owner_analytics()
 with st.expander("Izvori i napomene"):
     st.markdown(
         """
-**Tri mjere plaće** — ne miješati: isplata s dodacima · trošak rada po zaposlenom (izvješća) · osnovica kolektivnog ugovora (pregovori).
+**Tri mjere plaće** (različite serije): isplata s dodacima · trošak rada po zaposlenom (izvješća) · osnovica kolektivnog ugovora (pregovori).
 
 [Poslovna izvješća ZET](https://www.zet.hr/preuzimanja/pravo-na-pristup-informacijama/676) ·
 izvršenje proračuna Grada · priopćenja · DZS · EMTA/EIT · javni vozni red · tečaj 7,5345 kn/€.
